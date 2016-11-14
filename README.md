@@ -1,4 +1,4 @@
-# swagger-spec [![Build Status](https://travis-ci.org/immoh/swagger-spec.svg?branch=master)](https://travis-ci.org/immoh/swagger-spec)
+# swagger-spec [![Build Status](https://travis-ci.org/immoh/swagger-spec.svg?branch=master)](https://travis-ci.org/immoh/swagger-spec) [![Dependencies Status](https://jarkeeper.com/immoh/swagger-spec/status.svg)](https://jarkeeper.com/immoh/swagger-spec)
 
 A library that contains [clojure.spec](http://clojure.org/about/spec) spec for
 [Swagger definition](http://swagger.io/specification/) and functions to parse JSON and YAML strings to a compatible
