@@ -1,0 +1,52 @@
+swagger: '2.0'
+info:
+  version: '2'
+  title: Test
+  description: Test.
+basePath: '/v2'
+schemes:
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  
+  /test:
+    get:
+      description: Test
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Returns something
+          schema:
+            $ref: '#/definitions/sm'
+        default:
+          description: unexpected error
+          schema:
+            $ref: '#/definitions/errorModel'
+    x-javaClass: com.kenshoo.swagger.validator.SimpleResource
+    
+
+definitions:
+  sm:
+    properties:
+      a:
+        type: string      
+      b:
+        type: string      
+      date:
+        type: string
+    x-javaClass: com.kenshoo.swagger.validator.ForbiddenTypeModel
+
+  errorModel:
+    required:
+      - errorCode
+      - errorMessage
+    properties:
+      errorCode:
+        type: string
+      errorMessage:
+        type: string
+    x-javaClass: com.kenshoo.swagger.validator.ErrorInfo

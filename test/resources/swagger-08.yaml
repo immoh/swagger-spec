@@ -1,0 +1,4005 @@
+---
+swagger: "2.0"
+info:
+  description: "<b>S</b>teel<b>C</b>onnect <b>R</b>est <b>AP</b>I (scrap). <p> User\
+    \ documentation has been moved to confluence into the \"Rest API\" space.\n"
+  version: "1.0"
+  title: "SteelConnect Rest API documentation - Configuration"
+basePath: "/api/scm.config/1.0"
+tags:
+- name: "organization"
+  description: "Organization Management"
+- name: "hardware"
+  description: "Hardware Management (switches, access points)"
+- name: "node"
+  description: "Node Management"
+- name: "accesspoint"
+  description: "Access Point Management"
+- name: "switch"
+  description: "Switch Management"
+- name: "application"
+  description: "Application Management"
+- name: "zone"
+  description: "Zone Management"
+- name: "site"
+  description: "Site Management"
+- name: "ssid"
+  description: "Wifi SSID settings"
+- name: "cluster"
+  description: "Cluster Management"
+- name: "dcuplink"
+  description: "DC Uplink Management"
+- name: "uplink"
+  description: "Uplink Management"
+- name: "broadcast"
+  description: "Broadcast Management"
+- name: "app"
+  description: "Application Management"
+- name: "appgrp"
+  description: "Appliation Group Management"
+- name: "user"
+  description: "User Management"
+- name: "pathrule"
+  description: "Path Rule"
+- name: "outboundrule"
+  description: "Outbound Rule"
+- name: "inboundrule"
+  description: "Inbound Rule"
+- name: "endpoint"
+  description: "Endpoint"
+- name: "network"
+  description: "Network"
+- name: "bgpneigh"
+  description: "BGP Neighbor"
+- name: "dcinterface"
+  description: "Datcenter Interface"
+- name: "device"
+  description: "Device"
+- name: "port"
+  description: "Ports"
+- name: "wan"
+  description: "Wans"
+schemes:
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /ap:
+    get:
+      tags:
+      - "accesspoint"
+      summary: "List all access points"
+      description: "List all access points"
+      operationId: "apGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of all access points"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Accesspoint"
+  /ap/:apid:
+    get:
+      tags:
+      - "accesspoint"
+      summary: "Get access point info"
+      description: "Returns the access point object"
+      operationId: "apapidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The access point object"
+          schema:
+            $ref: "#/definitions/node"
+        404:
+          description: "No access point exists with given accesspointid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Accesspoint"
+    put:
+      tags:
+      - "accesspoint"
+      summary: "Update a access point."
+      description: "Update existing access point"
+      operationId: "apapidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "access point updated"
+          schema:
+            $ref: "#/definitions/node"
+        500:
+          description: "access point update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Accesspoint"
+    delete:
+      tags:
+      - "accesspoint"
+      summary: "Delete access point"
+      description: "Delete"
+      operationId: "apapidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Access point deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Access point deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Accesspoint"
+  /app/:appid:
+    get:
+      tags:
+      - "app"
+      summary: "Get app"
+      description: "Get specified app"
+      operationId: "appappidGET"
+      parameters: []
+      responses:
+        200:
+          description: "App"
+          schema:
+            $ref: "#/definitions/app"
+        404:
+          description: "No app exists with given appid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "App"
+  /app_group/:appgrpid:
+    get:
+      tags:
+      - "appgrp"
+      summary: "Get Application Group"
+      description: "Get specific Appliation Group"
+      operationId: "app_groupappgrpidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Appgrp"
+          schema:
+            $ref: "#/definitions/appgrp"
+        404:
+          description: "No app exists with given appid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Appgrp"
+    put:
+      tags:
+      - "appgrp"
+      summary: "Update a application group"
+      description: "Update existing application group"
+      operationId: "app_groupappgrpidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "application group updated"
+          schema:
+            $ref: "#/definitions/appgrp"
+        500:
+          description: "application group update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Appgrp"
+    delete:
+      tags:
+      - "appgrp"
+      summary: "Delete Application Group"
+      description: ""
+      operationId: "app_groupappgrpidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Application Group deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Application Group deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Appgrp"
+  /app_groups:
+    get:
+      tags:
+      - "appgrp"
+      summary: "List Application Groups"
+      description: "List Application Groups"
+      operationId: "app_groupsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of Application Groups"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Appgrp"
+  /apps:
+    get:
+      tags:
+      - "app"
+      summary: "List Apps"
+      description: "List pre-defined apps"
+      operationId: "appsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of apps"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "App"
+  /bgpneighs:
+    get:
+      tags:
+      - "bgpneigh"
+      summary: "List BGP neighbors"
+      description: "Returns a field 'items' which holds an array containing all IDs\
+        \ of all available BGP neighbors\n"
+      operationId: "bgpneighsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List BGP neighbors"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+      x-swagger-router-controller: "Bgpneigh"
+  /bgpneighs/:bgpneighid:
+    get:
+      tags:
+      - "bgpneigh"
+      summary: "Get bgp neighbor info"
+      description: "Returns the bgp neighbor object"
+      operationId: "bgpneighsbgpneighidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The bgp neighbor object"
+          schema:
+            $ref: "#/definitions/bgpneigh"
+        404:
+          description: "No bgp neighbor exists with given oid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Bgpneigh"
+    put:
+      tags:
+      - "bgpneigh"
+      summary: "Update an existing BGP neighbor"
+      description: "Update a BGP neighbor with id dcinterfaceid"
+      operationId: "bgpneighsbgpneighidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "BGP neighbor updated"
+          schema:
+            $ref: "#/definitions/bgpneigh"
+        500:
+          description: "BGP neighbor update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Bgpneigh"
+    delete:
+      tags:
+      - "bgpneigh"
+      summary: "Delete bgp neighbor"
+      description: "Deletes the bgp neighbor"
+      operationId: "bgpneighsbgpneighidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "BGP neighbor deleted"
+        500:
+          description: "Bgp deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Bgpneigh"
+  /broadcast/:bcastid:
+    get:
+      tags:
+      - "broadcast"
+      summary: "Get broadcast object"
+      description: "Returns the broadcast object"
+      operationId: "broadcastbcastidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The broadcast object"
+          schema:
+            $ref: "#/definitions/broadcast"
+        404:
+          description: "No broadcast exists with given broadcastid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Broadcast"
+    put:
+      tags:
+      - "broadcast"
+      summary: "Update a broadcast object"
+      description: "Updates the broadcast and returns the modified broadcast object.\
+        \ The ID field in the json object may be empty or missing.\n"
+      operationId: "broadcastbcastidPUT"
+      parameters:
+      - in: "body"
+        name: "broadcast"
+        description: "Ssid parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/broadcast"
+      responses:
+        200:
+          description: "Broadcast updated"
+          schema:
+            $ref: "#/definitions/broadcast"
+        400:
+          description: "Given parameters are invalid. Note, the error may expose internal\
+            \ information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to update broadcast"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Broadcast"
+    delete:
+      tags:
+      - "broadcast"
+      summary: "Delete broadcast"
+      description: ""
+      operationId: "broadcastbcastidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Broadcast deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Broadcast deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Broadcast"
+  /broadcasts:
+    get:
+      tags:
+      - "broadcast"
+      summary: "List all broadcasts"
+      description: "List all broadcasts"
+      operationId: "broadcastsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of switches"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Broadcast"
+  /cluster/:clusterid:
+    get:
+      tags:
+      - "cluster"
+      summary: "Get cluster object"
+      description: "Get the cluster object for cluster :clusterid"
+      operationId: "clusterclusteridGET"
+      parameters: []
+      responses:
+        200:
+          description: "The cluster object"
+          schema:
+            $ref: "#/definitions/cluster"
+        404:
+          description: "No cluster exists with given clusterid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Cluster"
+    put:
+      tags:
+      - "cluster"
+      summary: "Update a cluster object"
+      description: "Updates the cluster and returns the modified cluster object.\n"
+      operationId: "clusterclusteridPUT"
+      parameters:
+      - in: "body"
+        name: "cluster"
+        description: "Cluster parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/cluster"
+      responses:
+        200:
+          description: "Cluster updated"
+          schema:
+            $ref: "#/definitions/cluster"
+        404:
+          description: "No cluster exists with given clusterid\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to update cluster"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Cluster"
+    delete:
+      tags:
+      - "cluster"
+      summary: "Delete cluster"
+      description: "Delete cluster"
+      operationId: "clusterclusteridDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Cluster deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        404:
+          description: "Cluster deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Cluster"
+  /clusters:
+    get:
+      tags:
+      - "cluster"
+      summary: "List all clusters"
+      description: "List all clusters"
+      operationId: "clustersGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of all clusters"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Cluster"
+  /custom_app/:appid:
+    get:
+      tags:
+      - "app"
+      summary: "Get app"
+      description: "Get specified app"
+      operationId: "custom_appappidGET"
+      parameters: []
+      responses:
+        200:
+          description: "App"
+          schema:
+            $ref: "#/definitions/custom_app"
+        404:
+          description: "No app exists with given appid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "App"
+    put:
+      tags:
+      - "app"
+      summary: "Update a custom app."
+      description: "Update existing custom app"
+      operationId: "custom_appappidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "custom app updated"
+          schema:
+            $ref: "#/definitions/custom_app"
+        500:
+          description: "custom app update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "App"
+    delete:
+      tags:
+      - "app"
+      summary: "Delete custom app"
+      description: ""
+      operationId: "custom_appappidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Custom app deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Custom app deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "App"
+  /custom_apps:
+    get:
+      tags:
+      - "app"
+      summary: "List Custom Apps"
+      description: "List custom apps"
+      operationId: "custom_appsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of apps"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "App"
+  /dcinterfaces:
+    get:
+      tags:
+      - "dcinterface"
+      summary: "List datacenter interfaces"
+      description: "Returns a field 'items' which holds an array containing all IDs\
+        \ of all available datacenter interfaces\n"
+      operationId: "dcinterfacesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List datacenter interfaces"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+      x-swagger-router-controller: "Dcinterface"
+  /dcinterfaces/:dcinterfaceid:
+    get:
+      tags:
+      - "dcinterface"
+      summary: "Get datacenter interface info"
+      description: "Returns the datacenter interface object"
+      operationId: "dcinterfacesdcinterfaceidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The datacenter interface object"
+          schema:
+            $ref: "#/definitions/dcinterface"
+        404:
+          description: "No datacenter interface exists with given oid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcinterface"
+    put:
+      tags:
+      - "dcinterface"
+      summary: "Update a datacenter interface in a specified organization."
+      description: "Update existing datacenter interface with id dcinterfaceid"
+      operationId: "dcinterfacesdcinterfaceidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "datacenter interface updated"
+          schema:
+            $ref: "#/definitions/dcinterface"
+        500:
+          description: "datacenter interface update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcinterface"
+    delete:
+      tags:
+      - "dcinterface"
+      summary: "Delete datacenter interface"
+      description: "Deletes the datacenter interface"
+      operationId: "dcinterfacesdcinterfaceidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "datacenter interface deleted"
+        500:
+          description: "Bgp deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcinterface"
+  /dcuplink/:dcuplinkid:
+    get:
+      tags:
+      - "dcuplink"
+      summary: "Get dcuplink object"
+      description: "Get the dcuplink object for dcuplink :dcuplinkid"
+      operationId: "dcuplinkdcuplinkidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The dcuplink object"
+          schema:
+            $ref: "#/definitions/dcuplink"
+        404:
+          description: "No dcuplink exists with given dcuplinkid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcuplink"
+    put:
+      tags:
+      - "dcuplink"
+      summary: "Update a dcuplink object"
+      description: "Updates the dcuplink and returns the modified dcuplink object.\n"
+      operationId: "dcuplinkdcuplinkidPUT"
+      parameters:
+      - in: "body"
+        name: "dcuplink"
+        description: "Dcuplink parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/dcuplink"
+      responses:
+        200:
+          description: "Dcuplink updated"
+          schema:
+            $ref: "#/definitions/dcuplink"
+        404:
+          description: "No dcuplink exists with given dcuplinkid\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to update dcuplink"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcuplink"
+    delete:
+      tags:
+      - "dcuplink"
+      summary: "Delete dcuplink"
+      description: "Delete dcuplink"
+      operationId: "dcuplinkdcuplinkidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Dcuplink deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        404:
+          description: "Dcuplink deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcuplink"
+  /dcuplinks:
+    get:
+      tags:
+      - "dcuplink"
+      summary: "List all dcuplinks"
+      description: "List all dcuplinks"
+      operationId: "dcuplinksGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of all dcuplinks"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Dcuplink"
+  /device/:devid:
+    get:
+      tags:
+      - "device"
+      summary: "Get devices"
+      description: "Get specific device"
+      operationId: "devicedevidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Device"
+          schema:
+            $ref: "#/definitions/device"
+      x-swagger-router-controller: "Device"
+    put:
+      tags:
+      - "device"
+      summary: "Update a device"
+      description: "Update existing device"
+      operationId: "devicedevidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "device updated"
+          schema:
+            $ref: "#/definitions/device"
+        500:
+          description: "device update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Device"
+    delete:
+      tags:
+      - "device"
+      summary: "Delete device"
+      description: ""
+      operationId: "devicedevidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Device deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Device deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Device"
+  /devices:
+    get:
+      tags:
+      - "device"
+      summary: "List devices"
+      description: "List all devices"
+      operationId: "devicesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of devices"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Device"
+  /endpoint/:epid:
+    get:
+      tags:
+      - "endpoint"
+      summary: "Get endpoint"
+      description: "Get specific endpoint"
+      operationId: "endpointepidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Endpoint"
+          schema:
+            $ref: "#/definitions/endpoint"
+        404:
+          description: "No endpoint exists with given id"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Endpoint"
+    put:
+      tags:
+      - "endpoint"
+      summary: "Update a endpoint"
+      description: "Update existing endpoint"
+      operationId: "endpointepidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "endpoint updated"
+          schema:
+            $ref: "#/definitions/endpoint"
+        500:
+          description: "endpoint update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Endpoint"
+    delete:
+      tags:
+      - "endpoint"
+      summary: "Delete endpoint"
+      description: ""
+      operationId: "endpointepidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Endpoint deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Endpoint deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Endpoint"
+  /endpoints:
+    get:
+      tags:
+      - "endpoint"
+      summary: "List endpoints"
+      description: "List endpoints"
+      operationId: "endpointsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of endpoints"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Endpoint"
+  /inbound_rule/:ruleid:
+    get:
+      tags:
+      - "inboundrule"
+      summary: "Get inbound rules"
+      description: "Get specific inbound rules"
+      operationId: "inbound_ruleruleidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Inbound rule"
+          schema:
+            $ref: "#/definitions/inboundrule"
+        404:
+          description: "No rule exists with given ruleid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Inboundrule"
+    put:
+      tags:
+      - "inboundrule"
+      summary: "Update a inbound rule"
+      description: "Update existing inbound rule"
+      operationId: "inbound_ruleruleidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "inbound rule updated"
+          schema:
+            $ref: "#/definitions/inboundrule"
+        500:
+          description: "inbound rule update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Inboundrule"
+    delete:
+      tags:
+      - "inboundrule"
+      summary: "Delete inbound rule"
+      description: ""
+      operationId: "inbound_ruleruleidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Inbound rule deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Inbound rule deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Inboundrule"
+  /inbound_rules:
+    get:
+      tags:
+      - "inboundrule"
+      summary: "List inbound rules"
+      description: "List inbound rules"
+      operationId: "inbound_rulesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of inbound rules"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Inboundrule"
+  /network/:netid:
+    get:
+      tags:
+      - "network"
+      summary: "Get network"
+      description: "Get specific network"
+      operationId: "networknetidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Network"
+          schema:
+            $ref: "#/definitions/network"
+        404:
+          description: "No network exists with given id"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Network"
+    put:
+      tags:
+      - "network"
+      summary: "Update a network"
+      description: "Update existing network"
+      operationId: "networknetidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "network updated"
+          schema:
+            $ref: "#/definitions/network"
+        500:
+          description: "network update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Network"
+    delete:
+      tags:
+      - "network"
+      summary: "Delete network"
+      description: ""
+      operationId: "networknetidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Network deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Network deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Network"
+  /networks:
+    get:
+      tags:
+      - "network"
+      summary: "List networks"
+      description: "List networks"
+      operationId: "networksGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of networks"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Network"
+  /node/:nodeid:
+    get:
+      tags:
+      - "node"
+      summary: "Get node object"
+      description: "Get the node object for node :nodeid"
+      operationId: "nodenodeidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The node object"
+          schema:
+            $ref: "#/definitions/node"
+        404:
+          description: "No access point exists with given accesspointid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Node"
+    put:
+      tags:
+      - "node"
+      summary: "Update a node."
+      description: "Update existing node"
+      operationId: "nodenodeidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "node updated"
+          schema:
+            $ref: "#/definitions/node"
+        500:
+          description: "node update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Node"
+    delete:
+      tags:
+      - "node"
+      summary: "Delete node"
+      description: "Delete node"
+      operationId: "nodenodeidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Node deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Node deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Node"
+  /node/:nodeid/ports:
+    get:
+      tags:
+      - "port"
+      summary: "Get port"
+      description: "Get specified port"
+      operationId: "nodenodeidPortsGET"
+      parameters: []
+      responses:
+        200:
+          description: "Port"
+          schema:
+            $ref: "#/definitions/port"
+        404:
+          description: "No port exists with given nodeid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Port"
+  /nodes:
+    get:
+      tags:
+      - "node"
+      summary: "List all nodes"
+      description: "List all nodes"
+      operationId: "nodesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of all nodes"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Node"
+  /org/:orgid:
+    get:
+      tags:
+      - "organization"
+      summary: "Get organization info"
+      description: "Returns the organization object"
+      operationId: "orgorgidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The organization object"
+          schema:
+            $ref: "#/definitions/organization"
+        404:
+          description: "No organization exists with given orgid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Organization"
+    put:
+      tags:
+      - "organization"
+      summary: "Update an organization object"
+      description: "Updates the organization and returns the modified organization\
+        \ object. The ID field in the json part may be empty or missing.\n"
+      operationId: "orgorgidPUT"
+      parameters:
+      - in: "body"
+        name: "org"
+        description: "Organization parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/organization"
+      responses:
+        200:
+          description: "Organization updated"
+          schema:
+            $ref: "#/definitions/organization"
+        400:
+          description: "Given parameters are invalid. Note, the error may expose internal\
+            \ information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to update organization"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Organization"
+    delete:
+      tags:
+      - "organization"
+      summary: "Delete organization"
+      description: ""
+      operationId: "orgorgidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Organization deleted"
+        500:
+          description: "Organization deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Organization"
+  /org/:orgid/ap:
+    get:
+      tags:
+      - "accesspoint"
+      summary: "List access points"
+      description: "List access points for org given in :orgid"
+      operationId: "orgorgidApGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of access points"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Accesspoint"
+    post:
+      tags:
+      - "accesspoint"
+      summary: "Create a new access point"
+      operationId: "orgorgidApPOST"
+      parameters:
+      - in: "body"
+        name: "ap"
+        description: "Access point parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/node"
+      responses:
+        200:
+          description: "Access point created"
+          schema:
+            $ref: "#/definitions/node"
+        400:
+          description: "Given parameters are invalid. Note, the error may expose internal\
+            \ information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create switch"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Accesspoint"
+  /org/:orgid/app_groups:
+    get:
+      tags:
+      - "appgrp"
+      summary: "Get Application Groups"
+      description: "List Application Groups for given orgid"
+      operationId: "orgorgidApp_groupsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of Application Groups"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Appgrp"
+    post:
+      tags:
+      - "appgrp"
+      summary: "Create application group"
+      description: "Create a new application group in the org given in :orgid"
+      operationId: "orgorgidApp_groupsPOST"
+      parameters:
+      - in: "body"
+        name: "appgrp"
+        description: "application group object"
+        required: true
+        schema:
+          $ref: "#/definitions/appgrp"
+      responses:
+        200:
+          description: "Application group created successfully"
+          schema:
+            $ref: "#/definitions/appgrp"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create application group"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Appgrp"
+  /org/:orgid/bgpneighs:
+    get:
+      tags:
+      - "bgpneigh"
+      summary: "List all BGP neighbors in organization"
+      description: "List all BGP neighbors in org :orgid"
+      operationId: "orgorgidBgpneighsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of bgpneighs"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Bgpneigh"
+    post:
+      tags:
+      - "bgpneigh"
+      summary: "Create a new BGP neighbor in a specified organization"
+      description: "Create a new BGP neighbor in org :orgid"
+      operationId: "orgorgidBgpneighsPOST"
+      parameters: []
+      responses:
+        200:
+          description: "BGP neighbor created"
+          schema:
+            $ref: "#/definitions/bgpneigh"
+        500:
+          description: "BGP neighbor creation failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Bgpneigh"
+  /org/:orgid/broadcasts:
+    get:
+      tags:
+      - "broadcast"
+      summary: "List broadcasts"
+      description: "List broadcasts for org :orgid"
+      operationId: "orgorgidBroadcastsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of switches"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Broadcast"
+    post:
+      tags:
+      - "broadcast"
+      summary: "Create a new broadcast"
+      description: "Create a new broadcast"
+      operationId: "orgorgidBroadcastsPOST"
+      parameters:
+      - in: "body"
+        name: "broadcast"
+        description: "Broadcast parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/broadcast"
+      responses:
+        200:
+          description: "Broadcast created"
+          schema:
+            $ref: "#/definitions/broadcast"
+        400:
+          description: "Given parameters are invalid. Note, the error may expose internal\
+            \ information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create broadcast"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Broadcast"
+  /org/:orgid/clusters:
+    get:
+      tags:
+      - "cluster"
+      summary: "List clusters"
+      description: "List clusters for org :orgid"
+      operationId: "orgorgidClustersGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of clusters"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "No org exists with given orgid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Cluster"
+    post:
+      tags:
+      - "cluster"
+      summary: "Create a new cluster"
+      description: "Returns the newly created cluster object. The ID field may be\
+        \ left out in the request. If it is present, it should be empty or null. If\
+        \ not empty, it will be overwritten.\n"
+      operationId: "orgorgidClustersPOST"
+      parameters:
+      - in: "body"
+        name: "cluster"
+        description: "Cluster parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/cluster"
+      responses:
+        200:
+          description: "Cluster created"
+          schema:
+            $ref: "#/definitions/cluster"
+        400:
+          description: "Given parameters do not include required parameters.\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create cluster"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Cluster"
+  /org/:orgid/custom_apps:
+    get:
+      tags:
+      - "app"
+      summary: "Get Custom Apps"
+      description: "List Custom Apps for given orgid"
+      operationId: "orgorgidCustom_appsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of apps"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "App"
+    post:
+      tags:
+      - "app"
+      summary: "Create custom application"
+      description: "Create a new custom application in the org given in :orgid"
+      operationId: "orgorgidCustom_appsPOST"
+      parameters:
+      - in: "body"
+        name: "custom_app"
+        description: "custom application object"
+        required: true
+        schema:
+          $ref: "#/definitions/custom_app"
+      responses:
+        200:
+          description: "Custom application created successfully"
+          schema:
+            $ref: "#/definitions/custom_app"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create custom application"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "App"
+  /org/:orgid/dcinterfaces:
+    get:
+      tags:
+      - "dcinterface"
+      summary: "List all datacenter interfaces in organization"
+      description: "List all datacenter interfaces in org :orgid"
+      operationId: "orgorgidDcinterfacesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of dcinterfaces"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Dcinterface"
+    post:
+      tags:
+      - "dcinterface"
+      summary: "Create a datacenter interface in a specified organization"
+      description: "Create new datacenter interface in org :orgid"
+      operationId: "orgorgidDcinterfacesPOST"
+      parameters: []
+      responses:
+        200:
+          description: "datacenter interface created"
+          schema:
+            $ref: "#/definitions/dcinterface"
+        500:
+          description: "datacenter interface creation failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcinterface"
+  /org/:orgid/dcuplinks:
+    get:
+      tags:
+      - "dcuplink"
+      summary: "List dcuplinks"
+      description: "List dcuplinks for org :orgid"
+      operationId: "orgorgidDcuplinksGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of dcuplinks"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "No org exists with given orgid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcuplink"
+    post:
+      tags:
+      - "dcuplink"
+      summary: "Create a new dcuplink"
+      description: "Returns the newly created dcuplink object. The ID field may be\
+        \ left out in the request. If it is present, it should be empty or null. If\
+        \ not empty, it will be overwritten.\n"
+      operationId: "orgorgidDcuplinksPOST"
+      parameters:
+      - in: "body"
+        name: "dcuplink"
+        description: "Dcuplink parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/dcuplink"
+      responses:
+        200:
+          description: "Dcuplink created"
+          schema:
+            $ref: "#/definitions/dcuplink"
+        400:
+          description: "Given parameters do not include the required parameters.\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create dcuplink"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Dcuplink"
+  /org/:orgid/devices:
+    get:
+      tags:
+      - "device"
+      summary: "Get device for an org"
+      description: "Get the list of devices for the given org"
+      operationId: "orgorgidDevicesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of devices"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "No device exists with given deviceid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Device"
+    post:
+      tags:
+      - "device"
+      summary: "Create device an org"
+      description: "Create a new device in the org given in :orgid"
+      operationId: "orgorgidDevicesPOST"
+      parameters:
+      - in: "body"
+        name: "device"
+        description: "device object"
+        required: true
+        schema:
+          $ref: "#/definitions/device"
+      responses:
+        200:
+          description: "Device created successfully"
+          schema:
+            $ref: "#/definitions/device"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create device"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Device"
+  /org/:orgid/endpoints:
+    get:
+      tags:
+      - "endpoint"
+      summary: "Get endpoints for an org"
+      description: "Get the list of endpoints for the given org"
+      operationId: "orgorgidEndpointsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of endpoints"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Endpoint"
+    post:
+      tags:
+      - "endpoint"
+      summary: "Create endpoint for an org"
+      description: "Create a endpoint in the org given in :orgid"
+      operationId: "orgorgidEndpointsPOST"
+      parameters:
+      - in: "body"
+        name: "endpoint"
+        description: "endpoint object"
+        required: true
+        schema:
+          $ref: "#/definitions/endpoint"
+      responses:
+        200:
+          description: "Endpoint created successfully"
+          schema:
+            $ref: "#/definitions/endpoint"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create endpoint rule"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Endpoint"
+  /org/:orgid/inbound_rules:
+    get:
+      tags:
+      - "inboundrule"
+      summary: "Get inbound rules for an org"
+      description: "Get the list of inbound rules for the given org"
+      operationId: "orgorgidInbound_rulesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of inbound rules"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Inboundrule"
+    post:
+      tags:
+      - "inboundrule"
+      summary: "Create inbound rule for an org"
+      description: "Create a inbound in the org given in :orgid"
+      operationId: "orgorgidInbound_rulesPOST"
+      parameters:
+      - in: "body"
+        name: "inboundrule"
+        description: "inboundrule object"
+        required: true
+        schema:
+          $ref: "#/definitions/inboundrule"
+      responses:
+        200:
+          description: "Inbound rule created successfully"
+          schema:
+            $ref: "#/definitions/inboundrule"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create inbound rule"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Inboundrule"
+  /org/:orgid/networks:
+    get:
+      tags:
+      - "network"
+      summary: "Get network for an org"
+      description: "Get the list of networks for the given org"
+      operationId: "orgorgidNetworksGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of networks"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Network"
+    post:
+      tags:
+      - "network"
+      summary: "Create network for an org"
+      description: "Create a network in the org given in :orgid"
+      operationId: "orgorgidNetworksPOST"
+      parameters:
+      - in: "body"
+        name: "network"
+        description: "network object"
+        required: true
+        schema:
+          $ref: "#/definitions/network"
+      responses:
+        200:
+          description: "Network created successfully"
+          schema:
+            $ref: "#/definitions/network"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create network"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Network"
+  /org/:orgid/nodes:
+    get:
+      tags:
+      - "node"
+      summary: "List nodes"
+      description: "List nodes for org :orgid"
+      operationId: "orgorgidNodesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of nodes"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Node"
+    post:
+      tags:
+      - "node"
+      summary: "Create a new node"
+      operationId: "orgorgidNodesPOST"
+      parameters:
+      - in: "body"
+        name: "node"
+        description: "Node parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/node"
+      responses:
+        200:
+          description: "Node created"
+          schema:
+            $ref: "#/definitions/node"
+        400:
+          description: "Given parameters are invalid. Note, the error may expose internal\
+            \ information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create node"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Node"
+  /org/:orgid/outbound_rules:
+    get:
+      tags:
+      - "outboundrule"
+      summary: "Get outbound rule for an org"
+      description: "Get the list of outbound rules for the given org"
+      operationId: "orgorgidOutbound_rulesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of outbound rules"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Outboundrule"
+    post:
+      tags:
+      - "outboundrule"
+      summary: "Create outbound rule for an org"
+      description: "Create a outbound in the org given in :orgid"
+      operationId: "orgorgidOutbound_rulesPOST"
+      parameters:
+      - in: "body"
+        name: "outbound"
+        description: "outbound object"
+        required: true
+        schema:
+          $ref: "#/definitions/outboundrule"
+      responses:
+        200:
+          description: "Outbound rule created successfully"
+          schema:
+            $ref: "#/definitions/outboundrule"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create outbound rule"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Outboundrule"
+  /org/:orgid/path_rules:
+    get:
+      tags:
+      - "pathrule"
+      summary: "Get path rule for an org"
+      description: "Get the list of path rules for the given org"
+      operationId: "orgorgidPath_rulesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of path rules"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Pathrule"
+    post:
+      tags:
+      - "pathrule"
+      summary: "Create path rule for an org"
+      description: "Create a path rule in the org given in :orgid"
+      operationId: "orgorgidPath_rulesPOST"
+      parameters:
+      - in: "body"
+        name: "pathrule"
+        description: "pathrule object"
+        required: true
+        schema:
+          $ref: "#/definitions/pathrule"
+      responses:
+        200:
+          description: "Path rule created successfully"
+          schema:
+            $ref: "#/definitions/pathrule"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create path rule"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Pathrule"
+  /org/:orgid/sites:
+    get:
+      tags:
+      - "site"
+      summary: "List sites for given organization"
+      description: "List all sites for the organization given in :orgid"
+      operationId: "orgorgidSitesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of plink. May be empty"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Site"
+    post:
+      tags:
+      - "site"
+      summary: "Create site"
+      description: "Create a new site in the org given in orgid"
+      operationId: "orgorgidSitesPOST"
+      parameters:
+      - in: "body"
+        name: "site"
+        description: "Site object"
+        required: true
+        schema:
+          $ref: "#/definitions/site"
+      responses:
+        200:
+          description: "Site created successfully"
+          schema:
+            $ref: "#/definitions/site"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create site"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Site"
+  /org/:orgid/ssids:
+    get:
+      tags:
+      - "ssid"
+      summary: "List all ssids within organization"
+      description: "List all ssids within organization"
+      operationId: "orgorgidSsidsGET"
+      parameters: []
+      responses:
+        200:
+          description: "Ssid"
+          schema:
+            $ref: "#/definitions/ssid"
+        404:
+          description: "No SSID exists"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Ssid"
+    post:
+      tags:
+      - "ssid"
+      summary: "Create a new ssid"
+      description: "Returns the newly created ssid object. Most notably the assigned\
+        \ ssidid<br><br> The ID field may be left out in the request. If it is present,\
+        \ it should be empty or null. If not empty, it will be overwritten.\n"
+      operationId: "orgorgidSsidsPOST"
+      parameters:
+      - in: "body"
+        name: "ssid"
+        description: "Ssid parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/ssid"
+      responses:
+        200:
+          description: "Ssid created"
+          schema:
+            $ref: "#/definitions/ssid"
+        400:
+          description: "Given parameters are invalid. Note, the error may expose internal\
+            \ information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create ssid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Ssid"
+  /org/:orgid/switches:
+    get:
+      tags:
+      - "switch"
+      summary: "List switches"
+      description: "List switches for org given in :orgid"
+      operationId: "orgorgidSwitchesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of switches"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Switch"
+    post:
+      tags:
+      - "switch"
+      summary: "Create a new switch"
+      description: ""
+      operationId: "orgorgidSwitchesPOST"
+      parameters:
+      - in: "body"
+        name: "switch"
+        description: "Switch parameters"
+        required: true
+        schema:
+          $ref: "#/definitions/node"
+      responses:
+        200:
+          description: "Switch created"
+          schema:
+            $ref: "#/definitions/node"
+        400:
+          description: "Given parameters are invalid. Note, the error may expose internal\
+            \ information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create switch"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Switch"
+  /org/:orgid/uplinks:
+    get:
+      tags:
+      - "uplink"
+      summary: "List uplinks for given organization"
+      description: "List all uplinks for the organization given in :orgid"
+      operationId: "orgorgidUplinksGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of uplink. May be empty"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Uplink"
+    post:
+      tags:
+      - "uplink"
+      summary: "Create uplink"
+      description: "Create a new uplink in the org given in :orgid"
+      operationId: "orgorgidUplinksPOST"
+      parameters:
+      - in: "body"
+        name: "uplink"
+        description: "Uplink object"
+        required: true
+        schema:
+          $ref: "#/definitions/uplink"
+      responses:
+        200:
+          description: "Uplink created successfully"
+          schema:
+            $ref: "#/definitions/uplink"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create organization"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Uplink"
+  /org/:orgid/users:
+    get:
+      tags:
+      - "user"
+      summary: "Get user for an org"
+      description: "Get the list of users for the given org"
+      operationId: "orgorgidUsersGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of users"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "User"
+    post:
+      tags:
+      - "user"
+      summary: "Create user for an org"
+      description: "Create a new user in the org given in :orgid"
+      operationId: "orgorgidUsersPOST"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "user object"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "User created successfully"
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create user"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "User"
+  /org/:orgid/wans:
+    get:
+      tags:
+      - "wan"
+      summary: "Get wan for an org"
+      description: "Get the list of wans for the given org"
+      operationId: "orgorgidWansGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of wans"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Wan"
+    post:
+      tags:
+      - "wan"
+      summary: "Create wan for an org"
+      description: "Create a wan in the org given in :orgid"
+      operationId: "orgorgidWansPOST"
+      parameters:
+      - in: "body"
+        name: "wan"
+        description: "wan object"
+        required: true
+        schema:
+          $ref: "#/definitions/wan"
+      responses:
+        200:
+          description: "Wan created successfully"
+          schema:
+            $ref: "#/definitions/wan"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create wan"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Wan"
+  /org/:orgid/zones:
+    get:
+      tags:
+      - "zone"
+      summary: "List zones for given organization"
+      description: "List all zones for the organization given in :orgid"
+      operationId: "orgorgidZonesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of zones. May be empty"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Zone"
+    post:
+      tags:
+      - "zone"
+      summary: "Create zone"
+      description: "Create a new zone in the org given in :orgid"
+      operationId: "orgorgidZonesPOST"
+      parameters:
+      - in: "body"
+        name: "zone"
+        description: "Zone object"
+        required: true
+        schema:
+          $ref: "#/definitions/zone"
+      responses:
+        200:
+          description: "Zone created successfully"
+          schema:
+            $ref: "#/definitions/zone"
+        400:
+          description: "Given Parameters are invalid"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create organization"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Zone"
+  /orgs:
+    get:
+      tags:
+      - "organization"
+      summary: "List organizations"
+      description: "Returns a field 'items' which holds an array containing  all IDs\
+        \ of all available organizations\n"
+      operationId: "orgsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List organizations"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+      x-swagger-router-controller: "Organization"
+    post:
+      tags:
+      - "organization"
+      summary: "Create a new organization"
+      description: "Returns the newly created organization object. Most notably  the\
+        \ assigned orgid\n"
+      operationId: "orgsPOST"
+      parameters:
+      - in: "body"
+        name: "org"
+        description: "Organization Object"
+        required: true
+        schema:
+          $ref: "#/definitions/organization"
+      responses:
+        200:
+          description: "Organization created"
+          schema:
+            $ref: "#/definitions/organization"
+        400:
+          description: "Given parameters are invalid. Note, the error may  expose\
+            \ internal information of objects\n"
+          schema:
+            $ref: "#/definitions/error"
+        500:
+          description: "Failed to create organization"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Organization"
+  /outbound_rule/:ruleid:
+    get:
+      tags:
+      - "outboundrule"
+      summary: "Get outbound rule"
+      description: "Get specific outbound rule"
+      operationId: "outbound_ruleruleidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Outbound rule"
+          schema:
+            $ref: "#/definitions/outboundrule"
+        404:
+          description: "No rule exists with given ruleid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Outboundrule"
+    put:
+      tags:
+      - "outboundrule"
+      summary: "Update a outbound rule"
+      description: "Update existing outbound rule"
+      operationId: "outbound_ruleruleidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "outbound rule updated"
+          schema:
+            $ref: "#/definitions/outboundrule"
+        500:
+          description: "outbound rule update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Outboundrule"
+    delete:
+      tags:
+      - "outboundrule"
+      summary: "Delete outbound rule"
+      description: ""
+      operationId: "outbound_ruleruleidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Outbound rule deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Outbound rule deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Outboundrule"
+  /outbound_rules:
+    get:
+      tags:
+      - "outboundrule"
+      summary: "List outbound rules"
+      description: "List outbount rules"
+      operationId: "outbound_rulesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of outbound rules"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Outboundrule"
+  /path_rule/:pruleid:
+    get:
+      tags:
+      - "pathrule"
+      summary: "Get path rules"
+      description: "Get specific path rule"
+      operationId: "path_rulepruleidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Path rule"
+          schema:
+            $ref: "#/definitions/pathrule"
+        404:
+          description: "No rule exists with given ruleid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Pathrule"
+    put:
+      tags:
+      - "pathrule"
+      summary: "Update a path rule"
+      description: "Update existing path rule"
+      operationId: "path_rulepruleidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "path rule updated"
+          schema:
+            $ref: "#/definitions/pathrule"
+        500:
+          description: "path rule update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Pathrule"
+    delete:
+      tags:
+      - "pathrule"
+      summary: "Delete path rule"
+      description: ""
+      operationId: "path_rulepruleidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Path rule deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Path rule deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Pathrule"
+  /path_rules:
+    get:
+      tags:
+      - "pathrule"
+      summary: "List path rules"
+      description: "List path rules"
+      operationId: "path_rulesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of path rules"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Pathrule"
+  /port/:portid:
+    get:
+      tags:
+      - "port"
+      summary: "Get port"
+      description: "Get specified port"
+      operationId: "portportidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Port"
+          schema:
+            $ref: "#/definitions/port"
+        404:
+          description: "No port with given portid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Port"
+    put:
+      tags:
+      - "port"
+      summary: "Update a port"
+      description: "Update existing port"
+      operationId: "portportidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "port updated"
+          schema:
+            $ref: "#/definitions/port"
+        500:
+          description: "port update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Port"
+  /ports:
+    get:
+      tags:
+      - "port"
+      summary: "List Ports"
+      description: "List ports"
+      operationId: "portsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of ports"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Port"
+  /site/:siteid:
+    get:
+      tags:
+      - "site"
+      summary: "Retrieve specified site"
+      description: "Retrieve the site object for the site with id :siteid"
+      operationId: "sitesiteidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The site object"
+          schema:
+            $ref: "#/definitions/site"
+        404:
+          description: "No site exists with this siteid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Site"
+    put:
+      tags:
+      - "site"
+      summary: "Update a site."
+      description: "Update existing site"
+      operationId: "sitesiteidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "site updated"
+          schema:
+            $ref: "#/definitions/site"
+        500:
+          description: "site update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Site"
+    delete:
+      tags:
+      - "site"
+      summary: "Delete site"
+      description: "Delete site with id :siteid"
+      operationId: "sitesiteidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Object deleted"
+          schema:
+            $ref: "#/definitions/empty"
+      x-swagger-router-controller: "Site"
+  /site/:siteid/broadcasts:
+    get:
+      tags:
+      - "broadcast"
+      summary: "List broadcasts"
+      description: "List broadcasts for site :siteid"
+      operationId: "sitesiteidBroadcastsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of broadcasts"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Broadcast"
+  /site/:siteid/clusters:
+    get:
+      tags:
+      - "cluster"
+      summary: "List clusters"
+      description: "List clusters for site :siteid"
+      operationId: "sitesiteidClustersGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of clusters"
+          schema:
+            $ref: "#/definitions/list"
+        404:
+          description: "No site exists with given siteid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Cluster"
+  /site/:siteid/nodes:
+    get:
+      tags:
+      - "node"
+      summary: "List nodes"
+      description: "List nodes for site :siteid"
+      operationId: "sitesiteidNodesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of nodes"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Node"
+  /site/:siteid/uplinks:
+    get:
+      tags:
+      - "uplink"
+      summary: "List uplinks for given site"
+      description: "List all uplinks for the site given in :orgid"
+      operationId: "sitesiteidUplinksGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of uplink. May be empty"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Uplink"
+  /site/:siteid/zones:
+    get:
+      tags:
+      - "zone"
+      summary: "List zones for given site"
+      description: "List all zones for the site given in :orgid"
+      operationId: "sitesiteidZonesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of zones. May be empty"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Zone"
+  /sites:
+    get:
+      tags:
+      - "site"
+      summary: "Retrieve all sites"
+      description: "Retrieve a list of all sites"
+      operationId: "sitesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of sites. May be empty."
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Site"
+  /ssid/:ssidid:
+    get:
+      tags:
+      - "ssid"
+      summary: "Get ssid"
+      description: "Get specified ssid"
+      operationId: "ssidssididGET"
+      parameters: []
+      responses:
+        200:
+          description: "Ssid"
+          schema:
+            $ref: "#/definitions/ssid"
+        404:
+          description: "No SSID exists with given accesspointid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Ssid"
+    put:
+      tags:
+      - "ssid"
+      summary: "Update a ssid."
+      description: "Update existing ssid"
+      operationId: "ssidssididPUT"
+      parameters: []
+      responses:
+        200:
+          description: "ssid updated"
+          schema:
+            $ref: "#/definitions/ssid"
+        500:
+          description: "ssid update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Ssid"
+    delete:
+      tags:
+      - "ssid"
+      summary: "Delete ssid"
+      description: ""
+      operationId: "ssidssididDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Ssid deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Ssid deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Ssid"
+  /ssids:
+    get:
+      tags:
+      - "ssid"
+      summary: "List all ssids"
+      description: "List all ssids"
+      operationId: "ssidsGET"
+      parameters: []
+      responses:
+        200:
+          description: "List ssid"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Ssid"
+  /switch/:switchid:
+    get:
+      tags:
+      - "switch"
+      summary: "Get switch object"
+      description: "Returns the switch object"
+      operationId: "switchswitchidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The switch object"
+          schema:
+            $ref: "#/definitions/node"
+        404:
+          description: "No switch exists with given switchid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Switch"
+    put:
+      tags:
+      - "switch"
+      summary: "Update a switch."
+      description: "Update existing switch"
+      operationId: "switchswitchidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "switch updated"
+          schema:
+            $ref: "#/definitions/node"
+        500:
+          description: "switch update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Switch"
+    delete:
+      tags:
+      - "switch"
+      summary: "Delete switch"
+      description: "Delete"
+      operationId: "switchswitchidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Switch deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Switch deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Switch"
+  /switches:
+    get:
+      tags:
+      - "switch"
+      summary: "List all switches"
+      description: "List all switches"
+      operationId: "switchesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of switches"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Switch"
+  /uplink/:uplinkid:
+    get:
+      tags:
+      - "uplink"
+      summary: "Retrieve specified uplink"
+      description: "Retrieve the uplink object for the uplink with id :uplinkid"
+      operationId: "uplinkuplinkidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The uplink object"
+          schema:
+            $ref: "#/definitions/uplink"
+        404:
+          description: "No uplink exists with this uplinkid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Uplink"
+    put:
+      tags:
+      - "uplink"
+      summary: "Update a uplink."
+      description: "Update existing uplink"
+      operationId: "uplinkuplinkidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "uplink updated"
+          schema:
+            $ref: "#/definitions/uplink"
+        500:
+          description: "uplink update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Uplink"
+    delete:
+      tags:
+      - "uplink"
+      summary: "Delete uplink"
+      description: "Delete uplink with id :uplinkid"
+      operationId: "uplinkuplinkidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Object deleted"
+          schema:
+            $ref: "#/definitions/empty"
+      x-swagger-router-controller: "Uplink"
+  /uplinks:
+    get:
+      tags:
+      - "uplink"
+      summary: "Retrieve all uplinks"
+      description: "Retrieve a list of all uplinks"
+      operationId: "uplinksGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of uplinks. May be empty"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Uplink"
+  /user/:userid:
+    get:
+      tags:
+      - "user"
+      summary: "Get user"
+      description: "Get specific user"
+      operationId: "useruseridGET"
+      parameters: []
+      responses:
+        200:
+          description: "User"
+          schema:
+            $ref: "#/definitions/user"
+        404:
+          description: "No user exists with given userid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "User"
+    put:
+      tags:
+      - "user"
+      summary: "Update a user"
+      description: "Update existing user"
+      operationId: "useruseridPUT"
+      parameters: []
+      responses:
+        200:
+          description: "user updated"
+          schema:
+            $ref: "#/definitions/user"
+        500:
+          description: "user update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "User"
+    delete:
+      tags:
+      - "user"
+      summary: "Delete user"
+      description: ""
+      operationId: "useruseridDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "User deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "User deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "User"
+  /users:
+    get:
+      tags:
+      - "user"
+      summary: "List users"
+      description: "List users"
+      operationId: "usersGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of users"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "User"
+  /wan/:wanid:
+    get:
+      tags:
+      - "wan"
+      summary: "Get wan"
+      description: "Get specific wan"
+      operationId: "wanwanidGET"
+      parameters: []
+      responses:
+        200:
+          description: "Wan"
+          schema:
+            $ref: "#/definitions/wan"
+        404:
+          description: "No wan exists with given id"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Wan"
+    put:
+      tags:
+      - "wan"
+      summary: "Update a wan"
+      description: "Update existing wan"
+      operationId: "wanwanidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "wan updated"
+          schema:
+            $ref: "#/definitions/wan"
+        500:
+          description: "wan update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Wan"
+    delete:
+      tags:
+      - "wan"
+      summary: "Delete wan"
+      description: ""
+      operationId: "wanwanidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Wan deleted"
+          schema:
+            $ref: "#/definitions/empty"
+        500:
+          description: "Wan deletion failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Wan"
+  /wans:
+    get:
+      tags:
+      - "wan"
+      summary: "List wans"
+      description: "List wans"
+      operationId: "wansGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of wans"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Wan"
+  /zone/:zoneid:
+    get:
+      tags:
+      - "zone"
+      summary: "Retrieve specified zone"
+      description: "Retrieve the zone object for the zone with id :zoneid"
+      operationId: "zonezoneidGET"
+      parameters: []
+      responses:
+        200:
+          description: "The zone object"
+          schema:
+            $ref: "#/definitions/zone"
+        404:
+          description: "No uplink exists with this zoneid"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Zone"
+    put:
+      tags:
+      - "zone"
+      summary: "Update a zone."
+      description: "Update existing zone"
+      operationId: "zonezoneidPUT"
+      parameters: []
+      responses:
+        200:
+          description: "zone updated"
+          schema:
+            $ref: "#/definitions/zone"
+        500:
+          description: "zone update failed"
+          schema:
+            $ref: "#/definitions/error"
+      x-swagger-router-controller: "Zone"
+    delete:
+      tags:
+      - "zone"
+      summary: "Delete zone"
+      description: "Delete zone with id :zoneid"
+      operationId: "zonezoneidDELETE"
+      parameters: []
+      responses:
+        200:
+          description: "Object deleted"
+          schema:
+            $ref: "#/definitions/empty"
+      x-swagger-router-controller: "Zone"
+  /zones:
+    get:
+      tags:
+      - "zone"
+      summary: "Retrieve all zones"
+      description: "Retrieve a list of all zones"
+      operationId: "zonesGET"
+      parameters: []
+      responses:
+        200:
+          description: "List of zones. May be empty"
+          schema:
+            $ref: "#/definitions/list"
+      x-swagger-router-controller: "Zone"
+definitions:
+  list:
+    type: "object"
+    properties:
+      items:
+        type: "array"
+        items:
+          type: "string"
+  empty:
+    type: "object"
+  error:
+    type: "object"
+    properties:
+      error:
+        $ref: "#/definitions/error_error"
+  organization:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "string"
+        example: "SDDEDGERTSDGAGASG"
+        description: "Unique identifier of this object. This value is generated on\
+          \ object creation. Readonly.\n"
+      name:
+        type: "string"
+        example: "HQ"
+        description: "The name of the organization"
+      contact:
+        type: "string"
+        example: "root@myorg.com, Mrs HQ Admin, Root Road 14, 12345 Adminten"
+        description: "Freetext field for detailed contact information"
+      uid:
+        type: "string"
+        description: "Unique identifier of this object. This value is generated on\
+          \ object creation. Readonly.\n"
+      realm:
+        type: "string"
+        description: "Realm name"
+      gid:
+        type: "string"
+        description: "Organization global id"
+      longname:
+        type: "string"
+        description: "Organization's long name"
+      city:
+        type: "string"
+        description: "City"
+      country:
+        type: "string"
+        description: "Country"
+      street_address:
+        type: "string"
+        description: "Street Address"
+      timezone:
+        type: "string"
+        description: "Time Zone"
+  site:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of this object. This value is automatically\
+          \ generated when this object is created. Readonly.\n"
+      name:
+        type: "string"
+        example: "HQ"
+        description: "Short name or tag of the site\n"
+      org:
+        type: "string"
+        description: "Organization"
+      longname:
+        type: "string"
+        description: "Long name"
+      uplinks:
+        type: "array"
+        description: "List of uplink objects"
+        items:
+          type: "string"
+      networks:
+        type: "array"
+        description: "List of network objects"
+        items:
+          type: "string"
+      street_address:
+        type: "string"
+        description: "Street address"
+      city:
+        type: "string"
+        description: "City"
+      country:
+        type: "string"
+        description: "Country"
+      timezone:
+        type: "string"
+        description: "Time zone"
+      size:
+        type: "integer"
+        description: "Size"
+      uid:
+        type: "string"
+        description: "Unique integer identifier of this object. This value is automatically\
+          \ generated when this object is created. Readonly.\n"
+  zone:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier of this object. This value is generated on\
+          \ object creation. Readonly.\n"
+      org:
+        type: "string"
+        description: "Reference of the org this zone is in"
+      name:
+        type: "string"
+        example: "LAN"
+        description: "The name of the zone"
+      site:
+        type: "string"
+        example: "site-HQ-986eec1d96090b93"
+        description: "Reference of the site this zone is in"
+      networks:
+        type: "array"
+        description: "List of network objects"
+        items:
+          type: "string"
+      mgmt:
+        type: "string"
+        description: "Management Zone"
+      icmp:
+        type: "string"
+        description: "ICMP traffic ('all', 'ping', 'none')"
+      guest:
+        type: "string"
+        description: "Guest Zone"
+      breakout_preference:
+        type: "array"
+        description: "List of wan objects"
+        items:
+          type: "string"
+      routes:
+        type: "array"
+        description: "List of route objects"
+        items:
+          type: "string"
+      bcasts:
+        type: "array"
+        description: "List of bcast objects"
+        items:
+          type: "string"
+      tag:
+        type: "string"
+        example: "1000"
+        description: "Each zone has a vlan tag. If empty, this tag will be automatically\
+          \ assigned. Numbers 1-4049 may be used.  Tags over 4050 are reserved for\
+          \ internal use.\n"
+      tags:
+        type: "string"
+        description: "Policy tags"
+  uplink:
+    type: "object"
+    properties:
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      qos_bw_up:
+        type: "integer"
+        example: ""
+        description: "bw_up"
+      qos_up:
+        type: "integer"
+        example: ""
+        description: "qos_up"
+      site:
+        type: "string"
+        example: ""
+        description: "site"
+      static_ip_v6:
+        type: "string"
+        example: ""
+        description: "static_ip_v6"
+      uin:
+        type: "integer"
+        example: ""
+        description: "uin"
+      uid:
+        type: "integer"
+        example: ""
+        description: "uid"
+      node:
+        type: "string"
+        example: ""
+        description: "node"
+      name:
+        type: "string"
+        example: ""
+        description: "name"
+      static_gw_v4:
+        type: "string"
+        example: ""
+        description: "static_gw_v4"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      wan:
+        type: "string"
+        example: ""
+        description: "wan"
+      static_gw_v6:
+        type: "string"
+        example: ""
+        description: "static_gw_v6"
+      qos_bw_down:
+        type: "integer"
+        example: ""
+        description: "bw_down"
+      qos_down:
+        type: "integer"
+        example: ""
+        description: "qos_down"
+      static_ip_v4:
+        type: "string"
+        example: ""
+        description: "static_ip_v4"
+      port:
+        type: "string"
+        example: ""
+        description: "port"
+      vlan:
+        type: "integer"
+        example: ""
+        description: "vlan"
+      type:
+        type: "string"
+        example: ""
+        description: "type"
+  node:
+    type: "object"
+    properties:
+      site:
+        type: "string"
+        example: ""
+        description: "site"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      local_as:
+        type: "string"
+        example: ""
+        description: "local_as"
+      router_id:
+        type: "string"
+        example: ""
+        description: "router_id"
+      serial:
+        type: "string"
+        example: ""
+        description: "serial"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      uid:
+        type: "string"
+        example: ""
+        description: "uid"
+      zones:
+        type: "array"
+        description: "zones"
+        items:
+          type: "string"
+      radios:
+        type: "array"
+        description: "radios"
+        items:
+          type: "string"
+      realm:
+        type: "string"
+        example: ""
+        description: "realm"
+      location:
+        type: "string"
+        example: ""
+        description: "location"
+      ports:
+        type: "array"
+        description: "ports"
+        items:
+          type: "string"
+      uplinks:
+        type: "array"
+        description: "uplinks"
+        items:
+          type: "string"
+      inventory_version_cc:
+        type: "string"
+        example: ""
+        description: "inventory_version_cc"
+      disable_stp:
+        type: "boolean"
+        example: false
+        description: "disable_stp"
+      license:
+        type: "string"
+        example: ""
+        description: "license"
+      model:
+        type: "string"
+        example: ""
+        description: "model"
+      sitelink:
+        type: "string"
+        example: ""
+        description: "sitelink"
+      simulated:
+        type: "boolean"
+        example: false
+        description: "Set if this is a mock node simulated by NodeSim"
+  cluster:
+    type: "object"
+    properties:
+      site:
+        type: "string"
+        example: ""
+        description: "site"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      name:
+        type: "string"
+        example: ""
+        description: "cluster name"
+      failover:
+        type: "integer"
+        example: ""
+        description: "number of failover nodes in cluster"
+      members:
+        type: "array"
+        description: "member nodes of cluster"
+        items:
+          type: "string"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      dcuplinks:
+        type: "array"
+        description: "dcuplinks of cluster"
+        items:
+          type: "string"
+      url:
+        type: "string"
+        example: ""
+        description: "cluster etcd url"
+      bgp_graceful_restart:
+        type: "integer"
+        example: ""
+        description: "bgp_graceful_restart"
+      bgp_tep_community_type:
+        type: "string"
+        example: ""
+        description: "bgp_tep_community_type"
+      bgp_tep_community:
+        type: "integer"
+        example: ""
+        description: "bgp_tep_community"
+      bgp_branch_community_type:
+        type: "integer"
+        example: ""
+        description: "bgp_branch_community_type"
+      bgp_branch_community:
+        type: "string"
+        example: ""
+        description: "bgp_branch_community"
+      bgp_deployment_mode:
+        type: "integer"
+        example: ""
+        description: "bgp_deployment_mode"
+      bgp_subnet_splitting:
+        type: "integer"
+        example: ""
+        description: "bgp_subnet_splitting"
+  dcuplink:
+    type: "object"
+    properties:
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      net:
+        type: "string"
+        example: ""
+        description: "TEP IPs"
+      public_ipv4:
+        type: "string"
+        example: ""
+        description: "public ipv4"
+      public_ipv6:
+        type: "string"
+        example: ""
+        description: "public ipv6"
+      nat_range_start:
+        type: "integer"
+        example: ""
+        description: "nat range start port"
+      wan:
+        type: "string"
+        example: ""
+        description: "wan"
+      cluster:
+        type: "string"
+        example: ""
+        description: "cluster"
+      tags:
+        type: "string"
+        example: ""
+        description: "carrier tags"
+  app:
+    type: "object"
+    properties:
+      desc:
+        type: "string"
+        example: ""
+        description: "desc"
+      dgrp:
+        type: "string"
+        example: ""
+        description: "dgrp"
+      name:
+        type: "string"
+        example: ""
+        description: "name"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+  custom_app:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      appid:
+        type: "string"
+        example: ""
+        description: "appid"
+      desc:
+        type: "string"
+        example: ""
+        description: "Description"
+      name:
+        type: "string"
+        example: ""
+        description: "Name"
+      appgrps:
+        type: "array"
+        description: "Application groups"
+        items:
+          type: "string"
+      devgrp:
+        type: "string"
+        example: ""
+        description: "Device Group"
+      org:
+        type: "string"
+        example: ""
+        description: "Organization"
+      dnats:
+        type: "array"
+        description: "dnats"
+        items:
+          type: "string"
+      device_proto:
+        type: "string"
+        example: ""
+        description: "Protocol"
+      type:
+        type: "string"
+        example: ""
+        description: "Application type"
+      internal:
+        type: "boolean"
+        example: false
+        description: "Scope"
+      ipport:
+        type: "string"
+        example: ""
+        description: "Specification"
+      httphost:
+        type: "string"
+        example: ""
+        description: "Hostnames"
+      device:
+        type: "string"
+        example: ""
+        description: "Server Device"
+      segments:
+        type: "array"
+        description: "Zones"
+        items:
+          type: "string"
+      device_ports:
+        type: "string"
+        example: ""
+        description: "Ports"
+      uid:
+        type: "string"
+        example: ""
+        description: "Unique integer id"
+  appgrp:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: ""
+        description: "name"
+      webcat:
+        type: "string"
+        example: ""
+        description: "webcat"
+      sapps:
+        type: "string"
+        example: ""
+        description: "sapps"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      predefined:
+        type: "string"
+        example: ""
+        description: "predefined"
+      apps:
+        type: "array"
+        description: "Apps"
+        items:
+          type: "string"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      desc:
+        type: "string"
+        example: ""
+        description: "Description"
+  user:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      uid:
+        type: "string"
+        example: ""
+        description: "uid"
+      devices:
+        type: "array"
+        description: "devices"
+        items:
+          type: "string"
+      tags:
+        type: "string"
+        example: ""
+        description: "tags"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      usergrps:
+        type: "array"
+        description: "usergrps"
+        items:
+          type: "string"
+      home_site:
+        type: "string"
+        example: ""
+        description: "home_site"
+      name:
+        type: "string"
+        example: ""
+        description: "name"
+      username:
+        type: "string"
+        example: ""
+        description: "username"
+      email:
+        type: "string"
+        example: ""
+        description: "email"
+      mobile:
+        type: "string"
+        example: ""
+        description: "Mobile Phone"
+      endpoints:
+        type: "array"
+        description: "endpoints"
+        items:
+          type: "string"
+  pathrule:
+    type: "object"
+    properties:
+      dsttype:
+        type: "string"
+        example: ""
+        description: "dsttype"
+      qos:
+        type: "string"
+        example: ""
+        description: "qos"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      marking:
+        type: "string"
+        example: ""
+        description: "marking"
+      zones:
+        type: "array"
+        description: "zones"
+        items:
+          type: "string"
+      srctype:
+        type: "string"
+        example: ""
+        description: "srctype"
+      uid:
+        type: "string"
+        example: ""
+        description: "uid"
+      active:
+        type: "boolean"
+        example: false
+        description: "active"
+      sites:
+        type: "array"
+        description: "sites"
+        items:
+          type: "string"
+      path_preference:
+        type: "array"
+        description: "path_preference"
+        items:
+          type: "string"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      dscp:
+        type: "string"
+        example: ""
+        description: "dscp"
+      apps:
+        type: "array"
+        description: "apps"
+        items:
+          type: "string"
+      devices:
+        type: "array"
+        description: "devices"
+        items:
+          type: "string"
+      tags:
+        type: "string"
+        example: ""
+        description: "tags"
+      users:
+        type: "array"
+        description: "users"
+        items:
+          type: "string"
+  inboundrule:
+    type: "object"
+    properties:
+      nat_port_offset:
+        type: "integer"
+        example: ""
+        description: "nat_port_offset"
+      app:
+        type: "string"
+        example: ""
+        description: "app"
+      no_reflection:
+        type: "string"
+        example: ""
+        description: "no_reflection"
+      uplinks:
+        type: "array"
+        description: "uplinks"
+        items:
+          type: "string"
+      mode:
+        type: "string"
+        example: ""
+        description: "mode"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      inactive:
+        type: "boolean"
+        example: false
+        description: "inactive"
+      custom_ip:
+        type: "string"
+        example: ""
+        description: "custom_ip"
+      hostlist:
+        type: "string"
+        example: ""
+        description: "hostlist"
+      use_hostlist:
+        type: "boolean"
+        example: false
+        description: "use_hostlist"
+  outboundrule:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      users:
+        type: "array"
+        description: "users"
+        items:
+          type: "string"
+      active:
+        type: "boolean"
+        example: false
+        description: "active"
+      devices:
+        type: "array"
+        description: "devices"
+        items:
+          type: "string"
+      zones:
+        type: "array"
+        description: "zones"
+        items:
+          type: "string"
+      apps:
+        type: "array"
+        description: "apps"
+        items:
+          type: "string"
+      srctype:
+        type: "string"
+        example: ""
+        description: "srctype"
+      dsttype:
+        type: "string"
+        example: ""
+        description: "dsttype"
+      tags:
+        type: "string"
+        example: ""
+        description: "tags"
+      allow:
+        type: "boolean"
+        example: false
+        description: "allow"
+      usergrps:
+        type: "array"
+        description: "usergrps"
+        items:
+          type: "string"
+      devgrps:
+        type: "array"
+        description: "devgrps"
+        items:
+          type: "string"
+      appgrps:
+        type: "array"
+        description: "appgrps"
+        items:
+          type: "string"
+  endpoint:
+    type: "object"
+    properties:
+      vmac:
+        type: "string"
+        example: ""
+        description: "vmac"
+      secret:
+        type: "string"
+        example: ""
+        description: "secret"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      devices:
+        type: "array"
+        description: "devices"
+        items:
+          type: "string"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      user:
+        type: "string"
+        example: ""
+        description: "user"
+      client_id:
+        type: "string"
+        example: ""
+        description: "client_id"
+  network:
+    type: "object"
+    properties:
+      nodenetcfgs:
+        type: "array"
+        description: "nodenetcfgs"
+        items:
+          type: "string"
+      zone:
+        type: "string"
+        example: ""
+        description: "zone"
+      name:
+        type: "string"
+        example: ""
+        description: "name"
+      dhcps_range_start:
+        type: "string"
+        example: ""
+        description: "dhcps_range_start"
+      devices:
+        type: "array"
+        description: "devices"
+        items:
+          type: "string"
+      dhcps_range_end:
+        type: "string"
+        example: ""
+        description: "dhcps_range_end"
+      primary:
+        type: "string"
+        example: ""
+        description: "primary"
+      site:
+        type: "string"
+        example: ""
+        description: "site"
+      netv6:
+        type: "string"
+        example: ""
+        description: "netv6"
+      netv4:
+        type: "string"
+        example: ""
+        description: "netv4"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      gwv6:
+        type: "string"
+        example: ""
+        description: "gwv6"
+      ra:
+        type: "boolean"
+        example: false
+        description: "ra"
+      wans:
+        type: "array"
+        description: "wans"
+        items:
+          type: "string"
+      routes:
+        type: "array"
+        description: "routes"
+        items:
+          type: "string"
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      gwv4:
+        type: "string"
+        example: ""
+        description: "gwv4"
+      lnets:
+        type: "array"
+        description: "lnets"
+        items:
+          type: "string"
+      breakout_preference:
+        type: "array"
+        description: "list of wans"
+        items:
+          type: "string"
+      breakout_sitelink_site:
+        type: "string"
+        example: ""
+        description: "RouteVPN breakout site"
+      gw_noauto:
+        type: "boolean"
+        example: false
+        description: "gw_noauto"
+      dhcps_leasetime:
+        type: "integer"
+        example: ""
+        description: "DHCP lease-time"
+      dhcps_options:
+        type: "string"
+        example: ""
+        description: "dhcps_options"
+  device:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      uid:
+        type: "string"
+        example: ""
+        description: "uid"
+      user:
+        type: "string"
+        example: ""
+        description: "user"
+      mac:
+        type: "string"
+        example: ""
+        description: "mac"
+      info:
+        type: "string"
+        example: ""
+        description: "info"
+      ipv4:
+        type: "string"
+        example: ""
+        description: "ipv4"
+      ipv6:
+        type: "string"
+        example: ""
+        description: "ipv6"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      devgrps:
+        type: "array"
+        description: "devgrps"
+        items:
+          type: "string"
+      tags:
+        type: "string"
+        example: ""
+        description: "tags"
+      net:
+        type: "string"
+        example: ""
+        description: "Zone / Net"
+      endpoint:
+        type: "string"
+        example: ""
+        description: "endpoint"
+  broadcast:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      site:
+        type: "string"
+        example: ""
+        description: "site"
+      zone:
+        type: "string"
+        example: ""
+        description: "zone"
+      ssid:
+        type: "string"
+        example: ""
+        description: "ssid"
+      inactive:
+        type: "boolean"
+        example: false
+        description: "inactive"
+      dynzone:
+        type: "boolean"
+        example: false
+        description: "dynzone"
+      portal:
+        type: "string"
+        example: ""
+        description: "portal"
+      hide_ssid:
+        type: "boolean"
+        example: false
+        description: "hide_ssid"
+      band:
+        type: "string"
+        example: ""
+        description: "portal"
+  ssid:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      ssid:
+        type: "string"
+        example: "admin"
+        description: "The name of the wireless network\n"
+      security:
+        type: "string"
+        example: "wpa2personal"
+        description: "The encryption and authentication method for this SSID. Valid\
+          \ options are 'wpa2personal', 'wpa2enterprise', and 'open'.\n"
+      encryption:
+        type: "string"
+        description: "Encryption"
+      key:
+        type: "string"
+        description: "The password (WPA-PSK) users need to enter to be able to gain\
+          \ network access with this SSID\n"
+      authentication:
+        type: "string"
+        description: "Authentication"
+      eapol_version:
+        type: "string"
+        description: "EAPOL version"
+      dtim_period:
+        type: "string"
+        description: "DTIM Period"
+      bcasts:
+        type: "array"
+        description: "List of bcast objects"
+        items:
+          type: "string"
+  port:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      port_id:
+        type: "string"
+        example: ""
+        description: "port_id"
+      node:
+        type: "string"
+        example: ""
+        description: "node"
+      tag:
+        type: "string"
+        example: ""
+        description: "Port tag"
+      type:
+        type: "string"
+        example: ""
+        description: "Port type"
+      speeds:
+        type: "string"
+        example: ""
+        description: "speeds, in MBit/Sec"
+      speed:
+        type: "string"
+        example: ""
+        description: "speed"
+      patchlabel:
+        type: "string"
+        example: ""
+        description: "User-defined patch label. Limited to 16 chars"
+      zone:
+        type: "string"
+        example: ""
+        description: "The zone/segment assigned to this port"
+      uplink:
+        type: "string"
+        example: ""
+        description: "The uplink assigned to this port"
+      portal:
+        type: "string"
+        example: ""
+        description: "portal"
+      mac:
+        type: "string"
+        example: ""
+        description: "MAC address. For switch ports, contains the MAC of the switch"
+      virtual_mac:
+        type: "string"
+        example: ""
+        description: "Virtual MAC"
+      switch_id:
+        type: "string"
+        example: ""
+        description: "switch ID"
+      autotrunk:
+        type: "boolean"
+        example: false
+        description: "AutoTrunking"
+      bridge_with:
+        type: "string"
+        example: ""
+        description: "Bridge with another port"
+      ifname:
+        type: "string"
+        example: ""
+        description: "Logical interface name"
+      dcinterface:
+        type: "string"
+        example: ""
+        description: "dcinterface"
+      auto:
+        type: "boolean"
+        example: false
+        description: "Automatic provisioning. Every node has one of these ports"
+      autocfg:
+        type: "boolean"
+        example: false
+        description: "This is set if the port config was automatically set (autoport\
+          \ logic)"
+  wan:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        example: ""
+        description: "id"
+      org:
+        type: "string"
+        example: ""
+        description: "org"
+      uplinks:
+        type: "array"
+        description: "List of uplink objects"
+        items:
+          type: "string"
+      nets:
+        type: "array"
+        description: "List of net objects"
+        items:
+          type: "string"
+      name:
+        type: "string"
+        example: ""
+        description: "Name"
+      longname:
+        type: "string"
+        example: ""
+        description: "Long name"
+      uid:
+        type: "string"
+        example: ""
+        description: "uid"
+      internet:
+        type: "boolean"
+        example: false
+        description: "Set if this WAN is the internet"
+      sitelink:
+        type: "boolean"
+        example: false
+        description: "Set if this WAN is AutoVPN"
+      pingcheck_ips:
+        type: "string"
+        example: ""
+        description: "IP(s) to use for uplink status ping checking"
+      dcuplink:
+        type: "array"
+        description: "List of dcuplink objects"
+        items:
+          type: "string"
+      breakout:
+        type: "boolean"
+        example: false
+        description: "Set if this WAN should be used for internet breakout switch"
+      breakout_sites:
+        type: "array"
+        description: "List of site objects"
+        items:
+          type: "string"
+      xfer_networks:
+        type: "string"
+        example: ""
+        description: "Transfer and endpoint networks"
+  bgpneigh:
+    type: "object"
+    properties:
+      org:
+        type: "string"
+        example: "org-acme-0c5027cd98540e76"
+        description: "The ID of the organization this BGP neighbor belongs to."
+      node:
+        type: "string"
+        example: "node-faece15f745e08a0"
+        description: "The ID of the appliance this BGP neighbor belongs to."
+      name:
+        type: "string"
+        description: "The name of the BGP neighbor."
+      ipv4:
+        type: "string"
+        description: "The IPv4 address of the BGP neighbor."
+      remote_as:
+        type: "integer"
+        description: "The remote autonomous system number (1 to 4294967295)."
+      password:
+        type: "string"
+        description: "The router password."
+      keepalive_time:
+        type: "integer"
+        description: "The keep alive time in seconds (1 to 65535). Default value is\
+          \ 60."
+      hold_time:
+        type: "integer"
+        description: "The hold time in seconds (1. to 65535). Default value is 180."
+  dcinterface:
+    type: "object"
+    properties:
+      org:
+        type: "string"
+        example: "org-acme-0c5027cd98540e76"
+        description: "The ID of the organization this datacenter interface belongs\
+          \ to."
+      port:
+        type: "string"
+        example: "port-LAN1-faece15f745e08a0"
+        description: "The ID of the appliance port this datacenter interface belongs\
+          \ to."
+      gateway_ipv4:
+        type: "string"
+        description: "Gateway IPv4 address."
+      gateway_ipv6:
+        type: "string"
+        description: "Gateway IPv6 address."
+      ipv4:
+        type: "string"
+        description: "Static IPv4 address with optional netmask."
+      ipv6:
+        type: "string"
+        description: "Static IPv6 address with optional netmask."
+      mtu:
+        type: "integer"
+        description: "The maximum transmission unit of the datacenter interface (1280\
+          \ to 9586)."
+      auto_negotiation:
+        type: "boolean"
+        description: "Auto-negotiation on \"1\" or off \"0\"."
+      enabled:
+        type: "boolean"
+        description: "Enable \"1\" or disable \"0\""
+  inline_response_200:
+    properties:
+      items:
+        type: "array"
+        items:
+          type: "string"
+  error_error:
+    properties:
+      code:
+        type: "integer"
+      message:
+        type: "string"

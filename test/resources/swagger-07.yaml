@@ -1,0 +1,267 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Chordial
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths
+basePath: /
+#
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+
+  /me:
+    x-swagger-router-controller: users
+    get:
+      summary: user properties
+      operationId: detailMe
+      description: Sends user authentication token to spotify and gets user information
+      parameters:
+      - name: accessToken
+        in: header
+        required: false
+        type: string
+      responses:
+        200:
+          description: good authorization
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: bad userID
+
+
+  /me/friends:
+    x-swagger-router-controller: users
+
+    get:
+      summary: list of friends
+      operationId: detailFriends
+      description: gets the list of friends and their Chordial information from database
+      parameters:
+      - name: accessToken
+        in: header
+        required: false
+        type: string
+      responses:
+        200:
+          description: user is logged in
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+
+    post:
+      summary: add friend
+      operationId: addFriend
+      description: get some friends
+      parameters:
+      - name: friendName
+        in: body
+        required: true
+        schema:
+          type: string
+      - name: accessToken
+        in: header
+        required: false
+        type: string
+      responses:
+        200:
+          description: friend successfully added
+          schema:
+            type: string
+        400:
+          description: nobody likes you
+          schema:
+            type: string
+
+  /me/music:
+    x-swagger-router-controller: users
+
+    get:
+      summary: In-progress(lazy) placeholder for get tracks/playlists/etc.
+      operationId: myMusic
+      description: residentSleeper
+      parameters:
+      - name: accessToken
+        in: header
+        required: false
+        type: string
+      responses:
+        200:
+          description: I'm beyond sure this is ten times more work than actual coding
+          schema:
+            $ref: '#/definitions/Tracks'
+
+  /me/share/{idC}:
+    x-swagger-router-controller: users
+
+    get:
+      summary: gets common songs between current user and other user
+      operationId: shareCommon
+      description: compares track arrays of each user and uses matching ids to return all common tracks
+      parameters:
+      - name: idC
+        in: path
+        required: true
+        type: string
+      - name: accessToken
+        in: header
+        required: false
+        type: string
+      responses:
+        200:
+          description: MANY A TRACK
+          schema:
+            type: array
+            items:
+              type: string
+
+
+  /user:
+    x-swagger-router-controller: users
+
+    get:
+      summary: gets all users
+      operationId: getAll
+      responses:
+        200:
+          description: returns users.find everything
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+
+
+
+  /user/authorizeTesting:
+    x-swagger-router-controller: users
+
+    get:
+      summary: woo
+      operationId: authorizeTesting
+      description: akldjfkwe
+      responses:
+        302:
+          description: 302 response
+          headers:
+            location:
+              type: string
+
+  /user/tracks/{trackName}:
+    x-swagger-router-controller: users
+
+    post:
+      summary: adds a track to user tracks
+      operationId: addTrack
+      description: adds a track
+      parameters:
+      - name: trackName
+        in: path
+        type: string
+        required: true
+      - name: userName
+        in: body
+        schema:
+          type: string
+      responses:
+        200:
+          description: track successfully added
+          schema:
+            type: string
+
+
+  /user/callback:
+    x-swagger-router-controller: users
+    get:
+      summary: authorizes user
+      operationId: authorizeUser
+      description: Gets authorization token from Spotify and sends it to the backend
+      parameters:
+      - name: code
+        in: query
+        required: true
+        type: string
+      responses:
+        200:
+          description: authentication successful, send user id to frontend
+          schema:
+            type: string
+        400:
+          description: the user failed to be authenticated
+
+
+  /watchoutDELETEALL:
+    x-swagger-router-controller: users
+    delete:
+      summary: RIP your database
+      operationId: deleteThemAll
+      description: R I P
+      responses:
+        200:
+          description: deletion done
+          schema:
+            type: string
+
+
+
+  /swagger:
+    x-swagger-pipe: swagger_raw
+
+
+
+
+
+# complex objects have schema definitions
+
+definitions:
+  Users:
+    type: object
+    required:
+      - chordIDs
+    properties:
+      chordIDs:
+        type: array
+        items:
+          type: string
+          description: List of Chordial User's IDs
+  User:
+    type: object
+    required:
+      - spotifyID
+      - chordialID
+    properties:
+      spotifyID:
+        type: string
+      chordialID:
+        type: string
+      friends:
+        type: array
+        items:
+          type: string
+          description: List of Chordial User's IDs
+
+  Tracks:
+    type: object
+    properties:
+      urls:
+        type: array
+        items:
+          type: string
+          description: I don't know how tracks actually work
+
+  Track:
+    type: object
+    properties:
+      trackName:
+        type: string
+      trackID:
+        type: string

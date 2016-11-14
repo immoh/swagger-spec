@@ -1,0 +1,452 @@
+{
+    "swagger" : "2.0",
+    "info" : {
+        "title" : "Events API",
+        "description" : "Events API",
+        "version" : "1.0.0",
+        "contact" : {
+            "name" : "Dwight Egerton",
+            "email" : "dwight.egerton@ellucian.com",
+            "url" : "http://www.ellucian.com/"
+        }
+    },
+    "host" : "quercus.campusit.net",
+    "basePath" : "/api",
+    "tags" : [{
+            "name" : "Events",
+            "description" : "Services/Definitions related to the management of Events"
+        }
+    ],
+    "schemes" : ["https"],
+    "paths" : {
+        "/events" : {
+            "get" : {
+                "tags" : ["Events"],
+                "summary" : "Summary of the event queues and preferences",
+                "operationId" : "getSummary",
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(events)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            },
+            "put" : {
+                "tags" : ["Events"],
+                "summary" : "Update events settings",
+                "operationId" : "updateSettings",
+                "consumes" : ["application/json"],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }, {
+                        "$ref" : "#/parameters/Body(events)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(events)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            },
+            "delete" : {
+                "tags" : ["Events"],
+                "summary" : "Clear all event queues",
+                "operationId" : "clearAllQueues",
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(events)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            }
+        },
+        "/events/{queue}" : {
+            "get" : {
+                "tags" : ["Events"],
+                "summary" : "Retrieve the next available message from the respective queue",
+                "operationId" : "getNextMessage",
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "#/parameters/Path(queue)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }, {
+                        "$ref" : "#/parameters/Query(receipted)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(queue)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "404" : {
+                        "description" : "No matching record was found",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(queue)"
+                        }
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            },
+            "delete" : {
+                "tags" : ["Events"],
+                "summary" : "Clear all messages from the respective queue",
+                "operationId" : "clearQueue",
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "#/parameters/Path(queue)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(queue)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            }
+        },
+        "/events/{queue}/{id}" : {
+            "get" : {
+                "tags" : ["Events"],
+                "summary" : "Retrieve a message from the queue using the message unique identifier",
+                "operationId" : "getMessage",
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "#/parameters/Path(queue)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Path(id)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }, {
+                        "$ref" : "#/parameters/Query(receipt)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(message)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "404" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/NotFound(404)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            },
+            "delete" : {
+                "tags" : ["Events"],
+                "summary" : "Receipt a message in the queue to confirm delivery",
+                "operationId" : "receiptMessage",
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "#/parameters/Path(queue)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Path(id)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }, {
+                        "$ref" : "#/parameters/Query(receipt)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/definitions/Response(success)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "404" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/NotFound(404)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            }
+        }
+    },
+    "definitions" : {
+        "Element(message)" : {
+            "description" : "Message definition",
+            "required" : ["id", "timestamp", "reference"],
+            "properties" : {
+                "id" : {
+                    "description" : "Unique identifier",
+                    "type" : "string"
+                },
+                "timestamp" : {
+                    "description" : "Date timestamp",
+                    "type" : "string",
+                    "format" : "date"
+                },
+                "reference" : {
+                    "description" : "Reference URL to source",
+                    "type" : "string"
+                },
+                "receipt" : {
+                    "description" : "Receipt token used to confirm delivery",
+                    "type" : "string"
+                }
+            }
+        },
+        "Element(preference)" : {
+            "description" : "Preference definition",
+            "required" : ["name", "value"],
+            "properties" : {
+                "name" : {
+                    "description" : "System name",
+                    "type" : "string"
+                },
+                "description" : {
+                    "description" : "Descriptive name",
+                    "type" : "string"
+                },
+                "value" : {
+                    "description" : "Current value",
+                    "type" : "string"
+                },
+                "options" : {
+                    "description" : "Available value options",
+                    "type" : "array",
+                    "items" : {
+                        "type" : "string"
+                    }
+                }
+            }
+        },
+        "Element(queue)" : {
+            "description" : "Queue definition",
+            "required" : ["enabled", "name"],
+            "properties" : {
+                "enabled" : {
+                    "description" : "Is enabled",
+                    "type" : "boolean",
+                    "default" : false
+                },
+                "name" : {
+                    "description" : "System name",
+                    "type" : "string"
+                },
+                "description" : {
+                    "description" : "Descriptive name",
+                    "type" : "string"
+                },
+                "messages" : {
+                    "description" : "Currently queued messages",
+                    "type" : "integer",
+                    "format" : "int32"
+                }
+            }
+        },
+        "Request(events)" : {
+            "description" : "Events Summary update request",
+            "properties" : {
+                "preferences" : {
+                    "description" : "List of preferences",
+                    "type" : "array",
+                    "items" : {
+                        "$ref" : "#/definitions/Element(preference)"
+                    }
+                },
+                "queues" : {
+                    "description" : "List of queues",
+                    "type" : "array",
+                    "items" : {
+                        "$ref" : "#/definitions/Element(queue)"
+                    }
+                }
+            }
+        },
+        "Response(events)" : {
+            "description" : "Events Summary response",
+            "required" : ["preferences", "queues", "response"],
+            "properties" : {
+                "response" : {
+                    "description" : "Response definition",
+                    "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/definitions/Element(response)"
+                },
+                "preferences" : {
+                    "description" : "List of preferences",
+                    "type" : "array",
+                    "items" : {
+                        "$ref" : "#/definitions/Element(preference)"
+                    }
+                },
+                "queues" : {
+                    "description" : "List of queues",
+                    "type" : "array",
+                    "items" : {
+                        "$ref" : "#/definitions/Element(queue)"
+                    }
+                }
+            }
+        },
+        "Response(message)" : {
+            "description" : "Message response",
+            "required" : ["response", "message"],
+            "properties" : {
+                "response" : {
+                    "description" : "Response definition",
+                    "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/definitions/Element(response)"
+                },
+                "message" : {
+                    "description" : "Message definition",
+                    "$ref" : "#/definitions/Element(message)"
+                }
+            }
+        },
+        "Response(queue)" : {
+            "required" : ["response", "queue"],
+            "properties" : {
+                "response" : {
+                    "description" : "Events Response",
+                    "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/definitions/Element(response)"
+                },
+                "queue" : {
+                    "description" : "Current event queue",
+                    "$ref" : "#/definitions/Element(queue)"
+                },
+                "message" : {
+                    "description" : "Message from the queue",
+                    "$ref" : "#/definitions/Element(message)"
+                }
+            },
+            "description" : "Message from the queue"
+        }
+    },
+    "parameters" : {
+        "Path(queue)" : {
+            "name" : "queue",
+            "description" : "Queue reference",
+            "in" : "path",
+            "required" : true,
+            "type" : "string"
+        },
+        "Body(events)" : {
+            "name" : "body",
+            "in" : "body",
+            "required" : true,
+            "schema" : {
+                "$ref" : "#/definitions/Request(events)"
+            }
+        },
+        "Query(receipted)" : {
+            "name" : "receipted",
+            "description" : "Indicate if the message needs to be receipted (confirmed delivery)",
+            "in" : "query",
+            "required" : false,
+            "default" : false,
+            "type" : "boolean"
+        },
+        "Query(receipt)" : {
+            "name" : "receipt",
+            "description" : "The message receipt token",
+            "in" : "query",
+            "required" : true,
+            "type" : "string"
+        }
+    }
+}

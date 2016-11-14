@@ -1,0 +1,689 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Shovel APIs",
+        "description": "",
+        "version": "1.0.0"
+    },
+    "produces": [ "application/json" ],
+    "basePath": "/api/1.1",
+    "paths": {
+
+        "/info": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "infoGet",
+                "summary": "Get nodes info",
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/shovel/config": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "configget",
+                "summary": "Get shovel config file",
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/shovel/set-config": {
+            "post": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "POST" ],
+                "operationId": "configset",
+                "summary": "set shovel config file",
+                "parameters": [
+                    {
+                        "name": "Shovel Config Info",
+                        "in": "body",
+                        "description": "Shovel Config Info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/config"
+                        }
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/shovel/monorail/set-config": {
+            "post": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "POST" ],
+                "operationId": "configsetmono",
+                "summary": "set shovel- monorail info",
+                "parameters": [
+                    {
+                        "name": "Shovel Config Info",
+                        "in": "body",
+                        "description": "Shovel Config Info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/monorail"
+                        }
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/shovel/ironic/set-config": {
+            "post": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "POST" ],
+                "operationId": "configsetironic",
+                "summary": "set shovel ironic info",
+                "parameters": [
+                    {
+                        "name": "Shovel Config Info",
+                        "in": "body",
+                        "description": "Shovel Config Info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ironic"
+                        }
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/shovel/glance/set-config": {
+            "post": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "POST" ],
+                "operationId": "configsetglance",
+                "summary": "set shovel glance info",
+                "parameters": [
+                    {
+                        "name": "Shovel Config Info",
+                        "in": "body",
+                        "description": "Shovel Config Info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/glance"
+                        }
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/shovel/keystone/set-config": {
+            "post": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "POST" ],
+                "operationId": "configsetkeystone",
+                "summary": "set shovel Keystone info",
+                "parameters": [
+                    {
+                        "name": "Shovel Config Info",
+                        "in": "body",
+                        "description": "Shovel Config Info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/keystone"
+                        }
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/catalogs/{identifier}": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "catalogsGet",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Onrack node ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "summary": "Get catalog for a specified node",
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/catalogs/{identifier}/{source}": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "catalogsbysourceGet",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Onrack node ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "source",
+                        "in": "path",
+                        "description": "source",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "summary": "Get source in the catalog for a specified node",
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/nodes/{identifier}": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "nodeGet",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Onrack node ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "summary": "get specific node by id",
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/nodes": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "nodesGet",
+                "summary": "get All OnRack Nodes",
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/nodes/{identifier}/sel": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "getSeldata",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Node SEL information",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "summary": "get current SEL data for specified node ID",
+                "responses": {
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/ironic/nodes": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "ironicnodesGet",
+                "summary": "get All ironic Nodes",
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/ironic/node/{identifier}": {
+            "patch": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "PATCH" ],
+                "operationId": "ironicnodePatch",
+                "summary": "patch specified ironic node",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Ironic node ID",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "patchnode",
+                        "in": "body",
+                        "description": "Node patch form data",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/patchnode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/ironic/chassis/{identifier}": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "ironicchassisGet",
+                "summary": "get Ironic chassis by id",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Ironic node ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/ironic/nodes/{identifier}": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "ironicnodeGet",
+                "summary": "get Ironic node by name",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Ironic node name or ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "POST" ],
+                "operationId": "registerpost",
+                "summary": "Register an OnRack node in Ironic",
+                "parameters": [
+                    {
+                        "name": "Node Info",
+                        "in": "body",
+                        "description": "Node Registration info",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/regnode"
+                        }
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/unregister/{identifier}": {
+            "delete": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "DEL" ],
+                "operationId": "unregisterdel",
+                "summary": "UnRegister a node from Ironic",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Ironic node ID",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+
+                    "200": {
+                        "description": "Not Implemented"
+                    },
+
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/ironic/drivers": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "driversGet",
+                "summary": "Get all the drivers used in Ironic",
+                "responses": {
+
+                    "200": {
+                        "description": "Not implemented",
+
+                        "headers": {
+                            "x-expires": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        },
+        "/glance/images": {
+            "get": {
+                "x-swagger-router-controller": "Shovel",
+                "tags": [ "GET" ],
+                "operationId": "imagesGet",
+                "summary": "Get all the images in Glance",
+                "responses": {
+
+                    "200": {
+                        "description": "Not implemented",
+
+                        "headers": {
+                            "x-expires": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "unexpected error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "monorail": {
+            "type": "object",
+            "properties": {
+                "httpHost": {
+                    "type": "string"
+                },
+                "httpPort": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "config": {
+            "type": "object",
+            "properties": {
+                "httpPort": {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            }
+        },
+        "ironic": {
+            "type": "object",
+            "properties": {
+                "httpHost": {
+                    "type": "string"
+                },
+                "httpPort": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "os_username": {
+                    "type": "string"
+                },
+                "os_password": {
+                    "type": "string"
+                },
+                "os_tenant_name": {
+                    "type": "string"
+                },
+                "os_auth_token": {
+                    "type": "string"
+                },
+                "insecure": {
+                    "type": "string"
+                }
+            }
+        },
+        "glance": {
+            "type": "object",
+            "properties": {
+                "httpHost": {
+                    "type": "string"
+                },
+                "httpPort": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                },
+                "os_username": {
+                    "type": "string"
+                },
+                "os_password": {
+                    "type": "string"
+                },
+                "os_tenant_name": {
+                    "type": "string"
+                },
+                "os_auth_token": {
+                    "type": "string"
+                },
+                "insecure": {
+                    "type": "string"
+                }
+            }
+        },
+        "keystone": {
+            "type": "object",
+            "properties": {
+                "httpHost": {
+                    "type": "string"
+                },
+                "httpPort": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "regnode": {
+            "type": "object",
+            "required": [
+                "uuid",
+                "kernel",
+                "ramdisk",
+                "port"
+            ],
+            "properties": {
+                "uuid": {
+                    "type": "string"
+                },
+                "driver": {
+                    "type": "string"
+                },
+                "ipmihost": {
+                    "type": "string"
+                },
+                "ipmiuser": {
+                    "type": "string"
+                },
+                "ipmipass": {
+                    "type": "string"
+                },
+                "sshhost": {
+                    "type": "string"
+                },
+                "sshuser": {
+                    "type": "string"
+                },
+                "sshpass": {
+                    "type": "string"
+                },
+                "sshport": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "kernel": {
+                    "type": "string"
+                },
+                "ramdisk": {
+                    "type": "string"
+                },
+                "port": {
+                    
+                    "type": "string"
+                }
+            }
+        },
+        "patchnode": {
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
+        }
+    }
+}

@@ -1,0 +1,54 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "2.0",
+        "title": "Virt 1"
+    },
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "host": "api.company.com",
+    "basePath": "/test",
+    "paths": {
+        "/test": {
+            "get": {
+                "operationId": "getTest",
+                "produces": [
+                    "application/xml"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response 1",
+                        "examples": {
+                            "application/xml": ""
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "createTest",
+                "consumes": [
+                    "application/yaml",
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "definition",
+                        "description": "the Swagger definition of this API",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Response 1"
+                    }
+                }
+            }
+        }
+    }
+}

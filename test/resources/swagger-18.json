@@ -1,0 +1,3737 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "和勤项目管理系统前后台API 接口",
+    "description": "详细定义整个前后台的API接口",
+    "version": "1.0.0"
+  },
+  "produces": [
+    "application/json"
+  ],
+  "host": "139.196.45.24:808",
+  "basePath": "/smartprj",
+  "paths": {
+    "/material_req/get_pre_production_info": {
+      "post": {
+        "summary": "获取预生产信息(U9中间库表)",
+        "description": "获取预生产信息,从U9的中间数据库获取",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqGetPreProductionPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/mr_pre_production_info"
+            }
+          }
+        }
+      }
+    },
+    "/material_req/set_req_info": {
+      "post": {
+        "summary": "料品申请保存",
+        "description": "保存料品申请信息,并改变状态到【工艺设计】",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqSetReqInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/mr_req_info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/material_req/set_req_info_draft": {
+      "post": {
+        "summary": "料品申请保存草稿",
+        "description": "保存料品申请信息,并改变状态到【料品申请清单草稿】",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqSetReqInfoDraftPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/mr_req_info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/material_req/get_req_info": {
+      "post": {
+        "summary": "获取料品申请清单",
+        "description": "获取当前项目的料品申请清单,只有在保存了料品申请清单或草稿的时候,调用此接口才有对应的数据",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqGetReqInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/mr_req_info"
+            }
+          }
+        }
+      }
+    },
+    "/material_req/get_quota": {
+      "post": {
+        "summary": "获取公司配额信息",
+        "description": "指定项目ID从后台获取对应的公司配额信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqGetQuotaPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/mr_quota_info"
+            }
+          }
+        }
+      }
+    },
+    "/material_req/get_material_list": {
+      "post": {
+        "summary": "获取料品清单(U9中间库表)",
+        "description": "料品申请申请完毕以后,需要从U9中间数据库获取新的料品清单的详细信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqGetMaterialListPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/mr_ml_info"
+            }
+          }
+        }
+      }
+    },
+    "/material_req/get_eq_list": {
+      "post": {
+        "summary": "获取预埋件清单(U9中间库表)",
+        "description": "从U9中间数据库获取新的预埋件清单的详细信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqGetEqlListPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/mr_single_info"
+            }
+          }
+        }
+      }
+    },
+    "/material_req/get_tower_list": {
+      "post": {
+        "summary": "获取铁塔清单(U9中间库表)",
+        "description": "从U9中间数据库获取新的铁塔清单的详细信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品申请"
+        ],
+        "operationId": "materialReqGetTowerlListPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/mr_single_info"
+            }
+          }
+        }
+      }
+    },
+    "/ep_setup/set_arrival_info": {
+      "post": {
+        "summary": "预埋件进场保存",
+        "description": "预埋件进场以后,保存相关信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "预埋件安装"
+        ],
+        "operationId": "epSetupSetArrivalInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/es_arrival_info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/ep_setup/get_arrival_info": {
+      "post": {
+        "summary": "获取预埋件进场信息",
+        "description": "预埋件进场,保存相关信息以后,通过该接口,可以读到之前保存的信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "预埋件安装"
+        ],
+        "operationId": "epSetupGetArrivalInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/es_arrival_info"
+            }
+          }
+        }
+      }
+    },
+    "/ep_setup/set_placing_info": {
+      "post": {
+        "summary": "预埋件浇筑保存信息",
+        "description": "预埋件浇筑完成以后,保存相关信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "预埋件安装"
+        ],
+        "operationId": "epSetupSetPlacingInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/es_placing_info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/ep_setup/get_placing_info": {
+      "post": {
+        "summary": "获取预埋件浇筑信息",
+        "description": "预埋件浇筑,保存相关信息以后,通过该接口,可以读到之前保存的信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "预埋件安装"
+        ],
+        "operationId": "epSetupGetPlacingInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/es_placing_info"
+            }
+          }
+        }
+      }
+    },
+    "/ep_setup/set_sence_prospect_info": {
+      "post": {
+        "summary": "保存现场勘查信息",
+        "description": "项目经理到现场勘查完信息以后,保存相关信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "预埋件安装"
+        ],
+        "operationId": "epSetupSetSenceProspectInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/es_sence_prospect_info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/ep_setup/set_sence_prospect_info_draft": {
+      "post": {
+        "summary": "保存现场勘查信息【草稿】",
+        "description": "项目经理到现场勘查完信息以后,保存相关信息【草稿】",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "预埋件安装"
+        ],
+        "operationId": "epSetupSetSenceProspectInfoDraftPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/es_sence_prospect_info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/ep_setup/get_sence_prospect_info": {
+      "post": {
+        "summary": "读取现场勘查信息",
+        "description": "项目经理到现场勘查完保存信息以后,读取保存的相关信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "预埋件安装"
+        ],
+        "operationId": "epSetupGetSenceProspectInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/es_sence_prospect_info"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_plan_tower_setup_time": {
+      "post": {
+        "summary": "设置铁塔可安装时间和安全级别",
+        "description": "预埋件安装完成以后,项目经理可以开始评估铁塔什么时候可以安装,指定对铁塔的安装设定安全级别,也就是说这个时候允许修改之前保存的这两个参数",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetPlanTowerSetupTimePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_plan_tower_setup_time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_safety_approval": {
+      "post": {
+        "summary": "安质设置安全审批意见",
+        "description": "预埋件安装完成以后,项目经理保存了铁塔预计安装时间和安全级别,安质需要填写安全审批意见",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetSafetyApprovalPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_safety_approval"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/get_safety_approval": {
+      "post": {
+        "summary": "读取安质设置安全审批意见信息",
+        "description": "安质需要填写安全审批意见以后,读取审批信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupGetSafetyApprovalPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/ts_safety_approval"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/get_ct_info": {
+      "post": {
+        "summary": "获取施工队信息",
+        "description": "获取项目调度的施工队信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupGetCfInfoPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/ts_ct_info"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/get_plan_tower_arrival_time": {
+      "post": {
+        "summary": "获取预计铁塔到场时间(U9中间库表)",
+        "description": "获取铁塔预计到场时间,需要从U9的中间库表中获取",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupGetPlanTowerArrivalTimePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/ts_plan_tower_arrival_time"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_tower_arrival_time": {
+      "post": {
+        "summary": "设置铁塔签收时间",
+        "description": "铁塔到了现场以后项目经理签收铁塔,设置铁塔签收时间",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetTowerArrivalTimePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_tower_arrival_time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/get_tower_arrival_time": {
+      "post": {
+        "summary": "获取保存的铁塔签收时间",
+        "description": "项目经理保存了铁塔签收时间后,读取到保存的信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupGetTowerArrivalTimePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/ts_tower_arrival_time"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_work_statement": {
+      "post": {
+        "summary": "填写报工单",
+        "description": "铁塔安装完成以后,项目经理填写报工单",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetWorkStatementPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_work_statement"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_work_statement_draft": {
+      "post": {
+        "summary": "填写报工单保存草稿",
+        "description": "铁塔安装完成以后,项目经理填写报工单,保存草稿",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetWorkStatementPostDraft",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_work_statement"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/get_work_statement": {
+      "post": {
+        "summary": "获取保存的报工单信息",
+        "description": "铁塔安装完成以后,项目经理填写完成报工单,读回信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupGetWorkStatementPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/ts_work_statement"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_production_estimates": {
+      "post": {
+        "summary": "填写产值估算信息",
+        "description": "铁塔安装完成以后,项目经理填写产值估算信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetProductionEstimatesPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_production_estimates"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_production_estimates_draft": {
+      "post": {
+        "summary": "填写产值估算信息,保存草稿",
+        "description": "铁塔安装完成以后,项目经理填写产值估算信息,保存草稿",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetProductionEstimatesDraftPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_production_estimates"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/get_production_estimates": {
+      "post": {
+        "summary": "获取填写的产值估算信息",
+        "description": "获取项目经理填写产值估算信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupGetProductionEstimatesPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/ts_production_estimates_get"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/set_selective_acceptance": {
+      "post": {
+        "summary": "填写抽验结果信息",
+        "description": "铁塔安装完成以后,安质进行抽检,填写抽验结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupSetSelectiveAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ts_selective_acceptance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/tower_setup/get_selective_acceptance": {
+      "post": {
+        "summary": "获取填写的抽验结果信息",
+        "description": "获取安质填写的抽验结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "铁塔安装"
+        ],
+        "operationId": "towerSetupGetSelectiveAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/ts_selective_acceptance"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/set_poll_primary_acceptance": {
+      "post": {
+        "summary": "填写初验巡检结果信息",
+        "description": "结项后,安质进行初验巡检,填写结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkSetPollPrimaryAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/fw_primary_acceptance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/get_poll_primary_acceptance": {
+      "post": {
+        "summary": "获取填写的初验巡检结果信息",
+        "description": "获取安质填写的初验巡检结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkGetPollPrimaryAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/fw_primary_acceptance"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/set_primary_acceptance": {
+      "post": {
+        "summary": "填写初验结果信息",
+        "description": "结项后,项目经理进行初验,填写结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkSetPrimaryAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/fw_primary_acceptance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/get_primary_acceptance": {
+      "post": {
+        "summary": "获取填写的初验结果信息",
+        "description": "获取项目经理填写的初验结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkGetPrimaryAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/fw_primary_acceptance"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/set_production_values_and_cost": {
+      "post": {
+        "summary": "填写产值决算和成本计提信息",
+        "description": "结项后,项目经理,填写产值决算和成本计提信息,把所有的都放到一个功能里面,没有数据的可以不传递",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkSetProductionValuesAndCostPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/fw_production_values_and_cost"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/get_production_values_and_cost": {
+      "post": {
+        "summary": "获取填写的产值决算和成本计提信息",
+        "description": "获取项目经理填写的产值决算和成本计提信息,没有的信息填空传回",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkGetProductionValuesAndCostPost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/fw_production_values_and_cost"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/set_poll_final_acceptance": {
+      "post": {
+        "summary": "填写终验巡检结果信息",
+        "description": "结项后,安质进行终验巡检,填写结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkSetPollFinalAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/fw_final_acceptance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/get_poll_final_acceptance": {
+      "post": {
+        "summary": "获取填写的终验巡检结果信息",
+        "description": "获取安质填写的终验巡检结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkGetPollFinalAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/fw_final_acceptance"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/set_final_acceptance": {
+      "post": {
+        "summary": "填写终验结果信息",
+        "description": "结项后,项目经理进行终验巡检,填写结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkSetFinalAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/fw_final_acceptance"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_project_id_status"
+            }
+          }
+        }
+      }
+    },
+    "/finish_work/get_final_acceptance": {
+      "post": {
+        "summary": "获取填写的终验结果信息",
+        "description": "获取项目经理填写的终验结果信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "结项"
+        ],
+        "operationId": "finishWorkGetFinalAcceptancePost",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/fw_final_acceptance"
+            }
+          }
+        }
+      }
+    },
+    "/quota_manage/get_quota": {
+      "post": {
+        "summary": "获取所有的料品配额信息",
+        "description": "获取所有的料品配额信息,所有的分公司",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "配额管理"
+        ],
+        "operationId": "quotaManageGetQuota",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/qm_get_quota"
+            }
+          }
+        }
+      }
+    },
+    "/quota_manage/set_quota": {
+      "post": {
+        "summary": "设置分公司的配额信息",
+        "description": "总调设置当前月份的所有分公司的配额信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "配额管理"
+        ],
+        "operationId": "quotaManageSetQuota",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/qm_set_quota"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/ct_manage/get_all": {
+      "post": {
+        "summary": "所有施工队的信息",
+        "description": "获取所有施工队的详细信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队管理"
+        ],
+        "operationId": "ctManageGetAll",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/cm_get_all"
+            }
+          }
+        }
+      }
+    },
+    "/ct_manage/create": {
+      "post": {
+        "summary": "新建施工队",
+        "description": "建立一支新的施工队",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队管理"
+        ],
+        "operationId": "ctManageCreate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ct_manage_create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_ct_manage_create"
+            }
+          }
+        }
+      }
+    },
+    "/ct_manage/update": {
+      "post": {
+        "summary": "更新施工队信息",
+        "description": "修改了施工队(例如增加或删除成员), 进行信息更新",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队管理"
+        ],
+        "operationId": "ctManageUpdate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ct_manage_update"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_ct_manage_create"
+            }
+          }
+        }
+      }
+    },
+    "/ct_manage/del": {
+      "post": {
+        "summary": "删除施工队",
+        "description": "删除整个施工队,包括对应的队员",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队管理"
+        ],
+        "operationId": "ctManageDel",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ct_manage_del"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/ct_manage/get_user_list": {
+      "post": {
+        "summary": "获取可以成为队长的用户信息",
+        "description": "获取可以成为队长的用户信息,在数据库表users里面获取,需要过滤项目经理之类的",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队管理"
+        ],
+        "operationId": "ctManageGetUserList",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/cm_get_user_list"
+            }
+          }
+        }
+      }
+    },
+    "/ct_schedule/get_free_ct": {
+      "post": {
+        "summary": "获取空闲的施工队列表",
+        "description": "获取空闲的施工队列表,可以指定安全等级来获取",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队调度"
+        ],
+        "operationId": "ctScheduleGetFreeCt",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ct_schedule_get_free_ct"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_ct_schedule_get_free_ct"
+            }
+          }
+        }
+      }
+    },
+    "/ct_schedule/get_schedule_prj": {
+      "post": {
+        "summary": "获取准备施工队调度的项目列表",
+        "description": "获取预计铁塔可安装时间为明天的,或者铁塔没有安装,预计铁塔可安装时间过期的,所有项目",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队调度"
+        ],
+        "operationId": "ctScheduleGetSchedulePrj",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_ct_schedule_get_schedule_prj"
+            }
+          }
+        }
+      }
+    },
+    "/ct_schedule/manual_save": {
+      "post": {
+        "summary": "保存施工队调度人工操作的分配信息",
+        "description": "保存施工队调度人工操作的分配信息,剩下没有分配的项目进行随机分配",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队调度"
+        ],
+        "operationId": "ctScheduleManualSave",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ct_schedule_manual_save"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/ct_schedule/merge_prj": {
+      "post": {
+        "summary": "合并项目",
+        "description": "为了方便施工队调度,允许把施工天数加起来不超过1.5天的多个项目进行合并",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队调度"
+        ],
+        "operationId": "ctScheduleMergePrj",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/cs_schedule_merge_prj"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/ct_schedule/random_save": {
+      "post": {
+        "summary": "随机分配",
+        "description": "开始随机分配施工队给项目,只针对没有手工分配的项目",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队调度"
+        ],
+        "operationId": "ctScheduleRandomSave",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/cs_get_schedule_result"
+            }
+          }
+        }
+      }
+    },
+    "/ct_schedule/get_schedule_result": {
+      "post": {
+        "summary": "获取分配结果",
+        "description": "获取随机分配,人工分配,竞争的结果",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队调度"
+        ],
+        "operationId": "ctScheduleGetScheduleResult",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/cs_get_schedule_result"
+            }
+          }
+        }
+      }
+    },
+    "/ct_schedule/publish": {
+      "post": {
+        "summary": "发布",
+        "description": "一旦操作了发布,信息不能修改",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "施工队调度"
+        ],
+        "operationId": "ctScheduleGetPublishScheduleResult",
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/u9_man_made/set_material_list":{
+      "post": {
+        "summary": "设置料品清单信息",
+        "description": "临时API,手动输入U9的料品清单信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "U9人工输入"
+        ],
+        "operationId": "ummSetMaterialList",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/umm_ml_info"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/user_manage/get_all": {
+      "post": {
+        "summary": "获取所有的用户信息",
+        "description": "获取所有的用户信息,在数据库表users里面获取",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "用户管理"
+        ],
+        "operationId": "userManageGetAll",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/user_manage_get_all"
+            }
+          }
+        }
+      }
+    },
+    "/user_manage/get": {
+      "post": {
+        "summary": "指定的用户信息",
+        "description": "指定用户ID,获取该用户的详细信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "用户管理"
+        ],
+        "operationId": "userManageGet",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user_manage_get"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/um_users"
+            }
+          }
+        }
+      }
+    },
+    "/user_manage/create": {
+      "post": {
+        "summary": "建立用户",
+        "description": "建立一个用户,没有的数据,可以不填该字段",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "用户管理"
+        ],
+        "operationId": "userManageCreate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user_manage_create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_user_manage_create"
+            }
+          }
+        }
+      }
+    },
+    "/user_manage/update": {
+      "post": {
+        "summary": "更新用户信息",
+        "description": "更新用户信息,没有的数据,可以不填该字段",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "用户管理"
+        ],
+        "operationId": "userManageUpdate",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user_manage_update"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/res_user_manage_create"
+            }
+          }
+        }
+      }
+    },
+    "/user_manage/del": {
+      "post": {
+        "summary": "删除用户",
+        "description": "删除用户",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "用户管理"
+        ],
+        "operationId": "userManageDel",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/user_manage_get"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/material_template/get_all": {
+      "post": {
+        "summary": "列出所有的料品模板名称(模板名称不重复)",
+        "description": "列出所有的料品模板名称(模板名称不重复)",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品模板"
+        ],
+        "operationId": "materialTemplateGetAll",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema":{
+              "type":"array",
+              "format":"",
+              "items":{
+                "$ref": "#/definitions/material_template_get"
+              },
+              "description":"模板名字"
+            }
+          }
+        }
+      }
+    },
+    "/material_template/get": {
+      "post": {
+        "summary": "指定模板名称,获取模板的详细信息",
+        "description": "指定模板名称,获取模板的详细信息",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品模板"
+        ],
+        "operationId": "materialTemplateGet",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/material_template_get"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/material_template_save"
+            }
+          }
+        }
+      }
+    },
+    "/material_template/save": {
+      "post": {
+        "summary": "保存料品模板",
+        "description": "保存料品模板",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品模板"
+        ],
+        "operationId": "materialTemplateSave",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/material_template_save"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/material_template/del": {
+      "post": {
+        "summary": "指定模板名称,删除该模板",
+        "description": "指定模板名称,删除该模板",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "料品模板"
+        ],
+        "operationId": "materialTemplateDel",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/material_template_get"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+
+
+    "/prj_operate/pause": {
+      "post": {
+        "summary": "暂停项目",
+        "description": "暂时停止该项目",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "项目操作"
+        ],
+        "operationId": "prjOperatePause",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+
+    "/prj_operate/stop": {
+      "post": {
+        "summary": "停止项目",
+        "description": "停止该项目",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "项目操作"
+        ],
+        "operationId": "prjOperateStop",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+
+    "/prj_operate/restore": {
+      "post": {
+        "summary": "恢复项目",
+        "description": "恢复停止或暂停的项目",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "项目操作"
+        ],
+        "operationId": "prjOperateRestore",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+
+    "/code_name/get_prj_type": {
+      "get": {
+        "summary": "获取项目类型码",
+        "description": "获取项目类型码",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "编码名字对应关系"
+        ],
+        "operationId": "codeNameGetPrjType",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema":{
+              "type":"array",
+              "format":"",
+              "items":{
+                "$ref": "#/definitions/res_code_name"
+              },
+              "description":"编码关系"
+            }
+          }
+        }
+      }
+    },
+    "/code_name/get_prj_modify_cause": {
+      "get": {
+        "summary": "获取项目整改原因码",
+        "description": "获取项目整改原因码",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "编码名字对应关系"
+        ],
+        "operationId": "codeNameGetPrjModifyCause",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema":{
+              "type":"array",
+              "format":"",
+              "items":{
+                "$ref": "#/definitions/res_code_name"
+              },
+              "description":"编码关系"
+            }
+          }
+        }
+      }
+    },
+    "/code_name/get_pv_others_type": {
+      "get": {
+        "summary": "获取产值的其他费用码",
+        "description": "获取产值的其他费用码",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "编码名字对应关系"
+        ],
+        "operationId": "codeNameGetPvOthersType",
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema":{
+              "type":"array",
+              "format":"",
+              "items":{
+                "$ref": "#/definitions/res_code_name"
+              },
+              "description":"编码关系"
+            }
+          }
+        }
+      }
+    },
+    "/single/set_lal": {
+      "post": {
+        "summary": "设置项目的经纬度",
+        "description": "指定项目ID,设置经纬度",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "独立设置"
+        ],
+        "operationId": "singleSetLal",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/prj_lal"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/single/get_lal": {
+      "post": {
+        "summary": "获取项目的经纬度",
+        "description": "指定项目ID,获取经纬度",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "独立设置"
+        ],
+        "operationId": "singleGetLal",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/prj_lal"
+            }
+          }
+        }
+      }
+    },
+    "/single/set_on_and_cn": {
+      "post": {
+        "summary": "设置项目的合同号和订单号",
+        "description": "指定项目ID,设置合同号和订单号",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "独立设置"
+        ],
+        "operationId": "singleSetOnAndCn",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/prj_on_and_cn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/single/get_on_and_cn": {
+      "post": {
+        "summary": "获取项目的合同号和订单号",
+        "description": "指定项目ID,获取合同号和订单号",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "独立设置"
+        ],
+        "operationId": "singleGetOnAndCn",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/prj_on_and_cn"
+            }
+          }
+        }
+      }
+    },
+    "/single/set_prj_modify_cause": {
+      "post": {
+        "summary": "设置零星整改项目的原因",
+        "description": "指定项目ID,设置零星整改项目的原因",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "独立设置"
+        ],
+        "operationId": "singleSetPrjModifyCause",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/prj_modify_cause"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results"
+          }
+        }
+      }
+    },
+    "/single/get_prj_modify_cause": {
+      "post": {
+        "summary": "获取零星整改项目的原因",
+        "description": "指定项目ID,获取零星整改项目的原因",
+        "x-swagger-router-controller": "DefaultController",
+        "tags": [
+          "独立设置"
+        ],
+        "operationId": "singleGetPrjModifyCause",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/req_project_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "results",
+            "schema": {
+              "$ref": "#/definitions/prj_modify_cause"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "mr_pre_production_info": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "eq_is_pre_production": {
+          "type": "boolean",
+          "description": "预埋件是否使用预生产"
+        },
+        "tower_is_pre_production": {
+          "type": "boolean",
+          "description": "铁塔是否使用预生产"
+        }
+      }
+    },
+    "mr_req_info": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "tower_type": {
+          "type": "string",
+          "description": "塔型"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "数量"
+        },
+        "eq_is_pre_production": {
+          "type": "boolean",
+          "description": "预埋件是否使用预生产"
+        },
+        "tower_is_pre_production": {
+          "type": "boolean",
+          "description": "铁塔是否使用预生产"
+        },
+        "paint_req": {
+          "type": "string",
+          "description": "油漆要求"
+        },
+        "label_req": {
+          "type": "string",
+          "description": "广告字/标牌要求"
+        },
+        "other_req": {
+          "type": "string",
+          "description": "其他要求"
+        },
+        "plan_complete_time": {
+          "type": "string",
+          "format": "date",
+          "description": "期望加工完成时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "res_project_id_status": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "project_status": {
+          "type": "integer",
+          "format": "int32",
+          "description": "项目状态"
+        }
+      }
+    },
+    "req_project_id": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        }
+      }
+    },
+    "mr_quota_info": {
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "quota": {
+          "type": "integer",
+          "format": "int32",
+          "description": "配额"
+        }
+      }
+    },
+    "mr_ml_info": {
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+
+        "ml_array": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mr_ml_array"
+          }
+        }
+      }
+    },
+    "mr_ml_array": {
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "料号"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "数量"
+        },
+        "repo": {
+          "type": "string",
+          "description": "所在仓库"
+        },
+        "name": {
+          "type": "string",
+          "description": "品名"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型,0:预埋件,1:铁塔"
+        },
+        "status": {
+          "type": "string",
+          "description": "状态"
+        }
+      }
+    },
+    "mr_single_info": {
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "ml_array": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mr_single_array"
+          }
+        }
+      }
+    },
+    "mr_single_array": {
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "料号"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "数量"
+        },
+        "repo": {
+          "type": "string",
+          "description": "所在仓库"
+        },
+        "name": {
+          "type": "string",
+          "description": "品名"
+        },
+        "status": {
+          "type": "string",
+          "description": "状态"
+        }
+      }
+    },
+    "es_arrival_info": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "ce_arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "土建进场时间,日期格式:YYYY-MM-DD"
+        },
+        "plan_placing_complete_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计浇筑完成时间,日期格式:YYYY-MM-DD"
+        },
+        "receive_time": {
+          "type": "string",
+          "format": "date",
+          "description": "签收时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "es_placing_info": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "placing_complete_time": {
+          "type": "string",
+          "format": "date",
+          "description": "浇筑完成时间,日期格式:YYYY-MM-DD"
+        },
+        "plan_scene_prospect_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计现场勘查时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "es_sence_prospect_info": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "is_ep_setup_ok": {
+          "type": "boolean",
+          "description": "预埋件安装是否正确"
+        },
+        "is_expire": {
+          "type": "boolean",
+          "description": "保养是否到期"
+        },
+        "is_power_ok": {
+          "type": "boolean",
+          "description": "电源是否开通"
+        },
+        "is_sensitive_site": {
+          "type": "boolean",
+          "description": "是否为敏感站点"
+        },
+        "material_transport_way": {
+          "type": "integer",
+          "format": "int32",
+          "description": "物料进场方式,0:车辆,1:人工搬运"
+        },
+        "setup_tower_way": {
+          "type": "integer",
+          "format": "int32",
+          "description": "立塔方式,0:塔吊, 1:人工吊"
+        },
+        "transport_distance": {
+          "type": "number",
+          "format": "float",
+          "description": "搬运距离,单位米"
+        },
+        "transport_high": {
+          "type": "number",
+          "format": "float",
+          "description": "搬运高度,单位米"
+        },
+        "remarks": {
+          "type": "string",
+          "description": "补充说明"
+        },
+        "scene_prospect_time": {
+          "type": "string",
+          "format": "date",
+          "description": "勘查完成时间,日期格式:YYYY-MM-DD"
+        },
+        "plan_tower_setup_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计铁塔可安装时间,正常的话就是最后的施工队进场时间,日期格式:YYYY-MM-DD"
+        },
+        "plan_work_days": {
+          "type": "number",
+          "format": "float",
+          "description": "计划施工天数"
+        },
+        "security_level": {
+          "type": "integer",
+          "format": "int32",
+          "description": "安全级别,0-5级"
+        }
+      }
+    },
+    "ts_plan_tower_setup_time": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "plan_tower_setup_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计铁塔可安装时间,,正常的话就是最后的施工队进场时间日期格式:YYYY-MM-DD"
+        },
+        "plan_work_days": {
+          "type": "number",
+          "format": "float",
+          "description": "计划施工天数"
+        },
+        "security_level": {
+          "type": "integer",
+          "format": "int32",
+          "description": "安全级别,0-5级"
+        }
+      }
+    },
+    "ts_safety_approval": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "approval_opinion": {
+          "type": "string",
+          "description": "审批意见"
+        }
+      }
+    },
+    "ts_ct_array": {
+      "properties": {
+        "ct_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        },
+        "car_driver_phone": {
+          "type": "string",
+          "description": "司机联系电话"
+        },
+        "ct_leader_name": {
+          "type": "string",
+          "description": "施工队队长"
+        },
+        "ct_arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "施工队进场时间,日期格式:YYYY-MM-DD"
+        },
+        "car_number": {
+          "type": "string",
+          "description": "车牌号"
+        },
+        "ct_leader_phone": {
+          "type": "string",
+          "description": "施工队队长电话"
+        },
+        "ct_plan_work_days": {
+          "type": "number",
+          "format": "float",
+          "description": "预计施工天数"
+        },
+        "ct_worker_amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工人数"
+        },
+        "ct_name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "support_tower_type": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_tower_types"
+          }
+        },
+        "car_driver": {
+          "type": "string",
+          "description": "司机"
+        },
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "ct_ability": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队能力等级,0-5级"
+        },
+        "ct_history_score": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队历史评分,0-5级"
+        }
+      }
+    },
+    "ts_ct_info": {
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "ml_array": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ts_ct_array"
+          }
+        }
+      }
+    },
+    "ts_plan_tower_arrival_time": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "plan_tower_arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计铁塔到场时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "ts_tower_arrival_time": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "tower_arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "铁塔签收时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "ts_ct_detail": {
+      "properties": {
+        "ct_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        },
+        "ct_name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "进场时间,日期格式:YYYY-MM-DD"
+        },
+        "worker_amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工人数"
+        },
+        "work_days": {
+          "type": "number",
+          "format": "float",
+          "description": "施工天数"
+        },
+        "ct_grade": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队评分(0-5)"
+        }
+      },
+      "description": "人力投入情况"
+    },
+    "ts_material_detail": {
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "料号"
+        },
+        "name": {
+          "type": "string",
+          "description": "品名"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型"
+        },
+        "usage_amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "实际使用量"
+        }
+      },
+      "description": "物料实际使用情况"
+    },
+    "ts_work_statement": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "complete_time": {
+          "type": "string",
+          "format": "date",
+          "description": "完工时间,日期格式:YYYY-MM-DD"
+        },
+        "ct_detail": {
+          "$ref": "#/definitions/ts_ct_detail"
+        },
+        "material_detail": {
+          "$ref": "#/definitions/ts_material_detail"
+        }
+      }
+    },
+    "ts_ct_pe_detail": {
+      "properties": {
+        "ct_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        },
+        "ct_name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "进场时间,日期格式:YYYY-MM-DD"
+        },
+        "worker_amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工人数"
+        },
+        "work_days": {
+          "type": "number",
+          "format": "float",
+          "description": "施工天数"
+        },
+        "ct_grade": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队评分(0-5)"
+        },
+        "ct_price": {
+          "type": "number",
+          "format": "float",
+          "description": "单价"
+        },
+        "ct_cost": {
+          "type": "integer",
+          "format": "float",
+          "description": "成本"
+        }
+      },
+      "description": "人力成本"
+    },
+    "ts_material_pe_detail": {
+      "properties": {
+        "number": {
+          "type": "string",
+          "description": "料号"
+        },
+        "name": {
+          "type": "string",
+          "description": "品名"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型"
+        },
+        "usage_amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "实际使用量"
+        },
+        "ct_price": {
+          "type": "number",
+          "format": "float",
+          "description": "单价"
+        },
+        "ct_cost": {
+          "type": "integer",
+          "format": "float",
+          "description": "成本"
+        }
+      },
+      "description": "物料实际使用情况"
+    },
+    "ts_production_estimates": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "production_estimates": {
+          "type": "number",
+          "format": "double",
+          "description": "产值估算"
+        },
+        "ct_pe_detail": {
+          "$ref": "#/definitions/ts_ct_pe_detail"
+        },
+        "material_pe_detail": {
+          "$ref": "#/definitions/ts_material_pe_detail"
+        }
+      }
+    },
+    "ts_production_estimates_get": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "production_estimates": {
+          "type": "number",
+          "format": "double",
+          "description": "产值估算"
+        },
+        "all_cost": {
+          "type": "number",
+          "format": "double",
+          "description": "总成本"
+        },
+        "material_cost": {
+          "type": "number",
+          "format": "double",
+          "description": "材料总成本"
+        },
+        "ct_cost": {
+          "type": "number",
+          "format": "double",
+          "description": "人工总成本"
+        },
+        "ct_pe_detail": {
+          "$ref": "#/definitions/ts_ct_pe_detail"
+        },
+        "material_pe_detail": {
+          "$ref": "#/definitions/ts_material_pe_detail"
+        }
+      }
+    },
+    "ts_selective_acceptance": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "result": {
+          "type": "integer",
+          "format": "int32",
+          "description": "验收结论(0:通过,1:不通过,2:免检)"
+        },
+        "time": {
+          "type": "string",
+          "format": "date",
+          "description": "质检时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "fw_primary_acceptance": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "result": {
+          "type": "integer",
+          "format": "int32",
+          "description": "验收结论(0:通过,1:不通过,2:免检)"
+        },
+        "time": {
+          "type": "string",
+          "format": "date",
+          "description": "初验时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "pv_other_cost": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "code"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double",
+          "description": "金额(元)"
+        },
+        "cause": {
+          "type": "string",
+          "description": "原因"
+        }
+      }
+    },
+    "pv_invoice": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "发票名称"
+        },
+        "amount": {
+          "type": "number",
+          "format": "double",
+          "description": "金额(元)"
+        },
+        "time": {
+          "type": "string",
+          "format": "date",
+          "description": "开票日期,格式YYYY-MM-DD"
+        }
+      }
+    },
+    "fw_production_values_and_cost": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "production_values": {
+          "type": "number",
+          "format": "double",
+          "description": "产值决算金额(元)"
+        },
+        "audit": {
+          "type": "number",
+          "format": "double",
+          "description": "审计金额(元)"
+        },
+        "ticket": {
+          "type": "number",
+          "format": "double",
+          "description": "开票金额(元)"
+        },
+        "gathering": {
+          "type": "number",
+          "format": "double",
+          "description": "收款(元)"
+        },
+        "qa": {
+          "type": "number",
+          "format": "double",
+          "description": "质保金(元)"
+        },
+        "all_cost": {
+          "type": "number",
+          "format": "double",
+          "description": "总成本(元)"
+        },
+        "ct_cost": {
+          "type": "number",
+          "format": "double",
+          "description": "人工成本(元)"
+        },
+        "material_cost": {
+          "type": "number",
+          "format": "double",
+          "description": "材料成本(元)"
+        },
+        "others_cost": {
+          "$ref": "#/definitions/pv_other_cost"
+        },
+        "invoice": {
+          "$ref": "#/definitions/pv_invoice"
+        }
+      }
+    },
+    "fw_final_acceptance": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "result": {
+          "type": "integer",
+          "format": "int32",
+          "description": "验收结论(0:通过,1:不通过,2:免检)"
+        },
+        "time": {
+          "type": "string",
+          "format": "date",
+          "description": "终验时间,日期格式:YYYY-MM-DD"
+        }
+      }
+    },
+    "qm_get_branch_quota": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型,0:铁塔"
+        },
+        "com_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "分公司ID"
+        },
+        "com_name": {
+          "type": "string",
+          "description": "分公司名字"
+        },
+        "quota": {
+          "type": "integer",
+          "format": "int32",
+          "description": "额度"
+        },
+        "used": {
+          "type": "integer",
+          "format": "int32",
+          "description": "已使用"
+        }
+      },
+      "description": "所有分公司的配额使用信息"
+    },
+    "qm_get_quota": {
+      "type": "object",
+      "properties": {
+        "capacit": {
+          "type": "integer",
+          "format": "int32",
+          "description": "产能"
+        },
+        "used": {
+          "type": "integer",
+          "format": "int32",
+          "description": "已分配额度"
+        },
+        "branch_quota": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/qm_get_branch_quota"
+          }
+        }
+      }
+    },
+    "qm_set_branch_quota": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型,0:铁塔"
+        },
+        "com_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "分公司ID"
+        },
+        "quota": {
+          "type": "integer",
+          "format": "int32",
+          "description": "额度"
+        }
+      },
+      "description": "所有分公司的配额使用信息"
+    },
+    "qm_set_quota": {
+      "properties": {
+        "branch_quota": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/qm_set_branch_quota"
+          }
+        }
+      }
+    },
+    "cm_tower_types": {
+      "type": "object",
+      "properties": {
+        "tower_type": {
+          "type": "string",
+          "description": "塔型"
+        }
+      }
+    },
+    "cm_members": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "队员名字"
+        }
+      }
+    },
+    "cm_ctinfos": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型,0:自有,1:外包"
+        },
+        "support_tower_type": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_tower_types"
+          }
+        },
+        "ability": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队能力等级,0-5级"
+        },
+        "history_score": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队历史评分,0-5级"
+        },
+        "leader_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队队长ID"
+        },
+        "leader_name": {
+          "type": "string",
+          "description": "施工队队长"
+        },
+        "leader_phone": {
+          "type": "string",
+          "description": "施工队队长电话"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_members"
+          }
+        }
+      },
+      "description": "所有施工队信息"
+    },
+    "cm_get_all": {
+      "properties": {
+        "ct_infos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_ctinfos"
+          }
+        }
+      }
+    },
+    "ct_manage_create": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型,0:自有,1:外包"
+        },
+        "support_tower_type": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_tower_types"
+          }
+        },
+        "ability": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队能力等级,0-5级"
+        },
+        "leader_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队队长ID"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_members"
+          }
+        }
+      },
+      "description": "新建施工队需要的信息"
+    },
+    "ct_manage_update": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型,0:自有,1:外包"
+        },
+        "support_tower_type": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_tower_types"
+          }
+        },
+        "ability": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队能力等级,0-5级"
+        },
+        "leader_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队队长ID"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_members"
+          }
+        }
+      },
+      "description": "更新施工队信息"
+    },
+    "res_ct_manage_create": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        }
+      }
+    },
+    "ct_manage_del": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        }
+      }
+    },
+    "cm_users": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "用户ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "用户名称"
+        },
+        "phone": {
+          "type": "string",
+          "description": "用户电话号码"
+        }
+      },
+      "description": "可做队长的用户列表"
+    },
+    "cm_get_user_list": {
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_users"
+          }
+        }
+      }
+    },
+    "ct_schedule_get_free_ct": {
+      "type": "object",
+      "properties": {
+        "ability": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队能力等级,0-5级"
+        }
+      }
+    },
+    "cs_ctinfos": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "support_tower_type": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_tower_types"
+          }
+        },
+        "ability": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队能力等级,0-5级"
+        },
+        "leader_name": {
+          "type": "string",
+          "description": "施工队队长"
+        },
+        "leader_phone": {
+          "type": "string",
+          "description": "施工队队长电话"
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_members"
+          }
+        }
+      },
+      "description": "获取的施工队信息"
+    },
+    "res_ct_schedule_get_free_ct": {
+      "properties": {
+        "ct_infos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cs_ctinfos"
+          }
+        }
+      }
+    },
+    "cs_prjinfos": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "address": {
+          "type": "string",
+          "description": "施工地址"
+        },
+        "tower_type": {
+          "type": "string",
+          "description": "塔型"
+        },
+        "security_level": {
+          "type": "integer",
+          "format": "int32",
+          "description": "安全级别,0-5级"
+        },
+        "plan_ct_arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计施工队进场时间,日期格式:YYYY-MM-DD"
+        },
+        "plan_work_days": {
+          "type": "number",
+          "format": "float",
+          "description": "预计施工天数"
+        }
+      },
+      "description": "项目信息"
+    },
+    "res_ct_schedule_get_schedule_prj": {
+      "properties": {
+        "prj_infos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cs_prjinfos"
+          }
+        }
+      }
+    },
+    "cs_cts": {
+      "type": "object",
+      "properties": {
+        "ct_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        },
+        "ct_members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_members"
+          }
+        }
+      }
+    },
+    "cs_schedule_infos":{
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "cts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cs_cts"
+          }
+        }
+      }
+    },
+    "ct_schedule_manual_save": {
+      "properties": {
+        "ct_schedule_infos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cs_schedule_infos"
+          }
+        }
+      }
+    },
+    "cs_schedule_merge_prj": {
+      "properties": {
+        "merge_prjs": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "description": "一组项目ID"
+        }
+      }
+    },
+    "cs_result_cts": {
+      "type": "object",
+      "properties": {
+        "ct_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "施工队ID"
+        },
+        "ct_name": {
+          "type": "string",
+          "description": "施工队名称"
+        },
+        "ct_members": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cm_members"
+          }
+        },
+        "ct_ability": {
+          "type": "integer",
+          "format": "int32",
+          "description": "施工队能力等级,0-5级"
+        }
+      }
+    },
+    "cs_schedule_result":{
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "address": {
+          "type": "string",
+          "description": "施工地址"
+        },
+        "tower_type": {
+          "type": "string",
+          "description": "塔型"
+        },
+        "security_level": {
+          "type": "integer",
+          "format": "int32",
+          "description": "安全级别,0-5级"
+        },
+        "plan_ct_arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计施工队进场时间,日期格式:YYYY-MM-DD"
+        },
+        "plan_work_days": {
+          "type": "number",
+          "format": "float",
+          "description": "预计施工天数"
+        },
+        "cts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cs_result_cts"
+          }
+        },
+        "schedule_way": {
+          "type": "integer",
+          "format": "int32",
+          "description": "分配方式,0:人工,1:竞争,2:随机"
+        }
+      }
+    },
+    "cs_get_schedule_result": {
+      "properties": {
+        "schedule_result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/cs_schedule_result"
+          }
+        }
+      }
+    },
+    "umm_ml_info": {
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "plan_tower_arrival_time": {
+          "type": "string",
+          "format": "date",
+          "description": "预计铁塔到场时间,日期格式:YYYY-MM-DD"
+        },
+        "ml_array": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mr_ml_array"
+          }
+        }
+      }
+    },
+    "um_users": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "用户ID"
+        },
+        "account": {
+          "type": "string",
+          "description": "用户账户"
+        },
+        "name": {
+          "type": "string",
+          "description": "用户名称"
+        },
+        "mail": {
+          "type": "string",
+          "description": "用户名称"
+        },
+        "phone": {
+          "type": "string",
+          "description": "用户电话号码"
+        },
+        "role_name": {
+          "type": "string",
+          "description": "角色名称"
+        },
+        "role_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "角色ID, 1:管理员,2:项目经理,3:铁塔总调,4:安质,5:施工队总调,6:施工队长,7:工艺设计"
+        },
+        "post_name": {
+          "type": "string",
+          "description": "职位名称"
+        },
+        "post_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "职位ID"
+        },
+        "is_sys_user": {
+          "type": "boolean",
+          "description": "是否可登陆用户"
+        }
+      },
+      "description": "用户详细信息"
+    },
+    "user_manage_get_all": {
+      "properties": {
+        "users": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/um_users"
+          }
+        }
+      }
+    },
+    "user_manage_create": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "用户姓名"
+        },
+        "account": {
+          "type": "integer",
+          "format": "int32",
+          "description": "账户"
+        },
+        "password": {
+          "type": "string",
+          "description": "密码"
+        },
+        "mail": {
+          "type": "string",
+          "description": "电子邮箱"
+        },
+        "phone": {
+          "type": "string",
+          "description": "电话号码"
+        },
+        "role_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "角色ID"
+        },
+        "post_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "职位ID"
+        },
+        "is_sys_user": {
+          "type": "boolean",
+          "description": "是否可登陆用户"
+        }
+      },
+      "description": "新建用户需要的信息"
+    },
+    "res_user_manage_create": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "用户ID"
+        }
+      }
+    },
+    "user_manage_update": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "用户ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "用户姓名"
+        },
+        "account": {
+          "type": "integer",
+          "format": "int32",
+          "description": "账户"
+        },
+        "password": {
+          "type": "string",
+          "description": "密码"
+        },
+        "mail": {
+          "type": "string",
+          "description": "电子邮箱"
+        },
+        "phone": {
+          "type": "string",
+          "description": "电话号码"
+        },
+        "role_id": {
+          "type": "integer",
+          "format": "int32",
+          "description": "角色ID"
+        },
+        "post_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "职位ID"
+        },
+        "is_sys_user": {
+          "type": "boolean",
+          "description": "是否可登陆用户"
+        }
+      },
+      "description": "修改用户信息"
+    },
+    "user_manage_get": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "用户ID"
+        }
+      }
+    },
+    "mt_detail": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "integer",
+          "format": "int32",
+          "description": "类型0:预埋件,1:铁塔"
+        },
+        "number": {
+          "type": "string",
+          "description": "料号"
+        },
+        "name": {
+          "type": "string",
+          "description": "品名"
+        },
+        "amount": {
+          "type": "integer",
+          "format": "int32",
+          "description": "数量"
+        },
+        "need_pd": {
+          "type": "integer",
+          "format": "int32",
+          "description": "是否需要工艺设计, 0:否, 1:是"
+        }
+      },
+      "description": "模板具体信息"
+    },
+    "material_template_get": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "模板名称"
+        }
+      }
+    },
+    "material_template_save": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "模板名称"
+        },
+        "detail": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/mt_detail"
+          }
+        }
+      },
+      "description": "模板信息"
+    },
+
+    "res_code_name": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32",
+          "description": "编码"
+        },
+        "name": {
+          "type": "string",
+          "description": "名称"
+        }
+      }
+    },
+
+    "prj_lal": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "float",
+          "description": "经度"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "float",
+          "description": "维度"
+        }
+      }
+    },
+
+    "prj_on_and_cn": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "order_num": {
+          "type": "string",
+          "description": "订单号"
+        },
+        "contract_num": {
+          "type": "string",
+          "description": "合同号"
+        }
+      }
+    },
+
+    "prj_modify_cause": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "integer",
+          "format": "int64",
+          "description": "项目ID"
+        },
+        "cause": {
+          "type": "integer",
+          "format": "int32",
+          "description": "原因编码"
+        }
+      }
+    }
+  }
+}

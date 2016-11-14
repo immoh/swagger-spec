@@ -1,0 +1,3447 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Component Identifier Service API",
+        "description": "API for the IHTSDO Component Identifier Service.",
+        "version": "1.0"
+    },
+    "produces": ["application/json"],
+    "host": "localhost:3000",
+    "basePath": "/api",
+    "paths": {
+
+      "/testService": {
+        "get": {
+          "x-swagger-router-controller": "Home",
+          "operationId": "testService",
+          "tags": ["Test Service"],
+          "description": "Test service.",
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "Test OK.",
+              "schema": {
+                "type": "string"
+              }
+            },
+            "default": {
+              "description": "Error.",
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            }
+          }
+        }
+      },
+        "/login": {
+            "post": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "login",
+                "tags": ["Authentication"],
+                "description": "Creates a session, obtaining a token for next operations.",
+                "parameters": [
+                    {
+                        "name": "credentials",
+                        "in": "body",
+                        "description": "The user credentials.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Credentials"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login OK, Token obtained.",
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    },
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "logout",
+                "tags": ["Authentication"],
+                "description": "Closes a session, identified by the token.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "body",
+                        "description": "The security access token.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Session closed."
+                    }
+                }
+            }
+        },
+        "/authenticate": {
+            "post": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "authenticate",
+                "tags": ["Authentication"],
+                "description": "Validates a token, checking if it' assigned to a current session, and retrieves user data.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "body",
+                        "description": "The security access token.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Token"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Token OK.",
+                        "schema": {
+                            "$ref": "#/definitions/UserData"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "getUsers",
+                "tags": ["Authorization"],
+                "description": "Retrieves all users.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "searchString",
+                        "in": "query",
+                        "description": "The search string.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Users list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}/namespaces/":{
+            "get": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "getNamespacesForUser",
+                "tags": ["Namespaces"],
+                "description": "Returns the list of available namespaces.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Namespace"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}/schemes/":{
+            "get": {
+                "x-swagger-router-controller": "Scheme",
+                "operationId": "getSchemesForUser",
+                "tags": ["Schemes"],
+                "description": "Returns the list of available schemes.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Scheme"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}/groups/": {
+            "get": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "getGroups",
+                "tags": ["Authorization"],
+                "description": "Retrieves groups for the user.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Groups list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{username}/groups/{groupName}": {
+            "post": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "addMember",
+                "tags": ["Authorization"],
+                "description": "Adds a User to a Group.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "groupName",
+                        "in": "path",
+                        "description": "The Group Name.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Groups list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "removeMember",
+                "tags": ["Authorization"],
+                "description": "Removes a user from a Group.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "groupName",
+                        "in": "path",
+                        "description": "The Group Name.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Groups list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/groups/{groupName}/users": {
+            "get": {
+                "x-swagger-router-controller": "Login",
+                "operationId": "getGroupUsers",
+                "tags": ["Authorization"],
+                "description": "Retrieves groups for the user.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "groupName",
+                        "in": "path",
+                        "description": "The Group Name.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Users list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/namespaces/{namespaceId}/permissions": {
+            "get": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "getPermissions",
+                "tags": ["Authorization"],
+                "description": "Returns list of users with access to this namespace.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The required namespace id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/NamespacePermission"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/namespaces/{namespaceId}/permissions/{username}": {
+            "post": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "createPermission",
+                "tags": ["Authorization"],
+                "description": "Creates a permission for this namespace, allowing access for the provided user.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The required namespace id.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "The role.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/NamespacePermission"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "deletePermission",
+                "tags": ["Authorization"],
+                "description": "Deletes a permission for this namespace, removing access for the provided user.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The required namespace id.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "$ref": "#/definitions/NamespacePermission"
+                    }
+                }
+            }
+        },
+        "/schemes/{schemeName}/permissions": {
+            "get": {
+                "x-swagger-router-controller": "Scheme",
+                "operationId": "getPermissions",
+                "tags": ["Authorization"],
+                "description": "Returns list of users with access to this namespace.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The required Scheme name.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemePermission"
+                        }
+                    }
+                }
+            }
+        },
+        "/schemes/{schemeName}/permissions/{username}": {
+            "post": {
+                "x-swagger-router-controller": "Scheme",
+                "operationId": "createPermission",
+                "tags": ["Authorization"],
+                "description": "Creates a permission for this Scheme, allowing access for the provided user.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The required Scheme name.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "The role.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemePermission"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "x-swagger-router-controller": "Scheme",
+                "operationId": "deletePermission",
+                "tags": ["Authorization"],
+                "description": "Deletes a permission for this Scheme, removing access for the provided user.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The required scheme name.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "path",
+                        "description": "The username.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemePermission"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/namespaces/{namespaceId}": {
+            "get": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "getNamespace",
+                "tags": ["Namespaces"],
+                "description": "Returns the required namespace object.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The required namespace id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/Namespace"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "deleteNamespace",
+                "tags": ["Namespaces"],
+                "description": "Deletes a namespace.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The namespace to delete.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Namespace updated.",
+                        "schema": {
+                            "$ref": "#/definitions/Namespace"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/namespaces/{namespaceId}/partition/{partitionId}": {
+            "put": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "updatePartitionSequence",
+                "tags": ["Namespaces"],
+                "description": "Updates the partitionId sequence for this namespace.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The required namespace id.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "partitionId",
+                        "in": "path",
+                        "description": "The required namespace id.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "value",
+                        "in": "query",
+                        "description": "The next value in the sequence.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/Namespace"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/namespaces": {
+            "get": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "getNamespaces",
+                "tags": ["Namespaces"],
+                "description": "Returns the list of available namespaces.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Namespace"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "updateNamespace",
+                "tags": ["Namespaces"],
+                "description": "Updates a namespace.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "body",
+                        "description": "The updated namespace data.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Namespace"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Namespace updated.",
+                        "schema": {
+                            "$ref": "#/definitions/Namespace"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "x-swagger-router-controller": "Namespace",
+                "operationId": "createNamespace",
+                "tags": ["Namespaces"],
+                "description": "Creates a new namespace.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "body",
+                        "description": "The new namespace data.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Namespace"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Namespace created.",
+                        "schema": {
+                            "$ref": "#/definitions/Namespace"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/ids": {
+            "get": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "getSctids",
+                "tags": ["SCTIDS"],
+                "description": "Returns the SCTIDs Record.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "How many.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "Where starts.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespace",
+                        "in": "query",
+                        "description": "Namespace ID.",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/ids/{sctid}": {
+            "get": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "getSctid",
+                "tags": ["SCTIDS"],
+                "description": "Returns the required SCTID Record.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sctid",
+                        "in": "path",
+                        "description": "The required id.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "includeAdditionalIds",
+                        "in": "query",
+                        "description": "To include related additional ids in the result. Values \"true\" / \"false\"",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/namespaces/{namespaceId}/systemids/{systemId}": {
+            "get": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "getSctidBySystemId",
+                "tags": ["SCTIDS"],
+                "description": "Returns the required SCTID Record, identified by the systemId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The required namespace that contains the SystemId.",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "systemId",
+                        "in": "path",
+                        "description": "The required id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/generate": {
+            "post": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "generateSctid",
+                "tags": ["SCTIDS"],
+                "description": "Generates a new SCTID, based on the metadata passed in the GenerationData parameter. The first available SCTID will be assigned. Returns a SCTID Record with status 'Assigned'",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "generationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDGenerationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                          "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/register": {
+            "post": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "registerSctid",
+                "tags": ["SCTIDS"],
+                "description": "Registers a SCTID already in use in an external system, based on the metadata passed in the RegistrationData parameter. Returns a SCTID Record with status 'Assigned'. If the SCTID is already assigned it will return an error.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "registrationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRegistrationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/reserve": {
+            "post": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "reserveSctid",
+                "tags": ["SCTIDS"],
+                "description": "Reserves a SCTID for use in an external system, based on the metadata passed in the ReservationData parameter. The first available SCTID will be reserved. Returns a SCTID Record with status 'Reserved'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "reservationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDReservationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/deprecate": {
+            "put": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "deprecateSctid",
+                "tags": ["SCTIDS"],
+                "description": "Deprecates a SCTID, so it will not be assigned to any component, based on the metadata passed in the DeprecationData parameter. Returns a SCTID Record with status 'Deprecated'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "deprecationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/release": {
+            "put": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "releaseSctid",
+                "tags": ["SCTIDS"],
+                "description": "Releases a SCTID, so it will available to be assigned again, based on the metadata passed in the DeprecationData parameter. Returns a SCTID Record with status 'Available'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "releaseData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/publish": {
+            "put": {
+                "x-swagger-router-controller": "Sctid",
+                "operationId": "publishSctid",
+                "tags": ["SCTIDS"],
+                "description": "Sets the SCTID as published, based on the metadata passed in the DeprecationData parameter. Returns a SCTID Record with status 'Published'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "publicationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/bulk/ids": {
+            "get": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "getSctids",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Returns the required SCTID Records. Bulk SCTID operations do not currently include AdditionalIds",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sctids",
+                        "in": "query",
+                        "description": "The required sctids list, separated with commas (,).",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SCTIDRecord"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "getSctidsBody",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Returns the required SCTID Records. Bulk SCTID operations do not currently include AdditionalIds",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "sctids",
+                        "in": "body",
+                        "description": "The required sctids list, separated with commas (,).",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SctidsList"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SCTIDRecord"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/namespace/{namespaceId}/systemIds": {
+            "get": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "getSctidBySystemIds",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Returns the required SCTID Records by SystemIds.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "namespaceId",
+                        "in": "path",
+                        "description": "The namespaceId.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "systemIds",
+                        "in": "query",
+                        "description": "The required systemIds list, separated with commas (,).",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SCTIDRecord"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/bulk/generate": {
+            "post": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "generateSctids",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Generates news SCTID, based on the metadata passed in the GenerationData parameter. The first available SCTIDs will be assigned. Returns an array of SCTIDs Record with status 'Assigned'",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "generationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDBulkGenerationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/BulkJob"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/bulk/register": {
+            "post": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "registerSctids",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Registers SCTIDs already in use in an external system, based on the metadata passed in the RegistrationData parameter. Returns an array of SCTID Records with status 'Assigned'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "registrationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDBulkRegistrationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/BulkJob"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/bulk/reserve": {
+            "post": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "reserveSctids",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Reserves SCTIDs for use in an external system, based on the metadata passed in the ReservationData parameter. The first available SCTIDs will be reserved. Returns an array of SCTID Records with status 'Reserved'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "reservationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDBulkReservationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/BulkJob"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/bulk/deprecate": {
+            "put": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "deprecateSctids",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Deprecates SCTIDs, so they will not be assigned to any component, based on the metadata passed in the DeprecationData parameter. Returns an array of SCTID Records with status 'Deprecated'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "deprecationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDBulkUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/BulkJob"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/bulk/release": {
+            "put": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "releaseSctids",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Releases SCTIDs, so they will be available to be assigned again, based on the metadata passed in the DeprecationData parameter. Returns an array SCTID Records with status 'Available'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "releaseData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDBulkUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/BulkJob"
+                        }
+                    }
+                }
+            }
+        },
+        "/sct/bulk/publish": {
+            "put": {
+                "x-swagger-router-controller": "SctidBulk",
+                "operationId": "publishSctids",
+                "tags": ["SCTIDS - Bulk Operations"],
+                "description": "Sets the SCTIDs as published, based on the metadata passed in the DeprecationData parameter. Returns an array SCTID Records with status 'Published'.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "publicationData",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SCTIDBulkUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/BulkJob"
+                        }
+                    }
+                }
+            }
+        },
+        "/bulk/jobs": {
+            "get": {
+                "x-swagger-router-controller": "BulkJob",
+                "operationId": "getJobs",
+                "tags": ["Bulk Jobs"],
+                "description": "Returns all jobs.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "The jobs",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/BulkJob"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/bulk/jobs/{jobId}": {
+            "get": {
+                "x-swagger-router-controller": "BulkJob",
+                "operationId": "getJob",
+                "tags": ["Bulk Jobs"],
+                "description": "Returns a job identifed by the id.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "jobId",
+                        "in": "path",
+                        "description": "The jobId.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "The job.",
+                        "schema": {
+                            "$ref": "#/definitions/BulkJob"
+                        }
+                    }
+                }
+            }
+        },
+        "/bulk/jobs/{jobId}/records": {
+            "get": {
+                "x-swagger-router-controller": "BulkJob",
+                "operationId": "getJobRecords",
+                "tags": ["Bulk Jobs"],
+                "description": "Returns the id records created or updated by a job identifed by the id.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "jobId",
+                        "in": "path",
+                        "description": "The jobId.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "The records.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type":"object"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+      "/bulk/jobs/cleanupExpired": {
+        "get": {
+          "x-swagger-router-controller": "BulkJob",
+          "operationId": "cleanUpExpiredIds",
+          "tags": ["Bulk Jobs"],
+          "description": "Clean up expired ids.",
+          "parameters": [
+            {
+              "name": "token",
+              "in": "query",
+              "description": "The security access token.",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "default": {
+              "description": "Invalid request.",
+              "schema": {
+                "$ref": "#/definitions/Error"
+              }
+            },
+            "200": {
+              "description": "Database info",
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+        "/schemes": {
+            "get": {
+                "x-swagger-router-controller": "Scheme",
+                "operationId": "getSchemes",
+                "tags": ["Schemes"],
+                "description": "Returns available Identifier Schemes.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Scheme"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/schemes/{schemeName}": {
+            "get": {
+                "x-swagger-router-controller": "Scheme",
+                "operationId": "getScheme",
+                "tags": ["Schemes"],
+                "description": "Returns available Identifier Schemes.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/Scheme"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "x-swagger-router-controller": "Scheme",
+                "operationId": "updateScheme",
+                "tags": ["Schemes"],
+                "description": "Receives a request for updating a Scheme.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "schemeSeq",
+                        "in": "query",
+                        "description": "The changed operation.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/ids": {
+            "get": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "getSchemeIds",
+                "tags": ["SchemeIds"],
+                "description": "Returns the SchemeIds Record.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "How many.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "skip",
+                        "in": "query",
+                        "description": "Where starts.",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "scheme",
+                        "in": "query",
+                        "description": "The Scheme Name.",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/ids/{schemeId}": {
+            "get": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "getSchemeId",
+                "tags": ["SchemeIds"],
+                "description": "Returns the required SchemeId Record.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "schemeId",
+                        "in": "path",
+                        "description": "The required id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/systemids/{systemId}": {
+            "get": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "getSchemeIdBySystemId",
+                "tags": ["SchemeIds"],
+                "description": "Returns the required SchemeId Record, identified by the systemId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "systemId",
+                        "in": "path",
+                        "description": "The required id.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/generate": {
+            "post": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "generateSchemeId",
+                "tags": ["SchemeIds"],
+                "description": "Receives a request for a Generating a new SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "generationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdGenerationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/register": {
+            "post": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "registerSchemeId",
+                "tags": ["SchemeIds"],
+                "description": "Receives a request for a registering existing SchemeIds.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "registrationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRegistrationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/reserve": {
+            "post": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "reserveSchemeId",
+                "tags": ["SchemeIds"],
+                "description": "Receives a request for a reserving a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "reservationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdReservationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/deprecate": {
+            "put": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "deprecateSchemeId",
+                "tags": ["SchemeIds"],
+                "description": "Receives a request for deprecating a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "deprecationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/release": {
+            "put": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "releaseSchemeId",
+                "tags": ["SchemeIds"],
+                "description": "Receives a request for releasing a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "releaseMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/publish": {
+            "put": {
+                "x-swagger-router-controller": "SchemeId",
+                "operationId": "publishSchemeId",
+                "tags": ["SchemeIds"],
+                "description": "Receives a request for publishing a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "publicationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Operation ready.",
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdRecord"
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/bulk": {
+            "get": {
+                "x-swagger-router-controller": "SchemeIdBulk",
+                "operationId": "getSchemeIds",
+                "tags": ["SchemeIds - Bulk Operations"],
+                "description": "Returns the required SchemeId Records.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "schemeIds",
+                        "in": "query",
+                        "description": "The required schemeIds list, separated with commas (,).",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Successful request.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/SchemeIdRecord"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/bulk/generate": {
+            "post": {
+                "x-swagger-router-controller": "SchemeIdBulk",
+                "operationId": "generateSchemeIds",
+                "tags": ["SchemeIds - Bulk Operations"],
+                "description": "Receives a request for a Generating a new SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "generationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdBulkGenerationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                      "description": "Operation ready.",
+                      "schema": {
+                        "$ref": "#/definitions/BulkJob"
+                      }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/bulk/register": {
+            "post": {
+                "x-swagger-router-controller": "SchemeIdBulk",
+                "operationId": "registerSchemeIds",
+                "tags": ["SchemeIds - Bulk Operations"],
+                "description": "Receives a request for a registering existing SchemeIds.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "registrationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdBulkRegistrationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                      "description": "Operation ready.",
+                      "schema": {
+                        "$ref": "#/definitions/BulkJob"
+                      }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/bulk/reserve": {
+            "post": {
+                "x-swagger-router-controller": "SchemeIdBulk",
+                "operationId": "reserveSchemeIds",
+                "tags": ["SchemeIds - Bulk Operations"],
+                "description": "Receives a request for a reserving a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "reservationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdBulkReservationRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                      "description": "Operation ready.",
+                      "schema": {
+                        "$ref": "#/definitions/BulkJob"
+                      }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/bulk/deprecate": {
+            "put": {
+                "x-swagger-router-controller": "SchemeIdBulk",
+                "operationId": "deprecateSchemeIds",
+                "tags": ["SchemeIds - Bulk Operations"],
+                "description": "Receives a request for deprecating a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "deprecationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdBulkUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                      "description": "Operation ready.",
+                      "schema": {
+                        "$ref": "#/definitions/BulkJob"
+                      }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/bulk/release": {
+            "put": {
+                "x-swagger-router-controller": "SchemeIdBulk",
+                "operationId": "releaseSchemeIds",
+                "tags": ["SchemeIds - Bulk Operations"],
+                "description": "Receives a request for releasing a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "releaseMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdBulkUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                      "description": "Operation ready.",
+                      "schema": {
+                        "$ref": "#/definitions/BulkJob"
+                      }
+                    }
+                }
+            }
+        },
+        "/scheme/{schemeName}/bulk/publish": {
+            "put": {
+                "x-swagger-router-controller": "SchemeIdBulk",
+                "operationId": "publishSchemeIds",
+                "tags": ["SchemeIds - Bulk Operations"],
+                "description": "Receives a request for publishing a SchemeId.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "schemeName",
+                        "in": "path",
+                        "description": "The Scheme Name.",
+                        "required": true,
+                        "type": "string",
+                        "enum": [
+                            "SNOMEDID",
+                            "CTV3ID"
+                        ]
+                    },
+                    {
+                        "name": "publicationMetadata",
+                        "in": "body",
+                        "description": "The requested operation.",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SchemeIdBulkUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Invalid request.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                      "description": "Operation ready.",
+                      "schema": {
+                        "$ref": "#/definitions/BulkJob"
+                      }
+                    }
+                }
+            }
+        },
+        "/stats": {
+            "get": {
+                "x-swagger-router-controller": "Home",
+                "operationId": "getStats",
+                "tags": ["Stats"],
+                "description": "Retrieves stats for user.",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "description": "The security access token.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "The User requesting stats.",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "default": {
+                        "description": "Error.",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "200": {
+                        "description": "Users list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Partition" : {
+            "properties": {
+                "namespace": {
+                    "type": "integer"
+                },
+                "partitionId": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "integer"
+                }
+            }
+        },
+        "Namespace": {
+            "properties": {
+                "namespace": {
+                    "type": "integer"
+                },
+                "organizationName": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "partitions": {
+                    "type": "array",
+                    "items": {
+                       "$ref": "#/definitions/Partition"
+                    }
+                }
+            }
+        },
+        "NamespacePermission": {
+            "properties": {
+                "namespace": {
+                    "type": "integer"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string",
+                    "description": "name of the role (consumer or manager)"
+                }
+            }
+        },
+        "SchemePermission": {
+            "properties": {
+                "scheme": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                }
+            }
+        },
+        "Error": {
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": ["message"]
+        },
+        "Scheme": {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            }
+        },
+        "SchemeIdRecord" : {
+            "properties": {
+                "scheme": {
+                    "type": "string"
+                },
+                "schemeId": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "integer"
+                },
+                "checkDigit": {
+                    "type": "integer"
+                },
+                "systemId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "software": {
+                    "type": "string"
+                },
+                "expirationDate": {
+                    "type": "string"
+                },
+                "comment": {
+                    "type": "string"
+                }
+            }
+        },
+        "SchemeIdGenerationRequest" : {
+            "properties" : {
+                "systemId": {
+                    "type": "string",
+                    "description": "The systemId, optional, a reference to an existing ID on the user environment, external to this API"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            }
+        },
+        "SchemeIdRegistrationRequest" : {
+          "properties": {
+            "schemeId": {
+              "type": "string",
+              "description": "The Scheme Identifier"
+            },
+            "systemId": {
+              "type": "string",
+              "description": "The systemId, optional, a reference to an existing ID on the user environment, external to this API"
+            },
+            "software": {
+              "type": "string",
+              "description": "The name of the software sending the request, mandatory"
+            },
+            "comment": {
+              "type": "string",
+              "description": "A comment about the action, optional."
+            }
+          },
+          "required": [
+            "schemeId"
+          ]
+        },
+        "SchemeIdReservationRequest" : {
+            "properties" : {
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "expirationDate": {
+                    "type": "string",
+                    "description": "The expiration date, only necessary on reserve actions"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            }
+        },
+        "SchemeIdUpdateRequest" : {
+          "properties": {
+            "schemeId": {
+              "type": "string",
+              "description": "The Scheme Identifier"
+            },
+            "software": {
+              "type": "string",
+              "description": "The name of the software sending the request, mandatory"
+            },
+            "comment": {
+              "type": "string",
+              "description": "A comment about the action, optional."
+            }
+          },
+          "required": [
+            "schemeId"
+          ]
+        },
+        "SchemeIdBulkGenerationRequest" : {
+          "properties": {
+            "quantity": {
+              "type": "integer",
+              "description": "Number of actions to be performed"
+            },
+            "systemIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "The systemIds, optional, a reference to an existing ID on the user environment, external to this API"
+            },
+            "software": {
+              "type": "string",
+              "description": "The name of the software sending the request, mandatory"
+            },
+            "comment": {
+              "type": "string",
+              "description": "A comment about the action, optional."
+            }
+          },
+          "required": [
+            "quantity"
+          ]
+        },
+        "SchemeRegistrationRecord": {
+            "properties": {
+                "schemeId": {
+                    "type": "string"
+                },
+                "systemId": {
+                    "type": "string"
+                }
+            }
+        },
+        "SchemeIdBulkRegistrationRequest" : {
+          "properties": {
+            "records": {
+              "description": "The list of ids pairs to register",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/SchemeRegistrationRecord"
+              }
+            },
+            "software": {
+              "type": "string",
+              "description": "The name of the software sending the request, mandatory"
+            },
+            "comment": {
+              "type": "string",
+              "description": "A comment about the action, optional."
+            }
+          },
+          "required": [
+            "records"
+          ]
+        },
+        "SchemeIdBulkReservationRequest" : {
+          "properties": {
+            "quantity": {
+              "type": "integer",
+              "description": "Number of actions to be performed"
+            },
+            "software": {
+              "type": "string",
+              "description": "The name of the software sending the request, mandatory"
+            },
+            "expirationDate": {
+              "type": "string",
+              "description": "The expiration date, only necessary on reserve actions"
+            },
+            "comment": {
+              "type": "string",
+              "description": "A comment about the action, optional."
+            }
+          },
+          "required": [
+            "quantity"
+          ]
+        },
+        "SchemeIdBulkUpdateRequest" : {
+          "properties": {
+            "schemeIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "software": {
+              "type": "string",
+              "description": "The name of the software sending the request, mandatory"
+            },
+            "comment": {
+              "type": "string",
+              "description": "A comment about the action, optional."
+            }
+          },
+          "required": [
+            "schemeIds"
+          ]
+        },
+        "SCTIDRecord" : {
+            "properties": {
+                "sctid": {
+                    "type": "string"
+                },
+                "sequence": {
+                    "type": "integer"
+                },
+                "namespace": {
+                    "type": "integer"
+                },
+                "partitionId": {
+                    "type": "string"
+                },
+                "checkDigit": {
+                    "type": "integer"
+                },
+                "systemId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "software": {
+                    "type": "string"
+                },
+                "expirationDate": {
+                    "type": "string"
+                },
+                "comment": {
+                    "type": "string"
+                },
+                "additionalIds": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/SchemeIdRecord"
+                  }
+                }
+            }
+        },
+        "SCTIDGenerationRequest" : {
+            "properties" : {
+                "namespace": {
+                    "type": "integer"
+                },
+                "partitionId": {
+                    "type": "string",
+                    "description": "The partitionId, always mandatory. '10' for concepts, '11' for descriptions, '12' for relationships"
+                },
+                "systemId": {
+                    "type": "string",
+                    "description": "The systemId, optional, a reference to an existing ID on the user environment, external to this API"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                },
+                "generateLegacyIds": {
+                  "type": "string",
+                  "default": "false",
+                  "description": "Option to generate CTV3ID and SNOMEDID."
+                }
+            },
+          "required": [
+            "namespace","partitionId"
+          ]
+        },
+        "SCTIDBulkGenerationRequest" : {
+            "properties" : {
+                "namespace": {
+                    "type": "integer"
+                },
+                "partitionId": {
+                    "type": "string",
+                    "description": "The partitionId, always mandatory. '10' for concepts, '11' for descriptions, '12' for relationships"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "description": "Number of actions to be performed"
+                },
+                "systemIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The systemIds, optional, a reference to an existing ID on the user environment, external to this API"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                },
+                "generateLegacyIds": {
+                  "type": "string",
+                  "default": "false",
+                  "description": "Option to generate CTV3ID and SNOMEDID."
+                }
+            },
+          "required": [
+            "namespace","partitionId","quantity"
+          ]
+        },
+        "SCTIDRegistrationRequest" : {
+            "properties" : {
+                "sctid": {
+                    "type": "string",
+                    "description": "The SCTID"
+                },
+                "namespace": {
+                    "type": "integer",
+                    "description": "The namespace, always mandatory"
+                },
+                "systemId": {
+                    "type": "string",
+                    "description": "The systemId, optional, a reference to an existing ID on the user environment, external to this API"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            },
+            "required": [
+              "sctid","namespace"
+          ]
+        },
+        "RegistrationRecord": {
+            "properties": {
+                "sctid": {
+                    "type": "string"
+                },
+                "systemId": {
+                    "type": "string"
+                }
+            }
+        },
+        "SCTIDBulkRegistrationRequest" : {
+            "properties" : {
+                "records": {
+                    "description": "The list of ids pairs to register",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RegistrationRecord"
+                    }
+                },
+                "namespace": {
+                    "type": "integer",
+                    "description": "The namespace, always mandatory"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            },
+          "required": [
+            "records","namespace"
+          ]
+        },
+        "SCTIDReservationRequest" : {
+            "properties" : {
+                "namespace": {
+                    "type": "integer",
+                    "description": "The namespace, always mandatory"
+                },
+                "partitionId": {
+                    "type": "string",
+                    "description": "The partitionId, always mandatory. '10' for concepts, '11' for descriptions, '12' for relationships"
+                },
+                "expirationDate": {
+                    "type": "string",
+                    "description": "The expiration date, only necessary on reserve actions"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            },
+          "required": [
+            "namespace","partitionId"
+          ]
+        },
+        "SCTIDBulkReservationRequest" : {
+            "properties" : {
+                "namespace": {
+                    "type": "integer",
+                    "description": "The namespace, always mandatory"
+                },
+                "partitionId": {
+                    "type": "string",
+                    "description": "The partitionId, always mandatory. '10' for concepts, '11' for descriptions, '12' for relationships"
+                },
+                "expirationDate": {
+                    "type": "string",
+                    "description": "The expiration date, only necessary on reserve actions"
+                },
+                "quantity": {
+                    "type": "integer",
+                    "description": "Number of ids to reserve"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            },
+          "required": [
+            "namespace","partitionId","quantity"
+          ]
+        },
+        "SCTIDUpdateRequest" : {
+            "properties" : {
+                "sctid": {
+                    "type": "string",
+                    "description": "The SCTID"
+                },
+                "namespace": {
+                    "type": "integer",
+                    "description": "The namespace, always mandatory"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            },
+          "required": [
+            "sctid","namespace"
+          ]
+        },
+        "SCTIDBulkUpdateRequest" : {
+            "properties" : {
+                "sctids": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "The SCTIDs"
+                },
+                "namespace": {
+                    "type": "integer",
+                    "description": "The namespace, always mandatory"
+                },
+                "software": {
+                    "type": "string",
+                    "description": "The name of the software sending the request, mandatory"
+                },
+                "comment": {
+                    "type": "string",
+                    "description": "A comment about the action, optional."
+                }
+            },
+          "required": [
+            "sctids","namespace"
+          ]
+        },
+        "Credentials" : {
+            "properties": {
+                "username": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "BulkJob" : {
+            "properties" : {
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "modified_at": {
+                    "type": "string"
+                },
+                "request": {
+                    "type": "object"
+                },
+                "log": {
+                  "type": "string"
+                }
+            }
+        },
+        "Token" : {
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "UserData" : {
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "first-name":  {
+                    "type": "string"
+                },
+                "last-name":  {
+                    "type": "string"
+                },
+                "display-name":  {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            }
+        },
+        "SctidsList" : {
+            "properties": {
+                "sctids": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

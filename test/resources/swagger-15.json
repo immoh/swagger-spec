@@ -1,0 +1,306 @@
+{
+    "swagger" : "2.0",
+    "info" : {
+        "title" : "Program API",
+        "description" : "Program API",
+        "version" : "1.0.0",
+        "contact" : {
+            "name" : "Dwight Egerton",
+            "email" : "dwight.egerton@ellucian.com",
+            "url" : "http://www.ellucian.com"
+        }
+    },
+    "host" : "elevate.ellucian.com",
+    "basePath" : "/api",
+    "tags" : [{
+            "name" : "Programs",
+            "description" : "Services/Definitions related to the management of Programs"
+        }
+    ],
+    "schemes" : ["https"],
+    "paths" : {
+        "/programs" : {
+            "get" : {
+                "summary" : "Search of available programs",
+                "operationId" : "searchPrograms",
+                "tags" : ["Programs"],
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(programs)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            },
+            "post" : {
+                "summary" : "Create new program",
+                "operationId" : "createProgram",
+                "tags" : ["Programs"],
+                "consumes" : ["application/json"],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }, {
+                        "$ref" : "#/parameters/Body(program)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(programs)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            }
+        },
+        "/programs/{id}" : {
+            "get" : {
+                "summary" : "Retrieve a program using the unique identifier",
+                "operationId" : "getProgram",
+                "tags" : ["Programs"],
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Path(id)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(program)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            },
+            "put" : {
+                "summary" : "Update a program based on the unique identifier",
+                "operationId" : "updateProgram",
+                "tags" : ["Programs"],
+                "consumes" : ["application/json"],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Path(id)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }, {
+                        "$ref" : "#/parameters/Body(program)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "description" : "Successfully processed the request",
+                        "schema" : {
+                            "$ref" : "#/definitions/Response(program)"
+                        }
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            },
+            "delete" : {
+                "summary" : "Remove a program based on the unique identifier",
+                "operationId" : "removeProgram",
+                "tags" : ["Programs"],
+                "consumes" : [],
+                "produces" : ["application/json"],
+                "parameters" : [{
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Path(id)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Header(auth)"
+                    }, {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/parameters/Query(auth)"
+                    }
+                ],
+                "responses" : {
+                    "200" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Success(200)"
+                    },
+                    "401" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Unauthorised(401)"
+                    },
+                    "403" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Forbidden(403)"
+                    },
+                    "500" : {
+                        "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/responses/Error(500)"
+                    }
+                }
+            }
+        }
+    },
+    "definitions" : {
+        "Element(programfull)" : {
+            "description" : "Program definition",
+            "type" : "object",
+            "allOf" : [{
+                    "$ref" : "#/definitions/Element(programsmry)"
+                }, {
+                    "properties" : {
+                        "approved" : {
+                            "description" : "Date approved",
+                            "type" : "string",
+                            "format" : "datetime"
+                        },
+                        "closed" : {
+                            "description" : "Date closed",
+                            "type" : "string",
+                            "format" : "datetime"
+                        },
+                        "department" : {
+                            "description" : "Department code",
+                            "type" : "integer",
+                            "format" : "int32"
+                        },
+                        "departmentDescription" : {
+                            "description" : "Department description",
+                            "type" : "string",
+                            "readOnly" : true
+                        }
+                    }
+                }
+            ]
+        },
+        "Element(programsmry)" : {
+            "description" : "Program definition",
+            "type" : "object",
+            "required" : ["code"],
+            "allOf" : [{
+                    "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/definitions/Element(base)"
+                }, {
+                    "properties" : {
+                        "code" : {
+                            "description" : "Program code",
+                            "type" : "string",
+                            "pattern" : "^[a-zA-Z0-9]{16}$"
+                        },
+                        "description" : {
+                            "description" : "Program description",
+                            "type" : "string",
+                            "maxLength" : 80
+                        },
+                        "status" : {
+                            "description" : "Status",
+                            "type" : "integer",
+                            "format" : "int32"
+                        },
+                        "statusDescription" : {
+                            "description" : "Status description",
+                            "type" : "string",
+                            "readOnly" : true
+                        }
+                    }
+                }
+            ]
+        },
+        "Request(program)" : {
+            "description" : "Program request",
+            "type" : "object",
+            "required" : ["program"],
+            "properties" : {
+                "program" : {
+                    "description" : "Description of the program",
+                    "$ref" : "#/definitions/Element(programfull)"
+                }
+            }
+        },
+        "Response(program)" : {
+            "description" : "Program response",
+            "type" : "object",
+            "required" : ["response", "program"],
+            "allOf" : [{
+                    "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/definitions/Response(success)"
+                }, {
+                    "properties" : {
+                        "program" : {
+                            "description" : "Description of the program",
+                            "$ref" : "#/definitions/Element(programfull)"
+                        }
+                    }
+                }
+            ]
+        },
+        "Response(programs)" : {
+            "description" : "Programs response",
+            "type" : "object",
+            "required" : ["response", "programs"],
+            "allOf" : [{
+                    "$ref" : "https://raw.githubusercontent.com/egertond/swagger/master/common.json#/definitions/Response(success)"
+                }, {
+                    "properties" : {
+                        "programs" : {
+                            "description" : "List of matching available programs",
+                            "type" : "array",
+                            "minLength" : 0,
+                            "items" : {
+                                "$ref" : "#/definitions/Element(programsmry)"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "parameters" : {
+        "Body(program)" : {
+            "name" : "body",
+            "in" : "body",
+            "required" : true,
+            "schema" : {
+                "$ref" : "#/definitions/Request(program)"
+            }
+        }
+    }
+}

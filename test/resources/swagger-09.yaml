@@ -1,0 +1,3725 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Cloudpass
+  description: User management service
+  contact:
+    email: msuret@dhatim.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+host: localhost:10010
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+  - application/octet-stream
+produces:
+  - application/json
+paths:
+  /tenants/current:
+    x-swagger-router-controller: tenantController
+    get:
+      summary: retrieve the current tenant
+      description: redirects to the tenant of the authenticated account
+      operationId: getCurrent
+      tags:
+        - tenants
+      responses:
+        "302":
+          description: redirection to the current tenant
+  /tenants/{id}:
+    x-swagger-router-controller: tenantController
+    get:
+      summary: retrieve a tenant from its ID
+      description: retrieve a tenant from its ID
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: tenant found
+          schema:
+            $ref: "#/definitions/Tenant"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update a tenant
+      description: update the tenant with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              customData:
+                type: object
+      responses:
+        "200":
+          description: tenant updated
+          schema:
+            $ref: "#/definitions/Tenant"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /tenants/{id}/customData:
+    x-swagger-router-controller: tenantController
+    get:
+      summary: retrieve custom data
+      description: retrieve custom data
+      operationId: getCustomData
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update tenant custom data
+      description: update custom data of the tenant with the given ID using the provided values
+      operationId: updateCustomData
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: newCustomData
+          description: New custom data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: updated
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete custom data
+      description: delete custom data
+      operationId: deleteCustomData
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: custom data deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /tenants/{id}/customData/{fieldName}:
+    x-swagger-router-controller: tenantController
+    delete:
+      summary: delete custom data field
+      description: delete custom data field
+      operationId: deleteCustomDataField
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: fieldName
+          in: path
+          description: field to delete
+          required: true
+          type: string
+      responses:
+        "204":
+          description: custom data field deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /tenants/{id}/invitationEmails:
+    x-swagger-router-controller: tenantController
+    post:
+      summary: send an admin invitation email
+      description: send an admin invitation email
+      operationId: inviteAdmin
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: invitation
+          description: Invitation details
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/AdminInvitation"
+      responses:
+        "204":
+          description: invitation sent
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /tenants/{id}/{collection}:
+    x-swagger-router-controller: tenantController
+    get:
+      summary: retrieve a collection sub-resource from the tenant
+      description: retrieve a collection sub-resource from the tenant
+      operationId: getCollection
+      tags:
+        - tenants
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - applications
+            - directories
+            - groups
+            - accounts
+            - organizations
+            - idSites
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications:
+    x-swagger-router-controller: applicationController
+    post:
+      summary: create an application
+      description: create an application
+      operationId: create
+      tags:
+        - applications
+      parameters:
+        - name: attributes
+          description: new application attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+        - name: createDirectory
+          in: query
+          description: either the name of the directory to create and map to the application, or 'true' (then directory name = application name)
+          required: false
+          type: string
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: application created
+          schema:
+            $ref: "#/definitions/Application"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}:
+    x-swagger-router-controller: applicationController
+    get:
+      summary: retrieve an application from its ID
+      description: retrieve an application from its ID
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: application found
+          schema:
+            $ref: "#/definitions/Application"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an application
+      description: update the application with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: application updated
+          schema:
+            $ref: "#/definitions/Application"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete an application
+      description: delete an application
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: application deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/loginAttempts:
+    x-swagger-router-controller: applicationController
+    post:
+      summary: authenticate an account
+      description: authenticate an account
+      operationId: authenticate
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: expand
+          in: query
+          description: if the authentified account must be returned
+          required: false
+          type: string
+          enum:
+            - account
+        - name: attempt
+          description: login attempt Resource Attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - type
+              - value
+            properties:
+              type:
+                type: string
+                enum:
+                  - basic
+              value:
+                type: string
+              accountStore:
+                type: object
+                properties:
+                  nameKey:
+                    type: string
+                  href:
+                    type: string
+      responses:
+        "200":
+          description: login success
+          schema:
+            type: object
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/passwordResetTokens:
+    x-swagger-router-controller: applicationController
+    post:
+      summary: initiate a password reset
+      description: initiate a password reset
+      operationId: createPasswordResetToken
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: password reset resource attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                format: email
+              accountStore:
+                type: object
+                properties:
+                  nameKey:
+                    type: string
+                  href:
+                    type: string
+      responses:
+        "200":
+          description: password reset initiated
+          schema:
+            $ref: "#/definitions/PasswordResetToken"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/passwordResetTokens/{tokenId}:
+    x-swagger-router-controller: applicationController
+    get:
+      summary: initiate a password reset
+      description: initiate a password reset
+      operationId: getPasswordResetToken
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - $ref: "#/parameters/TokenId"
+      responses:
+        "200":
+          description: token found
+          schema:
+            $ref: "#/definitions/PasswordResetToken"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: reset a password
+      description: reset a password
+      operationId: consumePasswordResetToken
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/TokenId"
+        - name: expand
+          in: query
+          description: if the authentified account must be returned
+          required: false
+          type: string
+          enum:
+            - account
+        - name: attributes
+          in: body
+          description: object containingthe new password
+          required: true
+          schema:
+            type: object
+            required:
+              - password
+            properties:
+              password:
+               type: string
+      responses:
+        "200":
+          description: password reset
+          schema:
+            type: object
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/groups:
+    x-swagger-router-controller: applicationController
+    post:
+      summary: create a new group
+      description: create a new group
+      operationId: createGroup
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+      responses:
+        "200":
+          description: group created
+          schema:
+            $ref: "#/definitions/Group"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the application groups
+      description: retrieve the application groups
+      operationId: getGroups
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/accounts:
+    x-swagger-router-controller: applicationController
+    post:
+      summary: create a new account
+      description: create a new account
+      operationId: createAccount
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - $ref: "#/parameters/RegistrationWorkflowEnabled"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - givenName
+              - surname
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+              username:
+                type: string
+              givenName:
+                type: string
+              middleName:
+                type: string
+              surname:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+                  - UNVERIFIED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: account created
+          schema:
+            $ref: "#/definitions/Account"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the application accounts
+      description: retrieve the application accounts
+      operationId: getAccounts
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/verificationEmails:
+    x-swagger-router-controller: applicationController
+    post:
+      summary: resend the verification email
+      description: resend the verification email
+      operationId: resendVerificationEmail
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: attributes
+          description: resend email verification resource attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - login
+            properties:
+              login:
+                type: string
+              accountStore:
+                type: object
+                properties:
+                  nameKey:
+                    type: string
+                  href:
+                    type: string
+      responses:
+        "204":
+          description: email sent
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/idSiteModel:
+    x-swagger-router-controller: applicationController
+    get:
+      summary: retrieve an application ID site model
+      description: retrieve an application ID site model
+      operationId: getIdSiteModel
+      tags:
+        - applications
+        - ID sites
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: ID site model found
+          schema:
+            $ref: "#/definitions/IdSiteModel"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/customData:
+    x-swagger-router-controller: applicationController
+    get:
+      summary: retrieve custom data
+      description: retrieve custom data
+      operationId: getCustomData
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update custom data
+      description: update custom data
+      operationId: updateCustomData
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: newCustomData
+          description: New custom data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: updated
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete custom data
+      description: delete custom data
+      operationId: deleteCustomData
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: custom data deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/customData/{fieldName}:
+    x-swagger-router-controller: applicationController
+    delete:
+      summary: delete custom data field
+      description: delete custom data field
+      operationId: deleteCustomDataField
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: fieldName
+          in: path
+          description: field to delete
+          required: true
+          type: string
+      responses:
+        "204":
+          description: custom data field deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/saml/sso/idpRedirect:
+    x-swagger-router-controller: applicationController
+    get:
+      summary: redirects to the configured SAML identity provider
+      description: redirects to the configured SAML identity provider
+      operationId: samlIdpRedirect
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: accountStore.href
+          in: query
+          description: the account store where SAML was configured
+          required: false
+          type: string
+        - name: accessToken
+          in: query
+          description: JWT access token
+          required: false
+          type: string
+      responses:
+        "302":
+          description: redirection to the Identity provider
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /applications/{id}/{collection}:
+    x-swagger-router-controller: applicationController
+    get:
+      summary: retrieve a collection sub-resource from the application
+      description: retrieve a collection sub-resource from the application
+      operationId: getCollection
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - accountStoreMappings
+            - directories
+            - organizations
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /directories:
+    x-swagger-router-controller: directoryController
+    post:
+      summary: create a directory
+      description: create a directory
+      operationId: create
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+              provider:
+                type: object
+                required:
+                  - providerId
+                properties:
+                  providerId:
+                    type: string
+                    enum:
+                      - cloudpass
+                      - saml
+                  clientId:
+                    type: string
+                  clientSecret:
+                    type: string
+                  ssoLoginUrl:
+                    type: string
+                  ssoLogoutUrl:
+                    type: string
+                  encodedX509SigningCert:
+                    type: string
+      responses:
+        "200":
+          description: directory created
+          schema:
+            $ref: "#/definitions/Directory"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /directories/{id}:
+    x-swagger-router-controller: directoryController
+    get:
+      summary: retrieve a directory from its ID
+      description: retrieve a directory from its ID
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: directory found
+          schema:
+            $ref: "#/definitions/Directory"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an directory
+      description: update the group with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: directory updated
+          schema:
+            $ref: "#/definitions/Directory"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete a directory
+      description: delete a directory
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: directory deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /directories/{id}/provider:
+    x-swagger-router-controller: directoryController
+    get:
+      summary: retrieve the directory provider
+      description: retrieve the directory provider
+      operationId: getProvider
+      tags:
+        - directory providers
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/DirectoryProvider"
+        "default":
+           description: error
+           schema:
+             $ref: "#/definitions/Error"
+    post:
+      summary: updates diectory provider information
+      description: updates diectory provider information
+      operationId: updateProvider
+      tags:
+        - directory providers
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              clientId:
+                type: string
+              clientSecret:
+                type: string
+              ssoLoginUrl:
+                type: string
+              ssoLogoutUrl:
+                type: string
+              encodedX509SigningCert:
+                type: string
+      responses:
+        "200":
+          description: updated
+          schema:
+            $ref: "#/definitions/DirectoryProvider"
+        "default":
+           description: error
+           schema:
+             $ref: "#/definitions/Error"
+  /directories/{id}/saml/sso/post:
+    x-swagger-router-controller: directoryController
+    post:
+      summary: consume a SAML assertion
+      description: consume a SAML assertion
+      operationId: consumeSamlAssertion
+      consumes:
+        - application/x-www-form-urlencoded
+      tags:
+        - directories
+        - SAML
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: SAMLResponse
+          description: SAML response
+          in: formData
+          required: true
+          type: string
+        - name: RelayState
+          description: Relay state
+          in: formData
+          required: true
+          type: string
+      responses:
+        "302":
+          description: redirection to the application
+          schema:
+            $ref: "#/definitions/DirectoryProvider"
+  /directories/{id}/customData:
+    x-swagger-router-controller: directoryController
+    get:
+      summary: retrieve custom data
+      description: retrieve custom data
+      operationId: getCustomData
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update directory custom data
+      description: update directory custom data
+      operationId: updateCustomData
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: newCustomData
+          description: New custom data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: updated
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete directory custom data
+      description: delete directory custom data
+      operationId: deleteCustomData
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: custom data deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /directories/{id}/customData/{fieldName}:
+    x-swagger-router-controller: directoryController
+    delete:
+      summary: delete custom data field
+      description: delete custom data field
+      operationId: deleteCustomDataField
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: fieldName
+          in: path
+          description: field to delete
+          required: true
+          type: string
+      responses:
+        "204":
+          description: custom data field deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /directories/{id}/groups:
+    x-swagger-router-controller: directoryController
+    post:
+      summary: create a new group
+      description: create a new group
+      operationId: createGroup
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+      responses:
+        "200":
+          description: group created
+          schema:
+            $ref: "#/definitions/Group"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the directory groups
+      description: retrieve the directory groups
+      operationId: getGroups
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /directories/{id}/accounts:
+    x-swagger-router-controller: directoryController
+    post:
+      summary: create a new account
+      description: create a new account in the specified directory
+      operationId: createAccount
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - $ref: "#/parameters/RegistrationWorkflowEnabled"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - givenName
+              - surname
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+              username:
+                type: string
+              givenName:
+                type: string
+              middleName:
+                type: string
+              surname:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+                  - UNVERIFIED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: account created
+          schema:
+            $ref: "#/definitions/Account"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the directory accounts
+      description: retrieve the directory accounts
+      operationId: getAccounts
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /directories/{id}/{collection}:
+    x-swagger-router-controller: directoryController
+    get:
+      summary: retrieve a collection sub-resource from the directory
+      description: retrieve a collection sub-resource from the directory
+      operationId: getCollection
+      tags:
+        - directories
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - applicationMappings
+            - applications
+            - organizations
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /groups/{id}:
+    x-swagger-router-controller: groupController
+    get:
+      summary: retrieve a group from its ID
+      description: retrieve a group from its ID
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: group found
+          schema:
+            $ref: "#/definitions/Group"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update a group
+      description: update the group with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              desciption:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: group updated
+          schema:
+            $ref: "#/definitions/Group"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete a group
+      description: delete a group
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: group deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /groups/{id}/accounts:
+    x-swagger-router-controller: groupController
+    post:
+      summary: create a new account
+      description: create a new account in the specified group
+      operationId: createAccount
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - $ref: "#/parameters/RegistrationWorkflowEnabled"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - givenName
+              - surname
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+              username:
+                type: string
+              givenName:
+                type: string
+              middleName:
+                type: string
+              surname:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+                  - UNVERIFIED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: account created
+          schema:
+            $ref: "#/definitions/Account"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the group accounts
+      description: retrieve the group accounts
+      operationId: getAccounts
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /groups/{id}/customData:
+    x-swagger-router-controller: groupController
+    get:
+      summary: retrieve group custom data
+      description: retrieve group custom data
+      operationId: getCustomData
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update group custom data
+      description: update group custom data
+      operationId: updateCustomData
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: newCustomData
+          description: New custom data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: updated
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete custom data
+      description: delete custom data
+      operationId: deleteCustomData
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: custom data deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /groups/{id}/customData/{fieldName}:
+    x-swagger-router-controller: groupController
+    delete:
+      summary: delete custom data field
+      description: delete custom data field
+      operationId: deleteCustomDataField
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: fieldName
+          in: path
+          description: field to delete
+          required: true
+          type: string
+      responses:
+        "204":
+          description: custom data deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /groups/{id}/{collection}:
+    x-swagger-router-controller: groupController
+    get:
+      summary: retrieve a collection sub-resource from the group
+      description: retrieve a collection sub-resource from the group
+      operationId: getCollection
+      tags:
+        - groups
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - accountMemberships
+            - applicationMappings
+            - applications
+            - accounts
+            - organizations
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/current:
+    x-swagger-router-controller: accountController
+    get:
+      summary: retrieve the current account
+      description: redirects to the authenticated account
+      operationId: getCurrent
+      tags:
+        - accounts
+      responses:
+        "302":
+          description: redirection to the current account
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{id}:
+    x-swagger-router-controller: accountController
+    get:
+      summary: retrieve an account from its ID
+      description: retrieve an account from its ID
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: account found
+          schema:
+            $ref: "#/definitions/Account"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an account
+      description: update the account with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              username:
+                type: string
+              password:
+                type: string
+              givenName:
+                type: string
+              middleName:
+                type: string
+              surname:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+                  - UNVERIFIED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: account updated
+          schema:
+            $ref: "#/definitions/Account"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete an account
+      description: delete an account
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: account deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{id}/apiKeys:
+    x-swagger-router-controller: accountController
+    post:
+      summary: create a new api key
+      description: create a new api key
+      operationId: createApiKey
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: api keys created
+          schema:
+            $ref: "#/definitions/ApiKey"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the account API keys
+      description: retrieve the account API keys
+      operationId: getApiKeys
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/Expand"
+        - $ref: "#/parameters/OrderBy"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/emailVerificationTokens/{tokenId}:
+    x-swagger-router-controller: accountController
+    post:
+      summary: consume an email verification token
+      description: consume an email verification token
+      operationId: consumeEmailVerificationToken
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/TokenId"
+        - name: expand
+          in: query
+          description: if the authentified account must be returned
+          required: false
+          type: string
+          enum:
+            - account
+      responses:
+        "200":
+          description: success
+          schema:
+            $ref: "#/definitions/ResourceReference"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{id}/providerData:
+    x-swagger-router-controller: accountController
+    get:
+      summary: retrieve account provider data
+      description: retrieve account provider data
+      operationId: getProviderData
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{id}/customData:
+    x-swagger-router-controller: accountController
+    get:
+      summary: retrieve account custom data
+      description: retrieve account custom data
+      operationId: getCustomData
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update account custom data
+      description: update account custom data
+      operationId: updateCustomData
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: newCustomData
+          description: New custom data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: updated
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete custom data
+      description: delete custom data
+      operationId: deleteCustomData
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: custom data deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{id}/customData/{fieldName}:
+    x-swagger-router-controller: accountController
+    delete:
+      summary: delete custom data field
+      description: delete custom data field
+      operationId: deleteCustomDataField
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: fieldName
+          in: path
+          description: field to delete
+          required: true
+          type: string
+      responses:
+        "204":
+          description: custom data field deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accounts/{id}/{collection}:
+    x-swagger-router-controller: accountController
+    get:
+      summary: retrieve a collection sub-resource from the account
+      description: retrieve a collection sub-resource from the account
+      operationId: getCollection
+      tags:
+        - accounts
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - groupMemberships
+            - groups
+            - applications
+            - organizations
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /groupMemberships:
+    x-swagger-router-controller: groupMembershipController
+    post:
+      summary: create a group membership
+      description: create a group membership
+      operationId: create
+      tags:
+        - group memberships
+      parameters:
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - account
+              - group
+            properties:
+              account:
+                $ref: "#/definitions/ResourceReference"
+              group:
+                $ref: "#/definitions/ResourceReference"
+      responses:
+        "200":
+          description: group membership found
+          schema:
+            $ref: "#/definitions/GroupMembership"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /groupMemberships/{id}:
+    x-swagger-router-controller: groupMembershipController
+    get:
+      summary: retrieve a group membership from its ID
+      description: retrieve a group membership from its ID
+      tags:
+        - group memberships
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: group membership found
+          schema:
+            $ref: "#/definitions/GroupMembership"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete a group membership
+      description: delete a group membership
+      tags:
+        - group memberships
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: group membership deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accountStoreMappings:
+    x-swagger-router-controller: accountStoreMappingController
+    post:
+      summary: create an account store mapping
+      description: create an account store mapping
+      operationId: create
+      tags:
+        - account store mappings
+      parameters:
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - application
+              - accountStore
+            properties:
+              application:
+                $ref: "#/definitions/ResourceReference"
+              accountStore:
+                $ref: "#/definitions/ResourceReference"
+              listIndex:
+                type: integer
+              isDefaultAccountStore:
+                type: boolean
+              isDefaultGroupStore:
+                type: boolean
+      responses:
+        "200":
+          description: account store mapping created
+          schema:
+            $ref: "#/definitions/AccountStoreMapping"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accountStoreMappings/{id}:
+    x-swagger-router-controller: accountStoreMappingController
+    get:
+      summary: retrieve an account store mapping from its ID
+      description: retrieve an account store mapping from its ID
+      tags:
+        - account store mappings
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: account store mapping found
+          schema:
+            $ref: "#/definitions/AccountStoreMapping"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an account store mapping
+      description: update the account store mapping with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - account store mappings
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              listIndex:
+                type: integer
+              isDefaultAccountStore:
+                type: boolean
+              isDefaultGroupStore:
+                type: boolean
+      responses:
+        "200":
+          description: account store mapping updated
+          schema:
+            $ref: "#/definitions/AccountStoreMapping"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete an account store mapping
+      description: delete an account store mapping
+      tags:
+        - account store mappings
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: account store mappping deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /emailTemplates/{id}:
+    x-swagger-router-controller: emailTemplateController
+    get:
+      summary: retrieve an email template from its ID
+      description: retrieve an email template from its ID
+      tags:
+        - email templates
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: email template found
+          schema:
+            $ref: "#/definitions/EmailTemplate"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an email template
+      description: update the email template with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - email templates
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              fromEmailAddress:
+                type: string
+                format: email
+              fromName:
+                type: string
+              subject:
+                type: string
+              htmlBody:
+                type: string
+              textBody:
+                type: string
+              mimeType:
+                type: string
+                enum:
+                  - text/plain
+                  - text/html
+              mandrillTemplate:
+                type: string
+              defaultModel:
+                type: object
+                required:
+                  - linkBaseUrl
+                properties:
+                  linkBaseUrl:
+                    type: string
+      responses:
+        "200":
+          description: email template updated
+          schema:
+            $ref: "#/definitions/EmailTemplate"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /passwordPolicies/{id}:
+    x-swagger-router-controller: passwordPolicyController
+    get:
+      summary: retrieve the password strength policy from its ID
+      description: retrieve the password strength policy from its ID
+      tags:
+        - password policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: password policy found
+          schema:
+            $ref: "#/definitions/PasswordPolicy"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update a password policy
+      description: update the password policy with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - password policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              resetEmailStatus:
+                $ref: "#/definitions/Status"
+              resetSuccessEmailStatus:
+                $ref: "#/definitions/Status"
+              resetTokenTtl:
+                type: integer
+      responses:
+        "200":
+          description: password policy updated
+          schema:
+            $ref: "#/definitions/PasswordPolicy"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /passwordPolicies/{id}/strength:
+    x-swagger-router-controller: passwordPolicyController
+    get:
+      summary: retrieve a password strength policy from its ID
+      description: retrieve a password strength policy from its ID
+      operationId: getStrength
+      tags:
+        - password policies
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: password policy found
+          schema:
+            $ref: "#/definitions/PasswordStrength"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update password strength policy
+      description: update the strength of the password policy with the given ID using the provided attributes
+      operationId: setStrength
+      tags:
+        - password policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+                maxLength:
+                  type: integer
+                minLength:
+                  type: integer
+                minLowerCase:
+                  type: integer
+                minNumeric:
+                  type: integer
+                minSymbol:
+                  type: integer
+                minUpperCase:
+                  type: integer
+                minDiacritic:
+                  type: integer
+      responses:
+        "200":
+          description: password policy strength updated
+          schema:
+            $ref: "#/definitions/PasswordStrength"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /passwordPolicies/{id}/{collection}:
+    x-swagger-router-controller: passwordPolicyController
+    get:
+      summary: retrieve a collection sub-resource from the password policy
+      description: retrieve a collection sub-resource from the password policy
+      operationId: getCollection
+      tags:
+        - password policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - resetEmailTemplates
+            - resetSuccessEmailTemplates
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accountCreationPolicies/{id}:
+    x-swagger-router-controller: accountCreationPolicyController
+    get:
+      summary: retrieve the account creation policy from its ID
+      description: retrieve the account creation policy from its ID
+      tags:
+        - account creation policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: account creation policy found
+          schema:
+            $ref: "#/definitions/AccountCreationPolicy"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an account creation policy
+      description: update the account creation policy with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - account creation policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              verificationEmailStatus:
+                $ref: "#/definitions/Status"
+              verificationSuccessEmailStatus:
+                $ref: "#/definitions/Status"
+              welcomeEmailStatus:
+                $ref: "#/definitions/Status"
+      responses:
+        "200":
+          description: account creation policy updated
+          schema:
+            $ref: "#/definitions/AccountCreationPolicy"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /accountCreationPolicies/{id}/{collection}:
+    x-swagger-router-controller: accountCreationPolicyController
+    get:
+      summary: retrieve a collection sub-resource from the policy
+      description: retrieve a collection sub-resource from the policy
+      operationId: getCollection
+      tags:
+        - account creation policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - verificationEmailTemplates
+            - verificationSuccessEmailTemplates
+            - welcomeEmailTemplates
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /apiKeys/{id}:
+    x-swagger-router-controller: apiKeyController
+    get:
+      summary: retrieve the API key from its ID
+      description: retrieve the API key from its ID
+      tags:
+        - API keys
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: API key found
+          schema:
+            $ref: "#/definitions/ApiKey"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an API key
+      description: update the API key with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - API keys
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+      responses:
+        "200":
+          description: account updated
+          schema:
+            $ref: "#/definitions/ApiKey"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete an API key
+      description: delete an API key
+      tags:
+        - API keys
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: API key deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations:
+    x-swagger-router-controller: organizationController
+    post:
+      summary: create an organization
+      description: create an organization
+      operationId: create
+      tags:
+        - organizations
+      parameters:
+        - name: attributes
+          description: new organization attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              nameKey:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+              customData:
+                type: object
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: organization created
+          schema:
+            $ref: "#/definitions/Organization"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations/{id}:
+    x-swagger-router-controller: organizationController
+    get:
+      summary: retrieve an organization from its ID
+      description: retrieve an organization from its ID
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: organization found
+          schema:
+            $ref: "#/definitions/Organization"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an organization
+      description: update the organization with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              nameKey:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: organization updated
+          schema:
+            $ref: "#/definitions/Organization"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete an organization
+      description: delete an organization
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: organization deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations/{id}/groups:
+    x-swagger-router-controller: organizationController
+    post:
+      summary: create a new group
+      description: create a new group
+      operationId: createGroup
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+      responses:
+        "200":
+          description: group created
+          schema:
+            $ref: "#/definitions/Group"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the organization groups
+      description: retrieve the organization groups
+      operationId: getGroups
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations/{id}/accounts:
+    x-swagger-router-controller: organizationController
+    post:
+      summary: create a new account
+      description: create a new account
+      operationId: createAccount
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - $ref: "#/parameters/RegistrationWorkflowEnabled"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - givenName
+              - surname
+            properties:
+              email:
+                type: string
+                format: email
+              password:
+                type: string
+              username:
+                type: string
+              givenName:
+                type: string
+              middleName:
+                type: string
+              surname:
+                type: string
+              status:
+                type: string
+                enum:
+                  - ENABLED
+                  - DISABLED
+                  - UNVERIFIED
+              customData:
+                type: object
+      responses:
+        "200":
+          description: account created
+          schema:
+            $ref: "#/definitions/Account"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    get:
+      summary: retrieve the organization accounts
+      description: retrieve the organization accounts
+      operationId: getAccounts
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations/{id}/idSiteModel:
+    x-swagger-router-controller: organizationController
+    get:
+      summary: retrieve an organization ID site model
+      description: retrieve an organization ID site model
+      operationId: getIdSiteModel
+      tags:
+        - organizations
+        - ID sites
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: ID site model found
+          schema:
+            $ref: "#/definitions/IdSiteModel"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations/{id}/customData:
+    x-swagger-router-controller: organizationController
+    get:
+      summary: retrieve custom data
+      description: retrieve custom data
+      operationId: getCustomData
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update custom data
+      description: update custom data
+      operationId: updateCustomData
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: newCustomData
+          description: New custom data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        "200":
+          description: updated
+          schema:
+            $ref: "#/definitions/Resource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete custom data
+      description: delete custom data
+      operationId: deleteCustomData
+      tags:
+        - applications
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: custom data deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations/{id}/customData/{fieldName}:
+    x-swagger-router-controller: organizationController
+    delete:
+      summary: delete custom data field
+      description: delete custom data field
+      operationId: deleteCustomDataField
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: fieldName
+          in: path
+          description: field to delete
+          required: true
+          type: string
+      responses:
+        "204":
+          description: custom data field deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizations/{id}/{collection}:
+    x-swagger-router-controller: organizationController
+    get:
+      summary: retrieve a collection sub-resource from the organization
+      description: retrieve a collection sub-resource from the organization
+      operationId: getCollection
+      tags:
+        - organizations
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: collection
+          in: path
+          description: the collection to retrieve
+          required: true
+          type: string
+          enum:
+            - accountStoreMappings
+            - directories
+            - applications
+        - $ref: "#/parameters/Offset"
+        - $ref: "#/parameters/Limit"
+        - $ref: "#/parameters/OrderBy"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: ok
+          schema:
+            $ref: "#/definitions/CollectionResource"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizationAccountStoreMappings:
+    x-swagger-router-controller: organizationAccountStoreMappingController
+    post:
+      summary: create an organization account store mapping
+      description: create an organization account store mapping
+      operationId: create
+      tags:
+        - organization account store mappings
+      parameters:
+        - $ref: "#/parameters/Expand"
+        - name: attributes
+          description: attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - organization
+              - accountStore
+            properties:
+              organization:
+                $ref: "#/definitions/ResourceReference"
+              accountStore:
+                $ref: "#/definitions/ResourceReference"
+              listIndex:
+                type: integer
+              isDefaultAccountStore:
+                type: boolean
+              isDefaultGroupStore:
+                type: boolean
+      responses:
+        "200":
+          description: organization account store mapping created
+          schema:
+            $ref: "#/definitions/OrganizationAccountStoreMapping"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /organizationAccountStoreMappings/{id}:
+    x-swagger-router-controller: organizationAccountStoreMappingController
+    get:
+      summary: retrieve an organization account store mapping from its ID
+      description: retrieve an organization account store mapping from its ID
+      tags:
+        - organization account store mappings
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: organization account store mapping found
+          schema:
+            $ref: "#/definitions/OrganizationAccountStoreMapping"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an organization account store mapping
+      description: update the organization store mapping with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - organization account store mappings
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              listIndex:
+                type: integer
+              isDefaultAccountStore:
+                type: boolean
+              isDefaultGroupStore:
+                type: boolean
+      responses:
+        "200":
+          description: organization account store mapping updated
+          schema:
+            $ref: "#/definitions/OrganizationAccountStoreMapping"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: delete an organization account store mapping
+      description: delete an organization account store mapping
+      tags:
+        - organization account store mappings
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "204":
+          description: organization account store mappping deleted
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /idSites/{id}:
+    x-swagger-router-controller: idSiteController
+    get:
+      summary: retrieve an ID site from its ID
+      description: retrieve an ID site from its ID
+      tags:
+        - ID sites
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: ID site found
+          schema:
+            $ref: "#/definitions/IdSite"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update an ID site
+      description: update the ID site with the given ID using the provided attributes
+      operationId: update
+      tags:
+        - ID sites
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              url:
+                type: string
+              logoUrl:
+                type: string
+              sessionTtl:
+                type: string
+              sessionCookiePersistent:
+                type: boolean
+      responses:
+        "200":
+          description: ID site updated
+          schema:
+            $ref: "#/definitions/IdSite"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /samlServiceProviderMetadatas/{id}:
+    x-swagger-router-controller: samlServiceProviderMetadataController
+    get:
+      summary: get the metadata used by cloudpass to act as a SAML service provider
+      description: get the metadata used by cloudpass to act as a SAML service provider
+      tags:
+        - saml service provider metadata
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/SamlServiceProviderMetadata"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /attributeStatementMappingRules/{id}:
+    x-swagger-router-controller: attributeStatementMappingRulesController
+    get:
+      summary: get rules used to map SAML statements to account attributes
+      description: get rules used to map SAML statements to account attributes
+      tags:
+        - attribute statement mapping rules
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/AttributeStatementMappingRules"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: update rules used to map SAML statements to account attributes
+      description: update rules used to map SAML statements to account attributes
+      operationId: update
+      tags:
+        - attribute statement mapping rules
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+        - name: newAttributes
+          description: New attributes
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - items
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/AttributeStatementMappingRule'
+      responses:
+        "200":
+          description: rules updated
+          schema:
+            $ref: "#/definitions/AttributeStatementMappingRules"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /samlPolicies/{id}:
+    x-swagger-router-controller: applicationController
+    get:
+      summary: retrieve a SAML policy from its ID
+      description: retrieve a SAML policy from its ID
+      operationId: getSamlPolicy
+      tags:
+        - saml policies
+      parameters:
+        - $ref: "#/parameters/Id"
+        - $ref: "#/parameters/Expand"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/SamlPolicy"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /samlServiceProviders/{id}:
+    x-swagger-router-controller: samlServiceProviderController
+    get:
+      summary: retrieve SAML Service Provider endpoints
+      description: retrieve SAML Service Provider endpoints
+      tags:
+        - saml service provider
+      parameters:
+        - $ref: "#/parameters/Id"
+      responses:
+        "200":
+          description: found
+          schema:
+            $ref: "#/definitions/SamlServiceProvider"
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+  /samlServiceProviders/{id}/defaultRelayStates:
+    x-swagger-router-controller: samlServiceProviderController
+    post:
+      summary: generate a default relay state
+      description: generate a default relay state
+      operationId: generateDefaultRelayState
+      tags:
+        - saml service provider
+      parameters:
+        - $ref: "#/parameters/Id"
+        - name: properties
+          description: releay state properties
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - callbackUri
+            properties:
+              callbackUri:
+                type: string
+              state:
+                type: string
+      responses:
+        "200":
+          description: found
+          schema:
+            type: object
+            required:
+              - defaultRelayState
+            properties:
+              defaultRelayState:
+                type: string
+        "default":
+          description: error
+          schema:
+            $ref: "#/definitions/Error"
+definitions:
+  Resource:
+    type: object
+    required:
+      - href
+      - createdAt
+      - modifiedAt
+    properties:
+      href:
+        type: string
+      createdAt:
+        type: string
+        format: date-time
+      modifiedAt:
+        type: string
+        format: date-time
+  CollectionResource:
+    type: object
+    required:
+      - href
+      - offset
+      - limit
+      - size
+      - items
+    properties:
+      href:
+        type: string
+      offset:
+        type: integer
+      limit:
+        type: integer
+      size:
+        type: integer
+      items:
+        type: array
+        items:
+          $ref: "#/definitions/Resource"
+  Status:
+    type: string
+    enum:
+      - ENABLED
+      - DISABLED
+  ResourceReference:
+    type: object
+    required:
+      - href
+    properties:
+      href:
+        type: string
+  Error:
+    type: object
+    required:
+      - status
+      - code
+      - message
+      - developerMessage
+      - moreInfo
+    properties:
+      status:
+        type: integer
+      code:
+        type: integer
+      message:
+        type: string
+      developerMessage:
+        type: string
+      moreInfo:
+        type: string
+  Tenant:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - key
+          - name
+          - accounts
+          - groups
+          - directories
+          - organizations
+          - applications
+          - idSites
+          - customData
+        properties:
+          key:
+            type: string
+          name:
+            type: string
+          accounts:
+            $ref: "#/definitions/ResourceReference"
+          groups:
+            $ref: "#/definitions/ResourceReference"
+          directories:
+            $ref: "#/definitions/ResourceReference"
+          organizations:
+            $ref: "#/definitions/ResourceReference"
+          applications:
+            $ref: "#/definitions/ResourceReference"
+          idSites:
+            $ref: "#/definitions/ResourceReference"
+          customData:
+            $ref: "#/definitions/ResourceReference"
+  Application:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - name
+          - tenant
+          - description
+          - status
+          - accountStoreMappings
+          - accounts
+          - groups
+          - directories
+          - organizations
+          - loginAttempts
+          - passwordResetTokens
+          - samlPolicy
+          - customData
+        properties:
+          name:
+            type: string
+          tenant:
+            $ref: "#/definitions/ResourceReference"
+          description:
+            type: string
+          status:
+            type: string
+            enum:
+              - ENABLED
+              - DISABLED
+          accountStoreMappings:
+            $ref: "#/definitions/ResourceReference"
+          accounts:
+            $ref: "#/definitions/ResourceReference"
+          groups:
+            $ref: "#/definitions/ResourceReference"
+          directories:
+            $ref: "#/definitions/ResourceReference"
+          organizations:
+            $ref: "#/definitions/ResourceReference"
+          loginAttempts:
+            $ref: "#/definitions/ResourceReference"
+          passwordResetTokens:
+            $ref: "#/definitions/ResourceReference"
+          samlPolicy:
+            $ref: "#/definitions/ResourceReference"
+          customData:
+            $ref: "#/definitions/ResourceReference"
+  Directory:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - name
+          - tenant
+          - description
+          - provider
+          - status
+          - groups
+          - accounts
+          - applications
+          - organizations
+          - applicationMappings
+          - passwordPolicy
+          - accountCreationPolicy
+          - customData
+        properties:
+          name:
+            type: string
+          tenant:
+            $ref: "#/definitions/ResourceReference"
+          description:
+            type: string
+          provider:
+            $ref: "#/definitions/ResourceReference"
+          status:
+            type: string
+            enum:
+              - ENABLED
+              - DISABLED
+          groups:
+            $ref: "#/definitions/ResourceReference"
+          accounts:
+            $ref: "#/definitions/ResourceReference"
+          applications:
+            $ref: "#/definitions/ResourceReference"
+          organizations:
+            $ref: "#/definitions/ResourceReference"
+          applicationMappings:
+            $ref: "#/definitions/ResourceReference"
+          passwordPolicy:
+            $ref: "#/definitions/ResourceReference"
+          accountCreationPolicy:
+            $ref: "#/definitions/ResourceReference"
+          customData:
+            $ref: "#/definitions/ResourceReference"
+  Group:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - name
+          - tenant
+          - description
+          - status
+          - directory
+          - accounts
+          - applications
+          - organizations
+          - applicationMappings
+          - groupMemberships
+          - customData
+        properties:
+          name:
+            type: string
+          tenant:
+            type: object
+          description:
+            type: string
+          status:
+            type: string
+            enum:
+              - ENABLED
+              - DISABLED
+          directory:
+            $ref: "#/definitions/ResourceReference"
+          accounts:
+            $ref: "#/definitions/ResourceReference"
+          applications:
+            $ref: "#/definitions/ResourceReference"
+          organizations:
+            $ref: "#/definitions/ResourceReference"
+          groupMemberships:
+            $ref: "#/definitions/ResourceReference"
+          applicationMappings:
+            $ref: "#/definitions/ResourceReference"
+          customData:
+            $ref: "#/definitions/ResourceReference"
+  GroupMembership:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - account
+          - group
+        properties:
+          account:
+            $ref: "#/definitions/ResourceReference"
+          group:
+            $ref: "#/definitions/ResourceReference"
+  Account:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - email
+          - tenant
+          - username
+          - givenName
+          - middleName
+          - surname
+          - fullName
+          - status
+          - directory
+          - groups
+          - groupMemberships
+          - applications
+          - organizations
+          - customData
+          - providerData
+        properties:
+          email:
+            type: string
+            format: email
+          tenant:
+            $ref: "#/definitions/ResourceReference"
+          username:
+            type: string
+          givenName:
+            type: string
+          middleName:
+            type: string
+          surname:
+            type: string
+          fullName:
+            type: string
+          status:
+            type: string
+            enum:
+              - ENABLED
+              - DISABLED
+              - UNVERIFIED
+          directory:
+            $ref: "#/definitions/ResourceReference"
+          groups:
+            $ref: "#/definitions/ResourceReference"
+          groupMemberships:
+            $ref: "#/definitions/ResourceReference"
+          applications:
+            $ref: "#/definitions/ResourceReference"
+          organizations:
+            $ref: "#/definitions/ResourceReference"
+          customData:
+            $ref: "#/definitions/ResourceReference"
+          providerData:
+            $ref: "#/definitions/ResourceReference"
+  AccountStoreMapping:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - application
+          - accountStore
+          - listIndex
+          - isDefaultAccountStore
+          - isDefaultGroupStore
+        properties:
+          application:
+            $ref: "#/definitions/ResourceReference"
+          accountStore:
+            $ref: "#/definitions/ResourceReference"
+          listIndex:
+            type: integer
+          isDefaultAccountStore:
+            type: boolean
+          isDefaultGroupStore:
+            type: boolean
+  EmailTemplate:
+    type: object
+    required:
+      - href
+      - fromEmailAddress
+      - fromName
+      - subject
+      - htmlBody
+      - textBody
+      - mimeType
+      - mandrillTemplate
+    properties:
+      href:
+        type: string
+      fromEmailAddress:
+        type: string
+        format: email
+      fromName:
+        type: string
+      subject:
+        type: string
+      htmlBody:
+        type: string
+      textBody:
+        type: string
+      mimeType:
+        type: string
+        enum:
+          - text/plain
+          - text/html
+      mandrillTemplate:
+        type: string
+      defaultModel:
+        type: object
+        required:
+          - linkBaseUrl
+        properties:
+          linkBaseUrl:
+            type: string
+  PasswordPolicy:
+    type: object
+    required:
+      - href
+      - resetEmailStatus
+      - resetEmailTemplates
+      - resetSuccessEmailStatus
+      - resetSuccessEmailTemplates
+      - resetTokenTtl
+      - strength
+    properties:
+      href:
+        type: string
+      resetEmailStatus:
+        $ref: "#/definitions/Status"
+      resetEmailTemplates:
+        $ref: "#/definitions/ResourceReference"
+      resetSuccessEmailStatus:
+        $ref: "#/definitions/Status"
+      resetSuccessEmailTemplates:
+        $ref: "#/definitions/ResourceReference"
+      resetTokenTtl:
+        type: integer
+      strength:
+        $ref: "#/definitions/ResourceReference"
+  PasswordStrength:
+    type: object
+    required:
+      - href
+      - maxLength
+      - minLength
+      - minLowerCase
+      - minNumeric
+      - minSymbol
+      - minUpperCase
+      - minDiacritic
+    properties:
+      href:
+        type: string
+      maxLength:
+        type: integer
+      minLength:
+        type: integer
+      minLowerCase:
+        type: integer
+      minNumeric:
+        type: integer
+      minSymbol:
+        type: integer
+      minUpperCase:
+        type: integer
+      minDiacritic:
+        type: integer
+  AccountCreationPolicy:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - verificationEmailStatus
+          - verificationSuccessEmailStatus
+          - welcomeEmailStatus
+          - verificationEmailTemplates
+          - verificationSuccessEmailTemplates
+          - welcomeEmailTemplates
+        properties:
+          verificationEmailStatus:
+            $ref: "#/definitions/Status"
+          verificationSuccessEmailStatus:
+            $ref: "#/definitions/Status"
+          welcomeEmailStatus:
+            $ref: "#/definitions/Status"
+          verificationEmailTemplates:
+            $ref: "#/definitions/ResourceReference"
+          verificationSuccessEmailTemplates:
+            $ref: "#/definitions/ResourceReference"
+          welcomeEmailTemplates:
+            $ref: "#/definitions/ResourceReference"
+  PasswordResetToken:
+    type: object
+    required:
+      - href
+      - email
+      - account
+    properties:
+      href:
+        type: string
+      email:
+        type: string
+        format: email
+      account:
+        $ref: "#/definitions/ResourceReference"
+  ApiKey:
+    type: object
+    required:
+      - href
+      - id
+      - account
+      - tenant
+    properties:
+      href:
+        type: string
+      id:
+        type: string
+      account:
+        $ref: "#/definitions/ResourceReference"
+      tenant:
+        $ref: "#/definitions/ResourceReference"
+  AdminInvitation:
+    type: object
+    required:
+      - to
+      - subject
+      - textBody
+      - linkPath
+    properties:
+      to:
+        type: array
+        items:
+          type: string
+      subject:
+        type: string
+      textBody:
+        type: string
+      linkPath:
+        type: string
+  Organization:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - name
+          - nameKey
+          - tenant
+          - description
+          - status
+          - accountStoreMappings
+          - accounts
+          - groups
+          - directories
+          - customData
+        properties:
+          name:
+            type: string
+          nameKey:
+            type: string
+          tenant:
+            $ref: "#/definitions/ResourceReference"
+          description:
+            type: string
+          status:
+            type: string
+            enum:
+              - ENABLED
+              - DISABLED
+          accountStoreMappings:
+            $ref: "#/definitions/ResourceReference"
+          accounts:
+            $ref: "#/definitions/ResourceReference"
+          groups:
+            $ref: "#/definitions/ResourceReference"
+          directories:
+            $ref: "#/definitions/ResourceReference"
+          customData:
+            $ref: "#/definitions/ResourceReference"
+  OrganizationAccountStoreMapping:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - organization
+          - accountStore
+          - listIndex
+          - isDefaultAccountStore
+          - isDefaultGroupStore
+        properties:
+          organization:
+            $ref: "#/definitions/ResourceReference"
+          accountStore:
+            $ref: "#/definitions/ResourceReference"
+          listIndex:
+            type: integer
+          isDefaultAccountStore:
+            type: boolean
+          isDefaultGroupStore:
+            type: boolean
+  IdSite:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - url
+          - logoUrl
+          - sessionTtl
+          - sessionCookiePersistent
+        properties:
+          url:
+            type: string
+          logoUrl:
+            type: string
+          sessionTti:
+            type: string
+          sessionTtl:
+            type: string
+          sessionCookiePersistent:
+            type: boolean
+  IdSiteModel:
+    type: object
+    required:
+      - href
+      - providers
+    properties:
+      href:
+        type: string
+      providers:
+        type: array
+        items:
+          type: string
+      passwordPolicy:
+        type: object
+      logoUrl:
+        type: string
+  DirectoryProvider:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - providerId
+        properties:
+          providerId:
+            type: string
+            enum:
+              - cloudpass
+              - saml
+          clientId:
+            type: string
+          clientSecret:
+            type: string
+          ssoLoginUrl:
+            type: string
+          ssoLogoutUrl:
+            type: string
+          encodedX509SigningCert:
+            type: string
+          samlServiceProviderMetadata:
+            $ref: "#/definitions/ResourceReference"
+          attributeStatementMappingRules:
+            $ref: "#/definitions/ResourceReference"
+  AttributeStatementMappingRule:
+    type: object
+    required:
+      - name
+      - accountAttributes
+    properties:
+      name:
+        type: string
+      accountAttributes:
+        type: array
+        items:
+          type: string
+  AttributeStatementMappingRules:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - items
+        properties:
+          items:
+            type: array
+            items:
+              $ref: '#/definitions/AttributeStatementMappingRule'
+  SamlServiceProviderMetadata:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - entityId
+          - x509SigningCert
+          - assertionConsumerServicePostEndpoint
+        properties:
+          entityId:
+            type: string
+          x509SigningCert:
+            type: string
+          assertionConsumerServicePostEndpoint:
+            $ref: "#/definitions/ResourceReference"
+  SamlPolicy:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - serviceProvider
+        properties:
+          serviceProvider:
+            $ref: "#/definitions/ResourceReference"
+  SamlServiceProvider:
+    allOf:
+      - $ref: "#/definitions/Resource"
+      - type: object
+        required:
+          - ssoInitiationEndpoint
+          - defaultRelayStates
+        properties:
+          ssoInitiationEndpoint:
+            $ref: "#/definitions/ResourceReference"
+          defaultRelayStates:
+            $ref: "#/definitions/ResourceReference"
+parameters:
+  Id:
+    name: id
+    in: path
+    description: Resource ID
+    required: true
+    type: string
+    format: uuid
+  TokenId:
+    name: tokenId
+    in: path
+    description: token ID
+    required: true
+    type: string
+    format: uuid
+  Expand:
+    name: expand
+    in: query
+    description: the links to expand
+    required: false
+    type: string
+  Offset:
+    name: offset
+    in: query
+    description: resource collection offset
+    required: false
+    type: integer
+    default: 0
+  Limit:
+    name: limit
+    in: query
+    description: resource collection limit
+    required: false
+    type: integer
+    default: 25
+  OrderBy:
+    name: orderBy
+    in: query
+    description: resource collection ordering
+    required: false
+    type: array
+    collectionFormat: csv
+    items:
+      type: string
+  RegistrationWorkflowEnabled:
+    name: registrationWorkflowEnabled
+    in: query
+    description: override the directory’s account registration workflow email settings
+    required: false
+    type: boolean
+    default: true
