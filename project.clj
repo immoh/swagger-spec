@@ -5,5 +5,5 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.9.0-alpha14" :scope "provided"]
                  [circleci/clj-yaml "0.5.5"]
-                 [cheshire "5.6.3"]]
+                 [cheshire "5.7.0"]]
   :profiles {:dev {:dependencies [[org.clojure/test.check "0.9.0"]]}})
