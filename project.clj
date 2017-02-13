@@ -1,4 +1,4 @@
-(defproject swagger-spec "0.2.0"
+(defproject swagger-spec "0.3.0-SNAPSHOT"
   :description "clojure.spec spec for Swagger definition"
   :url "https://github.com/immoh/swagger-spec"
   :license {:name "Eclipse Public License"
