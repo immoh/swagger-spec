@@ -248,13 +248,19 @@
 
 ;; Responses Object
 
+(defn keyword->int [x]
+  (cond
+    (int? x) x
+    (nil? x) ::s/invalid
+    :else (try
+            (Integer/parseInt (name x))
+            (catch NumberFormatException _
+              ::s/invalid))))
+
 (s/def :swagger/responses (s/map-of (s/or :default #{:default}
-                                          :status-code-kw (s/with-gen
-                                                            (s/and keyword? #(re-matches #"[1-5][0-9][0-9]" (name %)))
-                                                            #(gen/fmap (comp keyword str) (gen/choose 100 599)))
-                                          :status-code-int (s/with-gen
-                                                             (s/and int? #(<= 100 % 599))
-                                                             #(gen/choose 100 599)))
+                                          :status-code (s/with-gen
+                                                         (s/and (s/conformer keyword->int) #(<= 100 % 599))
+                                                         #(gen/choose 100 599)))
                                     (s/or :response :swagger/response
                                           :ref :swagger/ref)))
 

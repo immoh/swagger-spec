@@ -8,7 +8,7 @@
             [swagger.spec]))
 
 (def ^:private spec->freq (->> (slurp "src/swagger/spec.clj")
-                               (re-seq #":[^ /)]+/[^ )\]\n]+")
+                               (re-seq #":swagger[^ /)]*/[^ )\]\n]+")
                                (map #(keyword (subs % 1)))
                                (frequencies)))
 
