@@ -1,6 +1,6 @@
 (ns swagger.spec
-  (:require [clojure.spec :as s]
-            [clojure.spec.gen :as gen]
+  (:require [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
             [clojure.string]))
 ;; Shared
 

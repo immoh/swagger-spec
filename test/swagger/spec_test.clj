@@ -1,7 +1,7 @@
 (ns swagger.spec-test
   (:require [clojure.java.io :as io]
-            [clojure.spec :as s]
-            [clojure.spec.gen :as gen]
+            [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
             [clojure.test :refer :all]
             [swagger.reader.json :as json]
             [swagger.reader.yaml :as yaml]
