@@ -25,7 +25,7 @@ and functions to parse JSON and YAML strings to a Clojure data structure that is
 
 ```clj
 (ns example
-  (:require [clojure.spec :as s]
+  (:require [clojure.spec.alpha :as s]
             [swagger.reader.json :as json]
             [swagger.reader.yaml :as yaml]
             [swagger.spec]))
@@ -42,8 +42,8 @@ The spec also allows test data to be generated for use with [test.check](https:/
 
 ```clj
 (ns example2
-  (:require [clojure.spec :as s]
-            [clojure.spec.gen :as gen]
+  (:require [clojure.spec.alpha :as s]
+            [clojure.spec.gen.alpha :as gen]
             [swagger.spec]))
 
 (binding [s/*recursion-limit* 0]
