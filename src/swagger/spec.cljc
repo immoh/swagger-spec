@@ -252,10 +252,14 @@
   (cond
     (int? x) x
     (nil? x) ::s/invalid
-    :else (try
-            (Integer/parseInt (name x))
-            (catch NumberFormatException _
-              ::s/invalid))))
+    :else #?(:clj (try
+                    (Integer/parseInt (name x))
+                    (catch NumberFormatException _
+                      ::s/invalid))
+             :cljs (let [result (js/parseInt (name x))]
+                     (if (.isFinite js/Number result)
+                       result
+                       ::s/invalid)))))
 
 (s/def :swagger/responses (s/map-of (s/or :default #{:default}
                                           :status-code (s/with-gen
