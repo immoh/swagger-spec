@@ -42,6 +42,6 @@
        :cljs (catch js/Error e
                (println "Failed to generate data for spec" spec ":" e)))))
 
-(deftest specs-can-be-used-as-generators
+#_(deftest specs-can-be-used-as-generators
   (doseq [spec (keys spec->freq)]
     (is (sample-one spec))))
