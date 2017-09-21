@@ -4,12 +4,12 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/spec.alpha "0.1.123"]
-                 [circleci/clj-yaml "0.5.5"]
-                 [cheshire "5.7.1"]
+                 [circleci/clj-yaml "0.5.6"]
+                 [cheshire "5.8.0"]
                  [cljsjs/js-yaml "3.3.1-0"]]
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-doo "0.1.7"]]
-  :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-alpha17"]
+  :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-beta1"]
                                   [org.clojure/clojurescript "1.9.908"]
                                   [org.clojure/test.check "0.9.0"]
                                   [cljs-node-io "0.5.0"]]}}
