@@ -9,7 +9,7 @@
                  [cljsjs/js-yaml "3.3.1-0"]]
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-doo "0.1.7"]]
-  :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-beta1"]
+  :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-alpha17"]
                                   [org.clojure/clojurescript "1.9.908"]
                                   [org.clojure/test.check "0.9.0"]
                                   [cljs-node-io "0.5.0"]]}}
