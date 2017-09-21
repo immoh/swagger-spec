@@ -15,7 +15,7 @@ for Clojure 1.8.
 Add the following dependency to your project file:
 
 ```clj
-[swagger-spec "0.3.0"]
+[swagger-spec "0.4.0"]
 ```
 
 ## Usage
