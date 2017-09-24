@@ -2,6 +2,22 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as gen]
             [clojure.string]))
+
+;; Coercion
+
+(defn keyword->int [x]
+  (cond
+    (int? x) x
+    (nil? x) ::s/invalid
+    :else #?(:clj (try
+                    (Integer/parseInt (name x))
+                    (catch NumberFormatException _
+                      ::s/invalid))
+             :cljs (let [result (js/parseInt (name x))]
+                     (if (.isFinite js/Number result)
+                       result
+                       ::s/invalid)))))
+
 ;; Shared
 
 (s/def :swagger/path (s/with-gen (s/and string? #(clojure.string/starts-with? % "/"))
@@ -247,19 +263,6 @@
 (s/def :swagger.response/examples (s/map-of string? any?))
 
 ;; Responses Object
-
-(defn keyword->int [x]
-  (cond
-    (int? x) x
-    (nil? x) ::s/invalid
-    :else #?(:clj (try
-                    (Integer/parseInt (name x))
-                    (catch NumberFormatException _
-                      ::s/invalid))
-             :cljs (let [result (js/parseInt (name x))]
-                     (if (.isFinite js/Number result)
-                       result
-                       ::s/invalid)))))
 
 (s/def :swagger/responses (s/map-of (s/or :default #{:default}
                                           :status-code (s/with-gen
