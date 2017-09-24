@@ -2,12 +2,36 @@
   (:require [clojure.spec.alpha :as s]
             [clojure.spec.gen.alpha :as gen]
             [clojure.string]))
+
+;; Coercion
+
+(defn keyword->int [x]
+  (cond
+    (int? x) x
+    (nil? x) ::s/invalid
+    :else #?(:clj (try
+                    (Integer/parseInt (name x))
+                    (catch NumberFormatException _
+                      ::s/invalid))
+             :cljs (let [result (js/parseInt (name x))]
+                     (if (.isFinite js/Number result)
+                       result
+                       ::s/invalid)))))
+
+(defn- keyword->str [x]
+  (cond
+    (string? x) x
+    (keyword? x) (subs (str x) 1)
+    :else ::s/invalid))
+
 ;; Shared
 
 (s/def :swagger/path (s/with-gen (s/and string? #(clojure.string/starts-with? % "/"))
                                  #(gen/fmap (partial str "/") (gen/string-alphanumeric))))
 (s/def :swagger/$ref string?)
 (s/def :swagger/schemes (s/* #{"http" "https" "ws" "wss"}))
+(s/def :swagger/extension (s/with-gen (s/and keyword? #(clojure.string/starts-with? (name %) "x-"))
+                                      #(gen/fmap (fn [s] (keyword (str "x-" s))) (gen/string-alphanumeric))))
 
 ;; JSON Schema
 
@@ -244,22 +268,10 @@
 (s/def :swagger.response/description string?)
 (s/def :swagger.response/schema :swagger/schema)
 (s/def :swagger.response/headers (s/map-of keyword? :swagger/property))
-(s/def :swagger.response/examples (s/map-of string? any?))
+(s/def :swagger.response/examples (s/map-of (s/with-gen (s/conformer keyword->str) gen/string-alphanumeric)
+                                            any?))
 
 ;; Responses Object
-
-(defn keyword->int [x]
-  (cond
-    (int? x) x
-    (nil? x) ::s/invalid
-    :else #?(:clj (try
-                    (Integer/parseInt (name x))
-                    (catch NumberFormatException _
-                      ::s/invalid))
-             :cljs (let [result (js/parseInt (name x))]
-                     (if (.isFinite js/Number result)
-                       result
-                       ::s/invalid)))))
 
 (s/def :swagger/responses (s/map-of (s/or :default #{:default}
                                           :status-code (s/with-gen
@@ -425,8 +437,13 @@
 
 ;; Paths Object
 
-(s/def :swagger/paths (s/every (s/or :path (s/tuple :swagger/path :swagger/path-item)
-                                     :extension (s/tuple keyword? any?))
+(s/def :swagger.paths/path (s/with-gen (s/and (s/conformer keyword->str)
+                                              :swagger/path)
+                                       #(gen/fmap (partial str "/") (gen/string-alphanumeric))))
+
+(s/def :swagger/paths (s/every (s/or :path (s/tuple :swagger.paths/path
+                                                    :swagger/path-item)
+                                     :extension (s/tuple :swagger/extension any?))
                                :kind map?))
 
 ;; License Object

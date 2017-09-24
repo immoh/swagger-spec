@@ -3,15 +3,15 @@
   :url "https://github.com/immoh/swagger-spec"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/spec.alpha "0.1.123"]
-                 [circleci/clj-yaml "0.5.6"]
-                 [cheshire "5.8.0"]
-                 [cljsjs/js-yaml "3.3.1-0"]]
+  :dependencies [[org.clojure/spec.alpha "0.1.123"]]
   :plugins [[lein-cljsbuild "1.1.7"]
             [lein-doo "0.1.7"]]
   :profiles {:dev {:dependencies [[org.clojure/clojure "1.9.0-alpha17"]
                                   [org.clojure/clojurescript "1.9.908"]
                                   [org.clojure/test.check "0.9.0"]
+                                  [circleci/clj-yaml "0.5.6"]
+                                  [cheshire "5.8.0"]
+                                  [cljsjs/js-yaml "3.3.1-0"]
                                   [cljs-node-io "0.5.0"]]}}
   :doo {:build "test"
         :alias {:default [:node]}}

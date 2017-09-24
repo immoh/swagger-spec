@@ -1,12 +1,11 @@
 # swagger-spec [![Build Status](https://travis-ci.org/immoh/swagger-spec.svg?branch=master)](https://travis-ci.org/immoh/swagger-spec) [![Dependencies Status](https://jarkeeper.com/immoh/swagger-spec/status.svg)](https://jarkeeper.com/immoh/swagger-spec)
 
 A library that contains [clojure.spec](http://clojure.org/about/spec) spec for
-[Swagger definition](http://swagger.io/specification/) and functions to parse JSON and YAML strings to a compatible
-Clojure data structure.
+[Swagger (OpenAPI) definition version 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 
 ## Dependencies
 
-This library depends on Clojure 1.9 which is still in alpha. It is possible to use it with Clojure 1.8 together with
+This library depends on Clojure 1.9 which is in beta. It is possible to use it with Clojure 1.8 together with
 [clojure-future.spec](https://github.com/tonsky/clojure-future-spec) which is an unofficial backport of clojure.spec
 for Clojure 1.8.
 
@@ -20,23 +19,31 @@ Add the following dependency to your project file:
 
 ## Usage
 
-This library registers spec `:swagger/definition` for validating Swagger definition against the specification,
-and functions to parse JSON and YAML strings to a Clojure data structure that is compatible with the spec:
+This library registers spec `:swagger/definition` which can be used for validation and data generation.
+
+Generally map keys are required to be keywords except in certain places where integers (status code in Responses
+Object) and strings (path in Path Items object, mime type in Example Object) can also be used. This is to make it
+easier to avoid some pitfalls with keywords (e.g. first slash is treated as namespace separator.)
+
+### Validation
 
 ```clj
 (ns example
-  (:require [clojure.spec.alpha :as s]
-            [swagger.reader.json :as json]
-            [swagger.reader.yaml :as yaml]
+  (:require [cheshire.core :as cheshire]
+            [clojure.spec.alpha :as s]
             [swagger.spec]))
 
-(s/valid? :swagger/definition (json/parse-string (slurp "http://petstore.swagger.io/v2/swagger.json")))
+(s/valid? :swagger/definition (cheshire/parse-string (slurp "http://petstore.swagger.io/v2/swagger.json") true))
 => true
 
-(s/explain :swagger/definition (-> (yaml/parse-string (slurp "http://petstore.swagger.io/v2/swagger.yaml"))
+(s/explain :swagger/definition (-> (cheshire/parse-string (slurp "http://petstore.swagger.io/v2/swagger.json") true)
                                    (assoc :swagger "2.1")))
 ;; In: [:swagger] val: "2.1" fails spec: :swagger.definition/swagger at: [:swagger] predicate: #{"2.0"}
+;; :clojure.spec.alpha/spec  :swagger/definition
+;; :clojure.spec.alpha/value ...
 ```
+
+### Data Generation
 
 The spec also allows test data to be generated for use with [test.check](https://github.com/clojure/test.check):
 
