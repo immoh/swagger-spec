@@ -30,6 +30,8 @@
                                  #(gen/fmap (partial str "/") (gen/string-alphanumeric))))
 (s/def :swagger/$ref string?)
 (s/def :swagger/schemes (s/* #{"http" "https" "ws" "wss"}))
+(s/def :swagger/extension (s/with-gen (s/and keyword? #(clojure.string/starts-with? (name %) "x-"))
+                                      #(gen/fmap (fn [s] (keyword (str "x-" s))) (gen/string-alphanumeric))))
 
 ;; JSON Schema
 
@@ -441,7 +443,7 @@
 
 (s/def :swagger/paths (s/every (s/or :path (s/tuple :swagger.paths/path
                                                     :swagger/path-item)
-                                     :extension (s/tuple keyword? any?))
+                                     :extension (s/tuple :swagger/extension any?))
                                :kind map?))
 
 ;; License Object
