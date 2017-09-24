@@ -266,7 +266,8 @@
 (s/def :swagger.response/description string?)
 (s/def :swagger.response/schema :swagger/schema)
 (s/def :swagger.response/headers (s/map-of keyword? :swagger/property))
-(s/def :swagger.response/examples (s/map-of string? any?))
+(s/def :swagger.response/examples (s/map-of (s/with-gen (s/conformer keyword->str) gen/string-alphanumeric)
+                                            any?))
 
 ;; Responses Object
 
