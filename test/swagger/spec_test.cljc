@@ -4,10 +4,11 @@
             [clojure.test :refer [deftest is]]
             [swagger.spec]
             [clojure.test.check.generators]
-            [swagger.reader.json :as json]
-            [swagger.reader.yaml :as yaml]
-            #?@(:cljs [[cljs-node-io.core :as io :refer [slurp file-seq]]]
-                :clj [[clojure.java.io :as io]])))
+    #?@(:cljs [[cljs-node-io.core :as io :refer [slurp file-seq]]
+               [cljsjs.js-yaml]]
+        :clj  [[cheshire.core :as cheshire]
+               [clj-yaml.core :as clj-yaml]
+               [clojure.java.io :as io]])))
 
 (def ^:private spec->freq (->> (slurp "src/swagger/spec.cljc")
                                (re-seq #":swagger[^ /)]*/[^ )\]\n]+")
@@ -16,8 +17,10 @@
 
 (defn- valid-swagger? [path]
   (let [reader (case (last (clojure.string/split path #"\."))
-                 "json" json/parse-string
-                 "yaml" yaml/parse-string)
+                 "json" #?(:clj  #(cheshire/parse-string % true)
+                           :cljs #(js->clj (js/JSON.parse %) :keywordize-keys true))
+                 "yaml" #?(:clj  #(clj-yaml/parse-string % :keywords true)
+                           :cljs #(js->clj (js/jsyaml.load %) :keywordize-keys true)))
         definition (reader (slurp path))]
     (or
       (s/valid? :swagger/definition definition)
