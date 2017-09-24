@@ -5,7 +5,7 @@ A library that contains [clojure.spec](http://clojure.org/about/spec) spec for
 
 ## Dependencies
 
-This library depends on Clojure 1.9 which is still in alpha. It is possible to use it with Clojure 1.8 together with
+This library depends on Clojure 1.9 which is in beta. It is possible to use it with Clojure 1.8 together with
 [clojure-future.spec](https://github.com/tonsky/clojure-future-spec) which is an unofficial backport of clojure.spec
 for Clojure 1.8.
 
