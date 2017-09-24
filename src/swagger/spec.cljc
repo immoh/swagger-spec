@@ -18,6 +18,12 @@
                        result
                        ::s/invalid)))))
 
+(defn- keyword->str [x]
+  (cond
+    (string? x) x
+    (keyword? x) (subs (str x) 1)
+    :else ::s/invalid))
+
 ;; Shared
 
 (s/def :swagger/path (s/with-gen (s/and string? #(clojure.string/starts-with? % "/"))
@@ -428,7 +434,12 @@
 
 ;; Paths Object
 
-(s/def :swagger/paths (s/every (s/or :path (s/tuple :swagger/path :swagger/path-item)
+(s/def :swagger.paths/path (s/with-gen (s/and (s/conformer keyword->str)
+                                              :swagger/path)
+                                       #(gen/fmap (partial str "/") (gen/string-alphanumeric))))
+
+(s/def :swagger/paths (s/every (s/or :path (s/tuple :swagger.paths/path
+                                                    :swagger/path-item)
                                      :extension (s/tuple keyword? any?))
                                :kind map?))
 
