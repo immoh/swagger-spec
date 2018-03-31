@@ -3,12 +3,6 @@
 A library that contains [clojure.spec](http://clojure.org/about/spec) spec for
 [Swagger (OpenAPI) definition version 2.0](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
 
-## Dependencies
-
-This library depends on Clojure 1.9 which is in beta. It is possible to use it with Clojure 1.8 together with
-[clojure-future.spec](https://github.com/tonsky/clojure-future-spec) which is an unofficial backport of clojure.spec
-for Clojure 1.8.
-
 ## Installation
 
 Add the following dependency to your project file:
